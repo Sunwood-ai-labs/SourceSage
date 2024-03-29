@@ -1,7 +1,7 @@
 
 
 <p align="center">
-    <img src="docs/SourceSage_icon4.png" width="100%">
+    <img src="docs/SourceSage_icon5.png" width="100%">
     <br>
     <h1 align="center">SourceSage</h1>
     <h2 align="center">～Transforming code for AI～</h2>
