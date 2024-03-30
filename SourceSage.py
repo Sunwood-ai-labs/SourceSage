@@ -1,12 +1,14 @@
 import os
 import fnmatch
+import json
 
 class SourceSage:
-    def __init__(self, folders, ignore_file='.SourceSageignore', output_file='output.md'):
+    def __init__(self, folders, ignore_file='.SourceSageignore', output_file='output.md', language_map_file='language_map.json'):
         self.folders = folders
         self.ignore_file = ignore_file
         self.output_file = output_file
         self.exclude_patterns = self._load_ignore_patterns()
+        self.language_map = self._load_language_map(language_map_file)
 
     def _load_ignore_patterns(self):
         if os.path.exists(self.ignore_file):
@@ -14,6 +16,13 @@ class SourceSage:
                 return [line.strip() for line in f if line.strip() and not line.startswith('#')]
         else:
             return []
+
+    def _load_language_map(self, language_map_file):
+        if os.path.exists(language_map_file):
+            with open(language_map_file, 'r') as f:
+                return json.load(f)
+        else:
+            return {}
 
     def generate_markdown(self):
         with open(self.output_file, 'w', encoding='utf-8') as md_file:
@@ -42,7 +51,8 @@ class SourceSage:
                 try:
                     with open(file_path, 'r', encoding='utf-8') as file_content:
                         content = file_content.read().strip()
-                        markdown_content += f"`{relative_file_path}`\n\n```plaintext\n{content}\n```\n\n"
+                        language = self._get_language_for_file(f)
+                        markdown_content += f"`{relative_file_path}`\n\n```{language}\n{content}\n```\n\n"
                 except Exception as e:
                     markdown_content += f"`{relative_file_path}` - Error reading file: {e}\n\n"
         return markdown_content
@@ -82,7 +92,15 @@ class SourceSage:
                 return True
         return False
 
-# 使用例
-folders = ['./']  # 現在のディレクトリを対象に
-source_sage = SourceSage(folders, ignore_file='.SourceSageignore', output_file='SourceSage.md')
-source_sage.generate_markdown()
+    def _get_language_for_file(self, filename):
+        _, extension = os.path.splitext(filename)
+        extension = extension.lower()
+        return self.language_map.get(extension, 'plaintext')
+        
+
+if __name__ == "__main__": 
+    folders = ['./']  # 現在のディレクトリを対象に
+    source_sage = SourceSage(folders, ignore_file='.SourceSageignore', 
+                                        output_file='SourceSage.md', 
+                                        language_map_file='assets/language_map.json')
+    source_sage.generate_markdown()
