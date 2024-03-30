@@ -10,8 +10,8 @@ with open("config/language_map.json", "r", encoding="utf-8") as lang_file:
 repo = Repo("./")
 
 # 最新のコミットから指定された数のコミットを取得して表示
-num_commits_to_display = 5
-commits = list(repo.iter_commits('develop', max_count=num_commits_to_display + 1))
+num_commits_to_display = 30
+commits = list(repo.iter_commits('main', max_count=num_commits_to_display + 1))
 
 with open("SourceSageAseets/CHANGELOG_Diff.md", "w", encoding="utf-8") as file:
     for i in range(min(num_commits_to_display, len(commits) - 1)):
