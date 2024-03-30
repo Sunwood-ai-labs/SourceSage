@@ -2,6 +2,23 @@
 
 ## HEAD
 
+- [c980f40] - Merge branch 'feature/add-git-logs' into develop (Maki, 2024-03-30)
+- [c67b909] - ソースコードの忽視対象ファイルリストを更新し、変更履歴生成機能を追加
+
+- .SourceSageignoreファイルに"Changelog"ディレクトリを除外対象に追加
+- ソースコード解析結果の出力ディレクトリを"docs/SourceSage.md"に変更
+- 変更履歴生成機能を追加し、"docs/Changelog"ディレクトリへの出力を実装
+
+これにより、ソースコード解析結果と変更履歴をドキュメント化して管理できるようになり、開発プロセスの透明性と可視性が向上します。 (Maki, 2024-03-30)
+- [5813fc7] - Create SourceSage.md (Maki, 2024-03-30)
+- [f58eeaa] - Delete CHANGELOG.md (Maki, 2024-03-30)
+- [67d8074] - Delete SourceSage.md (Maki, 2024-03-30)
+- [c7489ce] - Delete get_git_log.py (Maki, 2024-03-30)
+- [83f7c55] - Create CHANGELOG_main.md (Maki, 2024-03-30)
+- [67c1538] - Create CHANGELOG_integrated.md (Maki, 2024-03-30)
+- [0e1a13a] - Create CHANGELOG_HEAD.md (Maki, 2024-03-30)
+- [17127ed] - Create CHANGELOG_features.md (Maki, 2024-03-30)
+- [9a7739b] - Create CHANGELOG_develop.md (Maki, 2024-03-30)
 - [c346a22] - 変更の目的を明確にし、ファイル名や具体的な変更箇所の記述は最小限に抑えた簡潔なコミットメッセージを以下のように作成しました:
 
 "ChangelogGeneratorクラスの導入によりコードの可読性と保守性を向上"
