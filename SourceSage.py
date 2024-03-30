@@ -73,5 +73,5 @@ class SourceSage:
 # 使用例
 folders = ['./']  # 現在のディレクトリを対象に
 exclude_patterns = ['.git', '__pycache__', 'LICENSE', 'output.md', 'README.md', 'docs']  # 除外するファイル/フォルダのパターン
-source_sage = SourceSage(folders, exclude_patterns=exclude_patterns, output_file='output.md')
+source_sage = SourceSage(folders, exclude_patterns=exclude_patterns, output_file='SourceSage.md')
 source_sage.generate_markdown()
