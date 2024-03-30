@@ -1,10 +1,19 @@
 import os
+import fnmatch
 
 class SourceSage:
-    def __init__(self, folders, exclude_patterns=None, output_file='output.md'):
+    def __init__(self, folders, ignore_file='.SourceSageignore', output_file='output.md'):
         self.folders = folders
-        self.exclude_patterns = exclude_patterns or []
+        self.ignore_file = ignore_file
         self.output_file = output_file
+        self.exclude_patterns = self._load_ignore_patterns()
+
+    def _load_ignore_patterns(self):
+        if os.path.exists(self.ignore_file):
+            with open(self.ignore_file, 'r') as f:
+                return [line.strip() for line in f if line.strip() and not line.startswith('#')]
+        else:
+            return []
 
     def generate_markdown(self):
         with open(self.output_file, 'w', encoding='utf-8') as md_file:
@@ -20,9 +29,7 @@ class SourceSage:
         markdown_content += "\n```\n\n"
         base_level = folder_path.count(os.sep)
         for root, dirs, files in os.walk(folder_path, topdown=True):
-            if self._is_excluded(root):
-                dirs[:] = []  # Don't walk into excluded directories
-                continue
+            dirs[:] = [d for d in dirs if not self._is_excluded(os.path.join(root, d))]
             level = root.count(os.sep) - base_level + 1
             header_level = '#' * (level + 1)
             relative_path = os.path.relpath(root, folder_path)
@@ -57,9 +64,9 @@ class SourceSage:
         for item in os.listdir(dir_path):
             if not show_hidden and item.startswith('.'):
                 continue
-            if self._is_excluded(item):
-                continue
             item_path = os.path.join(dir_path, item)
+            if self._is_excluded(item_path):
+                continue
             if os.path.isdir(item_path):
                 tree_string += '│  ' * depth + '├─ ' + item + '/\n'
                 tree_string += self._build_tree_string(item_path, max_depth, show_hidden, depth + 1)
@@ -68,10 +75,14 @@ class SourceSage:
         return tree_string
 
     def _is_excluded(self, path):
-        return any(pattern in path for pattern in self.exclude_patterns)
+        for pattern in self.exclude_patterns:
+            if fnmatch.fnmatch(path, pattern):
+                return True
+            if fnmatch.fnmatch(os.path.basename(path), pattern):
+                return True
+        return False
 
 # 使用例
 folders = ['./']  # 現在のディレクトリを対象に
-exclude_patterns = ['.git', '__pycache__', 'LICENSE', 'output.md', 'assets', 'Style-Bert-VITS2', 'output', 'streamlit', 'SourceSage.md', 'data', 'SourceSage']  # 除外するファイル/フォルダのパターン
-source_sage = SourceSage(folders, exclude_patterns=exclude_patterns, output_file='SourceSage.md')
+source_sage = SourceSage(folders, ignore_file='.SourceSageignore', output_file='SourceSage.md')
 source_sage.generate_markdown()
