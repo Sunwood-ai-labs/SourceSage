@@ -13,13 +13,12 @@ from modules.ChangelogGenerator import ChangelogGenerator
 if __name__ == "__main__":
     folders = ['./']
     source_sage = SourceSage(folders, ignore_file='.SourceSageignore',
-                             output_file='docs/SourceSage.md',
+                             output_file='SourceSageAseets/SourceSage.md',
                              language_map_file='config/language_map.json')
     source_sage.generate_markdown()
 
-
     repo_path = "./"
-    output_dir = "docs/Changelog"
+    output_dir = "SourceSageAseets/Changelog"
     os.makedirs(output_dir, exist_ok=True)  # ディレクトリが存在しない場合は作成する
 
     generator = ChangelogGenerator(repo_path, output_dir)
