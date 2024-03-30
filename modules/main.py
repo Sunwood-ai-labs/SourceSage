@@ -1,12 +1,3 @@
-
-
-import os
-import sys
-import pprint
-
-sys.path.append(os.path.join(os.path.dirname(__file__), 'modules'))
-pprint.pprint(sys.path)
-
 from modules.source_sage import SourceSage
 
 if __name__ == "__main__":
