@@ -14,12 +14,13 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 ## 更新内容
 
-- 【2024/03/30】 ChangelogGenerator classを導入し、コードの可読性と保守性を向上
-- 【2024/03/30】 言語ごとのシンタックスハイライト機能を追加
-- 【2024/03/30】 対象フォルダの指定やファイルの除外設定を複数行対応
-- 【2024/03/30】 コード生成時のエラー処理を改善
-- 【2024/03/30】 設定ファイルの場所を外部化し、柔軟性を向上
-- 【2024/03/30】 .SourceSageignoreファイルを導入し、不要なファイルやフォルダを自動的に除外
+- [【2024/03/30】 SourceSage 2.0.0 ](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag2.0.0)
+  - ChangelogGenerator classを導入し、コードの可読性と保守性を向上
+  - 言語ごとのシンタックスハイライト機能を追加
+  - 対象フォルダの指定やファイルの除外設定を複数行対応
+  - コード生成時のエラー処理を改善
+  - 設定ファイルの場所を外部化し、柔軟性を向上
+  - .SourceSageignoreファイルを導入し、不要なファイルやフォルダを自動的に除外
 - 【2024/03/29】 初期リリース
 
 ## 特徴
@@ -61,7 +62,7 @@ python SourceSage.py
 
 ## 出力例
 
-生成されるマークダウンファイルの例は次のようになります：
+生成される[マークダウンファイル(docs/SourceSage.md)](docs/SourceSage.md)の例は次のようになります：
 
 ````markdown
 # Project: YourProjectName
@@ -127,7 +128,7 @@ This is the documentation for YourProjectName.
 
 ## 変更履歴の統合
 
-SourceSageは、Gitリポジトリの変更履歴を自動的に生成し、ブランチごとにマークダウンファイルに出力します。さらに、すべてのブランチの変更履歴を1つのファイルに統合することができます。
+SourceSageは、Gitリポジトリの変更履歴を自動的に生成し、ブランチごとに[マークダウンファイルに出力(docs/Changelog)](docs/Changelog)します。さらに、[すべてのブランチの変更履歴を1つのファイルに統合する(docs/Changelog/CHANGELOG_integrated.md)](docs/Changelog/CHANGELOG_integrated.md)ことができます。
 
 生成される変更履歴の例は次のようになります：
 
