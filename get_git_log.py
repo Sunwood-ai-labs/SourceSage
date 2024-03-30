@@ -1,33 +1,38 @@
 from git import Repo
 from datetime import datetime
 
-def get_repo(repo_path):
-    return Repo(repo_path)
+class ChangelogGenerator:
+    def __init__(self, repo_path):
+        self.repo_path = repo_path
+        self.repo = self._get_repo()
 
-def get_commits(repo):
-    return list(repo.iter_commits())
+    def _get_repo(self):
+        return Repo(self.repo_path)
 
-def format_commit(commit):
-    message = commit.message.strip()
-    sha = commit.hexsha[:7]
-    author = commit.author.name
-    date = datetime.fromtimestamp(commit.committed_date).strftime("%Y-%m-%d")
-    return f"- [{sha}] - {message} ({author}, {date})"
+    def _get_commits(self):
+        return list(self.repo.iter_commits())
 
-def generate_changelog(repo_path, branch='master', output_file='CHANGELOG.md'):
-    repo = get_repo(repo_path)
-    commits = get_commits(repo)
+    def _format_commit(self, commit):
+        message = commit.message.strip()
+        sha = commit.hexsha[:7]
+        author = commit.author.name
+        date = datetime.fromtimestamp(commit.committed_date).strftime("%Y-%m-%d")
+        return f"- [{sha}] - {message} ({author}, {date})"
 
-    with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(f"# Changelog\n\n")
-        f.write(f"## {branch}\n\n")
+    def generate_changelog(self, branch='master', output_file='CHANGELOG.md'):
+        commits = self._get_commits()
 
-        for commit in commits:
-            formatted_commit = format_commit(commit)
-            f.write(formatted_commit + "\n")
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(f"# Changelog\n\n")
+            f.write(f"## {branch}\n\n")
 
-    print(f"Changelog generated successfully at {output_file}")
+            for commit in commits:
+                formatted_commit = self._format_commit(commit)
+                f.write(formatted_commit + "\n")
 
-# Usage example
+        print(f"Changelog generated successfully at {output_file}")
+
+
 repo_path = "./"
-generate_changelog(repo_path)
+generator = ChangelogGenerator(repo_path)
+generator.generate_changelog()
