@@ -7,7 +7,7 @@ repo = Repo("./")
 num_commits_to_display = 5  # 表示したいコミットの数
 commits = list(repo.iter_commits('develop', max_count=num_commits_to_display + 1))  # 1つ多く取得する
 
-with open("Changelog/CHANGELOG_Diff.md", "w", encoding="utf-8") as file:
+with open("SourceSageAseets/CHANGELOG_Diff.md", "w", encoding="utf-8") as file:
     for i in range(min(num_commits_to_display, len(commits) - 1)):  # 存在するコミット数と要求された数を考慮
         commit = commits[i]
         formatted_message = commit.message.replace('\n', '\n    ')
