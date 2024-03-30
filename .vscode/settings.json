@@ -1,0 +1,6 @@
+{
+    "gitlens.ai.experimental.openai.url": "",
+    "gitlens.ai.experimental.provider": "anthropic",
+    "gitlens.ai.experimental.anthropic.model": "claude-3-haiku-20240307",
+    "gitlens.experimental.generateCommitMessagePrompt": "日本語でシンプルなコミットメッセージ"
+}

@@ -1,0 +1,15 @@
+.git
+__pycache__
+LICENSE
+output.md
+assets
+Style-Bert-VITS2
+output
+streamlit
+SourceSage.md
+data
+SourceSage
+.gitignore
+.SourceSageignore
+*.png
+Changelog
