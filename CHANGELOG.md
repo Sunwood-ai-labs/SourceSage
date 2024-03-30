@@ -2,6 +2,8 @@
 
 ## master
 
+- [5c5e6ac] - Create get_git_log.py (Maki, 2024-03-30)
+- [8d4a253] - Create CHANGELOG.md (Maki, 2024-03-30)
 - [f26fca5] - Merge branch 'feature/modules' into develop (Maki, 2024-03-30)
 - [36d6a4a] - 簡潔にまとめると、このコミットでは以下の変更が行われています:
 
