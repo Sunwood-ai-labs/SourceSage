@@ -1,6 +1,6 @@
 # Project: SourceSage
 
-```bash
+```plaintext
 OS: nt
 Directory: C:\Prj\SourceSage
 
