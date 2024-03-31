@@ -2,6 +2,102 @@
 
 ## develop
 
+- [555cfd6] - Merge branch 'feature/git-refactor' into develop (Maki, 2024-03-31)
+- [eedd0ca] - add demo assets (Maki, 2024-03-31)
+- [28487ce] - 指定された環境変数 `ISSUE_LOG_DIR` を使用するように SourceSage スクリプトを更新しました。これにより、GitHub イシューログが保存される場所を明確に定義できるようになりました。このチェンジは保守性と可読性を向上させるために行いました。 (Maki, 2024-03-31)
+- [51e3612] - [refactor] SourceSage.pyのリファクタリング
+
+## 変更内容
+
+- 環境変数の読み込みと.envファイルの作成処理を`modules.EnvFileHandler`モジュールに移動
+ - `create_env_file()`関数を`create_or_append_env_file()`関数に変更し、.envファイルがない場合は作成、ある場合は追記するように修正
+- 不要なコメントを削除
+- importの順序を調整
+ - 標準ライブラリ、外部ライブラリ、自作モジュールの順にimport
+- `if __name__ == "__main__":`の条件を追加
+
+## リファクタリングの目的
+
+- コードの可読性と保守性の向上
+- 環境変数の読み込みと.envファイルの作成処理の責務を分離
+- PEP8に準拠したコードスタイルの適用
+
+これらの変更により、SourceSage.pyの構造が改善され、より理解しやすく保守しやすいコードになりました。 (Maki, 2024-03-31)
+- [5538d65] - 「環境ファイルの自動生成機能を追加」
+
+このコミットでは、SourceSage.pyにenv_file関数を追加し、.envファイルが存在しない場合に自動で作成するようにしました。これにより、SourceSageプロジェクトを新しく始める際に、手動でenv_fileを作成する必要がなくなりました。開発者の生産性が向上し、プロジェクト開始がスムーズになることが期待されます。 (Maki, 2024-03-31)
+- [e769b1e] - ソース管理用の環境変数ファイルを追加  #2
+
+この変更は、ソースコード管理を容易にするためのプロジェクト設定ファイルを追加するものです。環境変数ファイルには、リポジトリのパス、ソースファイルの場所、出力ファイル名などの重要な構成情報が含まれています。これにより、プロジェクト全体のファイル構造が明確になり、コードの移植性と再現性が向上します。 (Maki, 2024-03-31)
+- [91e0f37] - dotenvモジュールのインポートエラーをキャッチし、エラーが発生してもデフォルト値を使用するように変更 (Maki, 2024-03-31)
+- [06b64fe] - [feat] issue#2 SourceSage.pyのパラメータを環境変数(.env)から設定できるようにする
+
+SourceSage.pyで使用しているパラメータを環境変数(.env)から設定できるように変更しました。
+
+## 変更内容
+
+- python-dotenvパッケージをインストールし、.envファイルから環境変数を読み込めるようにしました
+- .envファイルをプロジェクトルートに作成し、以下のパラメータを定義しました
+  - REPO_PATH
+  - SOURCE_SAGE_ASSETS_DIR
+  - CONFIG_DIR
+  - DOCS_DIR
+  - FOLDERS
+  - IGNORE_FILE
+  - OUTPUT_FILE
+  - LANGUAGE_MAP_FILE
+  - OWNER
+  - REPOSITORY
+  - ISSUES_FILE_NAME
+- SourceSage.pyを変更し、上記のパラメータを環境変数から読み込むようにしました
+  - os.getenv()を使用して環境変数の値を取得
+  - FOLDERSはカンマ区切りの文字列をリストに変換
+
+## 利点
+
+- .envファイルを変更するだけで、簡単にパラメータを変更できるようになりました
+- コードを変更することなくパラメータを設定できるため、メンテナンス性が向上しました
+- 複数のフォルダを指定する場合も、.envファイルのFOLDERSをカンマ区切りで指定するだけで対応可能です
+
+以上の変更により、issue#2の要件を満たすことができました。 (Maki, 2024-03-31)
+- [277db10] - 開いているIssueのデータを保存し、フィルタリングした結果を別ファイルとして保存する機能を追加しました。これにより、開発者がIssueの状況を詳細に把握しやすくなり、プロジェクト管理が効率化されます。 (Maki, 2024-03-31)
+- [0b4a102] - demo md (Maki, 2024-03-31)
+- [56e5def] - リファクタリング: SourceSage.pyの変数名とフォルダ名を統一
+
+- ソースコード内の重複するフォルダ名や変数を統一し、コードの可読性を向上
+  - source_sage_assets_dirを"SourceSageAssets"とし、関連するパスで使用するように修正
+  - config_dirを"config"とし、設定ファイルのパスで使用するように修正
+  - docs_dirを"docs"とし、テンプレートファイルのパスで使用するように修正
+- 変数名を一部変更し、より分かりやすい名前に修正
+  - save_pathをsource_sage_assets_dirに変更
+  - file_nameをissues_file_nameに変更
+  - output_dirをchangelog_output_dirとissues_markdown_output_dirに分けて使用するように修正
+- IssuesToMarkdownのインスタンス化時の引数を、他の部分と同様にf-stringを使用して指定するように修正
+- これらの変更により、コードの一貫性と可読性が向上し、保守性が改善された (Maki, 2024-03-31)
+- [784acce] - 機能: IssuesToMarkdownクラスにloguruを使用したログ出力を追加
+
+- loguruをインポートして使用できるようにした
+- load_data()メソッド内で、データのロード状況をログ出力するようにした
+- create_markdown_files()メソッド内で、マークダウンファイルの作成状況をログ出力するようにした
+- これにより、処理の進行状況や重要な情報がログに記録されるようになり、デバッグやモニタリングがしやすくなった (Maki, 2024-03-31)
+- [248d49b] - 機能: IssuesToMarkdownクラスをSourceSage.pyに統合
+
+- modules/IssuesToMarkdown.pyからIssuesToMarkdownクラスをインポート
+- if __name__ == "__main__":ブロックの最後に、IssuesToMarkdownクラスのインスタンス化と実行のコードを追加
+- これにより、SourceSage.pyを実行することで、他の処理と一緒にIssuesToMarkdownクラスの処理も実行されるようになった (Maki, 2024-03-31)
+- [b0e6da7] - 機能: 出力フォルダを指定できるオプションを追加
+
+- IssuesToMarkdownクラスの初期化時に出力フォルダを指定できるようにした
+- create_markdown_filesメソッド内で、os.path.joinを使用して出力フォルダとファイル名を結合
+- main部分で出力フォルダを指定できるようにした
+- これにより、出力先を柔軟に設定できるようになった (Maki, 2024-03-31)
+- [6a33080] - [refactor] Git関係のモジュールのリファクタリング
+
+- GitHubIssueRetrieve.pyとStagedDiffGenerator.pyの重複部分を削除し、GitHubUtils.pyというモジュールにまとめました。
+- ChangelogGenerator.pyとDiffChangelogGenerator.pyの共通部分をChangelogUtils.pyモジュールに抽出しました。
+- StageInfoGenerator.py内の不要なimport文を削除し、モジュールのインポート方法を修正しました。
+- SourceSage.py内のモジュールのインポート方法を修正し、不要なimport文を削除しました。
+- モジュール間の依存関係を整理し、コードの可読性と保守性を向上させました。 (Maki, 2024-03-31)
 - [7f0765c] - Merge branch 'feature/issues-to-resolve' into develop (Maki, 2024-03-31)
 - [c773352] - [refactor] Git関連モジュールのリファクタリング
 

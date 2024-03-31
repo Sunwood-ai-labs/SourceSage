@@ -1,20 +1,15 @@
 <p align="center">
-
 <img src="docs/icon/SourceSage_icon4.png" width="100%">
-
 <br>
-
 <h1 align="center">SourceSage</h1>
-
 <h2 align="center">～Transforming code for AI～</h2>
-
 </p>
 
-SourceSageは、プロジェクトのソースコードとファイル構成を単一のマークダウンファイルに統合するPythonスクリプトです。これにより、大規模言語モデル（AI）がプロジェクト全体の構造と内容を容易に理解できるようになります。
+SourceSageは、プロジェクトのソースコードとファイル構成を単一のマークダウンファイルに統合し、AIによる自動修正やドキュメント化を実現するPythonスクリプトです。開発のライフサイクル全体を通して、コードの品質向上と生産性の向上を支援します。
 
 ## 更新内容
 
-- [【2024/03/30】 SourceSage 2.0.0 ](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag2.0.0)
+- [【2024/03/30】 SourceSage 2.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag2.0.0)
   - ChangelogGenerator classを導入し、コードの可読性と保守性を向上
   - 言語ごとのシンタックスハイライト機能を追加
   - 対象フォルダの指定やファイルの除外設定を複数行対応
@@ -23,148 +18,228 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
   - .SourceSageignoreファイルを導入し、不要なファイルやフォルダを自動的に除外
 - 【2024/03/29】 初期リリース
 
-## 特徴
 
-- プロジェクトのディレクトリ構成とファイル内容を1つのマークダウンファイルにまとめます
-- AIがプロジェクトの概要を素早く把握できる構造化された形式で出力します
-- 不要なファイルやディレクトリを除外する設定が可能です
-- プロジェクトの全体像を明確かつ読みやすい方法で提示します
-- 複数のプログラミング言語に対応し、シンタックスハイライト機能を提供します
-- 設定ファイルを外部化することで、柔軟性と保守性を向上させています
-- Gitの変更履歴を自動生成し、ドキュメント化することができます
+
+## 主な機能
+
+### [IssueWise（開発前の課題解決）](#1-issuewise開発前の課題解決)
+
+- GitHubのオープンIssueを自動取得し、AIによる課題の自動修正をサポート
+- 課題を効率的に特定し、迅速に解決策を見つけられます
+
+### [CommitCraft（開発中のコミット管理）](#2-commitcraft開発中のコミット管理)
+- 変更差分を追跡し、AIが適切なコミットメッセージを自動生成
+- コミットの内容を正確に記述でき、変更履歴を明確に管理できます
+
+### [DocuMind（リリース後のドキュメント化）](#3-documindリリース後のドキュメント化)
+- プロジェクトの概要とGitの変更履歴を組み合わせてドキュメント化
+- プロジェクトの全体像を把握しやすく、メンテナンス性が向上します
+
 
 ## 使用方法
 
-プロジェクトでSourceSageを使用するには、次の手順に従います：
+### 設定
 
 1. `SourceSage.py`ファイルと`modules`フォルダを、分析対象のプロジェクトのルートディレクトリにコピーします。
 
-2. 必要に応じて、`.SourceSageignore`ファイルを作成し、除外したいファイルやフォルダのパターンを記述します。
+2. 必要に応じて、`config/.SourceSageignore`ファイルを作成し、除外したいファイルやフォルダのパターンを記述します。
 
 3. `config/language_map.json`ファイルを編集し、必要なプログラミング言語とそれに対応するシンタックスハイライトの識別子を設定します。
 
-4. 必要に応じて、`SourceSage.py`内の以下の設定を変更します：
+4. 必要に応じて、`.env`内の以下の設定を変更します：
 
-```python
-folders = ['./'] # 分析対象のディレクトリ（現在のディレクトリを指定）
-ignore_file = '.SourceSageignore' # 無視するファイル/フォルダのパターンを記述したファイル
-output_file = 'docs/SourceSage.md' # 出力するマークダウンファイル名
-language_map_file = 'config/language_map.json' # 言語マッピングの設定ファイル
+```bash
+
+REPO_PATH=./
+SOURCE_SAGE_ASSETS_DIR=SourceSageAssets
+CONFIG_DIR=config
+DOCS_DIR=docs
+FOLDERS=./
+IGNORE_FILE=.SourceSageignore
+OUTPUT_FILE=SourceSage.md
+LANGUAGE_MAP_FILE=config/language_map.json
+ISSUE_LOG_DIR=ISSUE_LOG
+
+OWNER=Sunwood-ai-labs
+REPOSITORY=SourceSage
+ISSUES_FILE_NAME=open_issues_filtered.json
+
+ISSUES_RESOLVE_DIR=ISSUES_RESOLVE
+STAGE_INFO_DIR=STAGE_INFO
 ```
 
-5. ターミナルまたはコマンドプロンプトで、プロジェクトのルートディレクトリに移動し、以下のコマンドを実行します：
+
+### 実行
+
+ターミナルまたはコマンドプロンプトで、プロジェクトのルートディレクトリに移動し、以下のコマンドを実行します：
 
 ```bash
 python SourceSage.py
 ```
 
-これにより、AIがプロジェクトの構造と内容を理解しやすい形式のマークダウンファイル（デフォルトでは `docs/SourceSage.md`）が生成されます。また、Gitの変更履歴が`docs/Changelog`ディレクトリに自動生成されます。
+これにより、以下のファイルが生成されます：
 
-## 出力例
+- `SourceSageAssets/SourceSage.md`：AIがプロジェクトの構造と内容を理解しやすい形式のマークダウンファイル
+- `SourceSageAssets/Changelog`：Gitの変更履歴を保存するディレクトリ
+- `SourceSageAssets/open_issues_filtered.json`：GitHubからフェッチしたオープンなIssueのJSONファイル
+- `SourceSageAssets/STAGED_DIFF.md`：ステージされた変更の差分情報を含むマークダウンファイル
 
-生成される[マークダウンファイル(docs/SourceSage.md)](docs/SourceSage.md)の例は次のようになります：
 
-````markdown
-# Project: YourProjectName
 
-```plaintext
-OS: nt
-Directory: C:\Prj\YourProjectName
 
-├─ src/
-│  ├─ main.py
-│  ├─ utils/
-│  │  ├─ helper.py
-│  │  └─ constants.py
-│  └─ tests/
-│     └─ test_main.py
-├─ docs/
-│  └─ README.md
-├─ .gitignore
-└─ README.md
+## 1. IssueWise：開発前の課題解決
+
+<p align="center">
+<img src="docs/icon/head_icon4.png" width="50%">
+</p>
+
+IssueWiseは、GitHubのオープンなIssue(課題)を自動的に取得し、SourceSageが生成したプロジェクトの概要と組み合わせることで、AIによる課題の自動修正を可能にするツールです。これにより、開発者はプロジェクトの課題を効率的に特定し、解決策を迅速に見つけることができます。
+
+`SourceSageAssets/ISSUES_RESOLVE`に生成されるマークダウンファイルを使用します。
+
+例：[`SourceSageAssetsDemo/ISSUES_RESOLVE\ISSUE_7.md`](SourceSageAssetsDemo/ISSUES_RESOLVE\ISSUE_7.md)
+
+このマークダウンファイルをそのままAIに入力することで、AIが課題を解決するためのコードを生成します。
+
+このマークダウンファイルは、下記のファイルのフォーマットで出力されます。
+[`docs\ISSUES_RESOLVE\ISSUES_RESOLVE_TEMPLATE.md`](docs\ISSUES_RESOLVE\ISSUES_RESOLVE_TEMPLATE.md)
+
+```bash
+    下記のissueについてリポジトリ情報を参照して修正してください。
+
+    # ISSUE {{number}} : {{title}}
+
+    {{body}}
+
+
+    ## 補足事項
+
+    修正に対するコミットメッセージは日本語にしてください。
+    正確にstep-by-stepで処理してください。
+    issueの番号も記載してください。
+
+    コミットメッセージは下記のフォーマットにしてください。
+
+    ## フォーマット
+
+    ```markdown
+    [種類] 概要
+
+    詳細な説明（必要に応じて）
+    ```
+
+    種類は下記を参考にしてください。
+
+    例：
+      - feat: 新機能
+      - fix: バグ修正
+      - docs: ドキュメントのみの変更
+      - style: コードの動作に影響しない変更（空白、フォーマット、セミコロンの欠落など） 
+      - refactor: バグの修正も機能の追加も行わないコードの変更
+      - perf: パフォーマンスを向上させるコードの変更
+      - test: 欠けているテストの追加や既存のテストの修正
+      - chore: ビルドプロセスやドキュメント生成などの補助ツールやライブラリの変更
+
+
+
+    # リポジトリ情報
+
+    {{sourcesage_md}}
 ```
 
-## src
+## 2. CommitCraft：開発中のコミット管理
 
-### main.py
+<p align="center">
+<img src="docs/icon/head_icon5.png" width="50%">
+</p>
 
-```python
-def main():
-    print("Hello, World!")
+CommitCraftは、開発中のステージされた変更を追跡し、AIを活用して適切なコミットメッセージを自動生成するツールです。これにより、開発者はコミットの内容を正確に記述することができ、プロジェクトの変更履歴をより明確に管理できます。
 
-if __name__ == "__main__":
-    main()
+`SourceSageAssets/STAGED_DIFF.md`に生成されるマークダウンファイルを使用します。
+例：[`SourceSageAssetsDemo/STAGED_DIFF.md`](SourceSageAssetsDemo/STAGED_DIFF.md)
+
+このマークダウンファイルをそのままAIに入力することで、AIがコミットメッセージを生成します。
+
+このマークダウンファイルは、下記のファイルのフォーマットで出力されます。
+
+```bash
+    # Staged Files Diff
+
+    ## README.md
+
+    ### 差分:
+
+    ## modules/EnvFileHandler.py
+
+    ### 差分:
+
+    ```diff
+    @@ -10,7 +10,7 @@ CONFIG_DIR=config
+    DOCS_DIR=docs
+    FOLDERS=./
+    IGNORE_FILE=.SourceSageignore
+    -OUTPUT_FILE=SourceSageAssets/SourceSage.md
+    +OUTPUT_FILE=SourceSage.md
+    LANGUAGE_MAP_FILE=config/language_map.json
+    
+    OWNER=Sunwood-ai-labs
+    ```
 ```
 
-### utils
+## 3. DocuMind：リリース後のドキュメント化
 
-#### helper.py
+<p align="center">
+<img src="docs/icon/head_icon7.png" width="100%">
+</p>
 
-```python
-def greet(name):
-    return f"Hello, {name}!"
+DocuMindは、リリース後のプロジェクトの統合とドキュメント化を支援するツールです。SourceSageが生成するプロジェクトの概要と、自動生成されたGitの変更履歴を組み合わせることで、プロジェクトの全体像を明確に把握できます。これにより、開発者はプロジェクトのドキュメントを効率的に作成し、メンテナンス性を向上させることができます。
+
+`SourceSageAssets/SourceSage.md`に生成されるマークダウンファイルを使用します。
+例：[`SourceSageAssetsDemo/SourceSage.md`](SourceSageAssetsDemo/SourceSage.md)
+
+このマークダウンファイルをそのままAIに入力することで、AIがプロジェクトの構造と内容を理解し、ドキュメントを生成します。
+
+このマークダウンファイルは、下記のファイルのフォーマットで出力されます。
+
+```bash
+    # Project: SourceSage
+
+    ```plaintext
+    OS: nt
+    Directory: C:\Prj\SourceSage
+
+    ├─ config/
+    │  ├─ language_map.json
+    ├─ demo/
+    │  ├─ get_diff.py
+    │  ├─ get_issues.py
+    │  ├─ make_issue_res.py
+    ├─ modules/
+    │  ├─ ChangelogGenerator.py
+    │  ├─ ChangelogUtils.py
+    │  ├─ DiffChangelogGenerator.py
+    ├─ README.md
+    ├─ SourceSage.py
+    ```
+
+    ## .
+
+    `.env`
+
+    ```plaintext
+    REPO_PATH=./
+    SOURCE_SAGE_ASSETS_DIR=SourceSageAssets
+    CONFIG_DIR=config
+    DOCS_DIR=docs
+    FOLDERS=./
+    ```
 ```
 
-#### constants.py
-
-```python 
-PI = 3.14159
-```
-
-...
-
-## docs
-
-### README.md
-
-```markdown
-# YourProjectName Documentation
-
-This is the documentation for YourProjectName.
-
-...
-```
-````
-
-## 変更履歴の統合
-
-SourceSageは、Gitリポジトリの変更履歴を自動的に生成し、ブランチごとに[マークダウンファイルに出力(docs/Changelog)](docs/Changelog)します。さらに、[すべてのブランチの変更履歴を1つのファイルに統合する(docs/Changelog/CHANGELOG_integrated.md)](docs/Changelog/CHANGELOG_integrated.md)ことができます。
-
-生成される変更履歴の例は次のようになります：
-
-````markdown
-# Integrated Changelog
-
-# Changelog
-
-## develop
-
-- [f26fca5] - Merge branch 'feature/modules' into develop (John Doe, 2023-03-30)
-- [36d6a4a] - Refactor SourceSage.py to use modules (John Doe, 2023-03-30)
-- [60ccecb] - Update SourceSage.md (John Doe, 2023-03-30)
-- [6796a56] - Create language_map.json (John Doe, 2023-03-30)
-- [d6e1af6] - Delete language_map.json (John Doe, 2023-03-30)
-
-...
-
-# Changelog - Features
-
-## feature/add-git-logs
-
-- [c346a22] - Introduce ChangelogGenerator class for improved readability and maintainability (Jane Smith, 2023-03-30)
-- [0344765] - Update CHANGELOG.md (Jane Smith, 2023-03-30)
-- [5c5e6ac] - Create get_git_log.py (Jane Smith, 2023-03-30)
-- [8d4a253] - Create CHANGELOG.md (Jane Smith, 2023-03-30)
-
-...
-````
 
 ## 貢献
 
-SourceSageの改善にご協力ください！バグの報告や機能追加の提案がある場合は、[GitHubリポジトリ](https://github.com/yourusername/SourceSage)でIssueを開くかプルリクエストを送信してください。
+SourceSageの改善にご協力ください！バグの報告や機能追加の提案がある場合は、[GitHubリポジトリ](https://github.com/Sunwood-ai-labs/SourceSage)でIssueを開くかプルリクエストを送信してください。
 
 ## ライセンス
 
 このプロジェクトは[MITライセンス](LICENSE)の下で公開されています。
-
----

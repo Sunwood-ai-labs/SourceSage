@@ -151,8 +151,31 @@ Change the output file name to 'SourceSage.md' for improved clarity and consiste
 - [7b2c70f] - Create SourceSage_icon.png (Maki, 2024-03-29)
 - [8a96c27] - Initial commit (Maki, 2024-03-29)
 
-## feature/git-refactor
+## feature/update-docs
 
+- [15263e8] - ファイルとディレクトリの管理の改善
+- 無視するパターンを `.SourceSageignore` ファイルに集約し、コードの可読性向上
+- 除外拡張子の処理を追加し、不要なファイルの生成を抑制
+- ディレクトリ構造の表示処理を改善し、ファイルツリーの表示が適切になるよう修正 (Maki, 2024-03-31)
+- [1bf1315] - update demo docs (Maki, 2024-03-31)
+- [abf7cd3] - README.mddファイルと、SourceSage.pyファイルの複数の変更を行いました。
+
+主な変更点は以下の通りです:
+- READMEファイルのヘッダーセクションを削除しました。
+- SourceSage.pyファイルのディレクトリ構造を明確にし、環境変数から取得したパスを使うように変更しました。
+- ソースコードを読みやすくするため、一部のディレクトリ作成処理を追加しました。
+- 設定ファイルのパスを環境変数から取得するように変更しました。
+- 変更内容はソースコードの可読性や保守性を高め、ツールの利便性を向上させることを目的としています。 (Maki, 2024-03-31)
+- [d4686e4] - Update README.md (Maki, 2024-03-31)
+- [9ffa3b6] - Update README.md (Maki, 2024-03-31)
+- [7610747] - 簡潔にREADMEファイルのスタイル、文言およびコンテンツに改善を加えました。
+
+- READMEの見栄えを向上するためにCSSファイルを追加しました。
+- 更新内容や主な使い方などの説明を分かりやすく整理しました。
+- 読みやすさを高めるためにコード行を簡潔にまとめました。 (Maki, 2024-03-31)
+- [555cfd6] - Merge branch 'feature/git-refactor' into develop (Maki, 2024-03-31)
+- [eedd0ca] - add demo assets (Maki, 2024-03-31)
+- [28487ce] - 指定された環境変数 `ISSUE_LOG_DIR` を使用するように SourceSage スクリプトを更新しました。これにより、GitHub イシューログが保存される場所を明確に定義できるようになりました。このチェンジは保守性と可読性を向上させるために行いました。 (Maki, 2024-03-31)
 - [51e3612] - [refactor] SourceSage.pyのリファクタリング
 
 ## 変更内容
@@ -791,8 +814,31 @@ Change the output file name to 'SourceSage.md' for improved clarity and consiste
 - [7b2c70f] - Create SourceSage_icon.png (Maki, 2024-03-29)
 - [8a96c27] - Initial commit (Maki, 2024-03-29)
 
-## feature/git-refactor
+## feature/update-docs
 
+- [15263e8] - ファイルとディレクトリの管理の改善
+- 無視するパターンを `.SourceSageignore` ファイルに集約し、コードの可読性向上
+- 除外拡張子の処理を追加し、不要なファイルの生成を抑制
+- ディレクトリ構造の表示処理を改善し、ファイルツリーの表示が適切になるよう修正 (Maki, 2024-03-31)
+- [1bf1315] - update demo docs (Maki, 2024-03-31)
+- [abf7cd3] - README.mddファイルと、SourceSage.pyファイルの複数の変更を行いました。
+
+主な変更点は以下の通りです:
+- READMEファイルのヘッダーセクションを削除しました。
+- SourceSage.pyファイルのディレクトリ構造を明確にし、環境変数から取得したパスを使うように変更しました。
+- ソースコードを読みやすくするため、一部のディレクトリ作成処理を追加しました。
+- 設定ファイルのパスを環境変数から取得するように変更しました。
+- 変更内容はソースコードの可読性や保守性を高め、ツールの利便性を向上させることを目的としています。 (Maki, 2024-03-31)
+- [d4686e4] - Update README.md (Maki, 2024-03-31)
+- [9ffa3b6] - Update README.md (Maki, 2024-03-31)
+- [7610747] - 簡潔にREADMEファイルのスタイル、文言およびコンテンツに改善を加えました。
+
+- READMEの見栄えを向上するためにCSSファイルを追加しました。
+- 更新内容や主な使い方などの説明を分かりやすく整理しました。
+- 読みやすさを高めるためにコード行を簡潔にまとめました。 (Maki, 2024-03-31)
+- [555cfd6] - Merge branch 'feature/git-refactor' into develop (Maki, 2024-03-31)
+- [eedd0ca] - add demo assets (Maki, 2024-03-31)
+- [28487ce] - 指定された環境変数 `ISSUE_LOG_DIR` を使用するように SourceSage スクリプトを更新しました。これにより、GitHub イシューログが保存される場所を明確に定義できるようになりました。このチェンジは保守性と可読性を向上させるために行いました。 (Maki, 2024-03-31)
 - [51e3612] - [refactor] SourceSage.pyのリファクタリング
 
 ## 変更内容

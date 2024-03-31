@@ -1,5 +1,5 @@
 import os
-from modules.file_utils import is_excluded
+from modules.file_utils import is_excluded, is_excluded_extension
 
 def generate_markdown_for_folder(folder_path, exclude_patterns, language_map):
     markdown_content = "```plaintext\n"
@@ -8,14 +8,13 @@ def generate_markdown_for_folder(folder_path, exclude_patterns, language_map):
     base_level = folder_path.count(os.sep)
     for root, dirs, files in os.walk(folder_path, topdown=True):
         dirs[:] = [d for d in dirs if not is_excluded(os.path.join(root, d), exclude_patterns)]
+        files = [f for f in files if not is_excluded(os.path.join(root, f), exclude_patterns) and not is_excluded_extension(f, exclude_patterns)]
         level = root.count(os.sep) - base_level + 1
         header_level = '#' * (level + 1)
         relative_path = os.path.relpath(root, folder_path)
         markdown_content += f"{header_level} {relative_path}\n\n"
         for f in files:
             file_path = os.path.join(root, f)
-            if is_excluded(file_path, exclude_patterns):
-                continue
             relative_file_path = os.path.relpath(file_path, folder_path)
             try:
                 with open(file_path, 'r', encoding='utf-8') as file_content:
@@ -40,17 +39,18 @@ def _build_tree_string(dir_path, max_depth, show_hidden, exclude_patterns, depth
     tree_string = ""
     if depth == max_depth:
         return tree_string
-    for item in os.listdir(dir_path):
+    dir_contents = [(item, os.path.join(dir_path, item)) for item in os.listdir(dir_path)]
+    dirs = [(item, path) for item, path in dir_contents if os.path.isdir(path) and not is_excluded(path, exclude_patterns)]
+    files = [(item, path) for item, path in dir_contents if os.path.isfile(path) and not is_excluded(path, exclude_patterns) and not is_excluded_extension(item, exclude_patterns)]
+    for item, path in dirs:
         if not show_hidden and item.startswith('.'):
             continue
-        item_path = os.path.join(dir_path, item)
-        if is_excluded(item_path, exclude_patterns):
+        tree_string += '│  ' * depth + '├─ ' + item + '/\n'
+        tree_string += _build_tree_string(path, max_depth, show_hidden, exclude_patterns, depth + 1)
+    for item, path in files:
+        if not show_hidden and item.startswith('.'):
             continue
-        if os.path.isdir(item_path):
-            tree_string += '│  ' * depth + '├─ ' + item + '/\n'
-            tree_string += _build_tree_string(item_path, max_depth, show_hidden, exclude_patterns, depth + 1)
-        else:
-            tree_string += '│  ' * depth + '├─ ' + item + '\n'
+        tree_string += '│  ' * depth + '├─ ' + item + '\n'
     return tree_string
 
 def _get_language_for_file(filename, language_map):

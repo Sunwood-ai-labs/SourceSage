@@ -51,13 +51,16 @@ CONFIG_DIR=config
 DOCS_DIR=docs
 FOLDERS=./
 IGNORE_FILE=.SourceSageignore
-OUTPUT_FILE=SourceSageAssets/SourceSage.md
+OUTPUT_FILE=SourceSage.md
 LANGUAGE_MAP_FILE=config/language_map.json
 ISSUE_LOG_DIR=ISSUE_LOG
 
 OWNER=Sunwood-ai-labs
 REPOSITORY=SourceSage
 ISSUES_FILE_NAME=open_issues_filtered.json
+
+ISSUES_RESOLVE_DIR=ISSUES_RESOLVE
+STAGE_INFO_DIR=STAGE_INFO
 ```
 
 `.env.example`
@@ -79,7 +82,7 @@ ISSUES_FILE_NAME=open_issues_filtered.json
 
 `README.md`
 
-```markdown
+```plaintext
 <p align="center">
 
 <img src="docs/icon/SourceSage_icon4.png" width="100%">
@@ -93,6 +96,9 @@ ISSUES_FILE_NAME=open_issues_filtered.json
 </p>
 
 SourceSageは、プロジェクトのソースコードとファイル構成を単一のマークダウンファイルに統合するPythonスクリプトです。これにより、大規模言語モデル（AI）がプロジェクト全体の構造と内容を容易に理解できるようになります。
+
+
+
 
 ## 更新内容
 
@@ -114,6 +120,61 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 - 複数のプログラミング言語に対応し、シンタックスハイライト機能を提供します
 - 設定ファイルを外部化することで、柔軟性と保守性を向上させています
 - Gitの変更履歴を自動生成し、ドキュメント化することができます
+
+## 主な使い方
+
+
+<div class="cp_timeline04">
+ <div class="timeline_item">
+   <div class="time_date">
+     <p class="time">開発前</p>
+     <p class="flag">課題の確認とAIによる自動修正</p>
+   </div>
+   <div class="desc">
+     <p>
+       - <code>get_issues.py</code>を使用してGitHubのオープンなissueを取得し、JSONファイルに保存する<br>
+       - issueの内容と現在のソースコードの情報をClaude AIに入力し、自動でissueの修正を行う<br>
+         - <code>SourceSage.py</code>を使用して現在のプロジェクトのソースコードとファイル構成を1つのマークダウンファイルに統合する<br>
+         - <code>get_issues.py</code>で取得したissueデータと<code>SourceSage.py</code>で生成したマークダウンをClaude AIに入力する<br>
+         - AIがissueの内容を理解し、現在のソースコードを分析して自動的にissueの修正を提案する<br>
+         - 提案された修正内容を確認し、必要に応じて手動で調整を行う
+     </p>
+   </div>
+ </div>
+
+ <div class="timeline_item">
+   <div class="time_date">
+     <p class="time">開発中</p>
+     <p class="flag">ステージされた変更の確認とコミットメッセージの自動生成</p>
+   </div>
+   <div class="desc">
+     <p>
+       - <code>StagedDiffGenerator</code>クラスを使用してステージされた差分を取得し、マークダウンファイルに出力する<br>
+       - ステージされた変更とissueの情報をAIに入力し、適切なコミットメッセージを生成する<br>
+         - <code>get_issues.py</code>で取得したissueデータと<code>StagedDiffGenerator</code>で生成したマークダウンをClaude AIに入力する<br>
+         - AIが既存のissueを考慮してコミットメッセージを自動生成する<br>
+     </p>
+   </div>
+ </div>
+
+ <div class="timeline_item">
+   <div class="time_date">
+     <p class="time">リリース後</p>
+     <p class="flag">プロジェクトの統合とドキュメント化</p>
+   </div>
+   <div class="desc">
+     <p>
+       - <code>SourceSage.py</code>を使用してプロジェクト全体のソースコードとファイル構成をAIが理解しやすい形式で統合する<br>
+         - プロジェクトのディレクトリ構成とファイル内容を1つのマークダウンファイルにまとめる<br>
+         - 不要なファイルやディレクトリを除外するための設定が可能<br>
+         - 複数のプログラミング言語に対応し、シンタックスハイライト機能を提供<br>
+       - Gitの変更履歴を自動生成し、ドキュメント化する<br>
+         - ブランチごとに変更履歴をマークダウンファイルに出力する<br>
+         - すべてのブランチの変更履歴を1つのファイルに統合する<br>
+     </p>
+   </div>
+ </div>
+</div>
 
 ## 使用方法
 
@@ -254,7 +315,7 @@ SourceSageの改善にご協力ください！バグの報告や機能追加の�
 
 `SourceSage.py`
 
-```python
+```plaintext
 import os
 import sys
 from modules.EnvFileHandler import create_or_append_env_file
@@ -277,19 +338,24 @@ except ImportError:
 
 if __name__ == "__main__":
     repo_path = os.getenv("REPO_PATH")
-    source_sage_assets_dir = os.getenv("SOURCE_SAGE_ASSETS_DIR")
-    config_dir = os.getenv("CONFIG_DIR")
-    docs_dir = os.getenv("DOCS_DIR")
-    issue_log_dir = os.getenv("ISSUE_LOG_DIR")
+    source_sage_assets_dir = os.path.join(repo_path, os.getenv("SOURCE_SAGE_ASSETS_DIR"))
+    config_dir = os.path.join(repo_path, os.getenv("CONFIG_DIR"))
+    docs_dir = os.path.join(repo_path, os.getenv("DOCS_DIR"))
+    issue_log_dir = os.path.join(source_sage_assets_dir, os.getenv("ISSUE_LOG_DIR"))
+    issues_resolve_dir = os.path.join(source_sage_assets_dir, os.getenv("ISSUES_RESOLVE_DIR"))
+    stage_info_dir = os.path.join(source_sage_assets_dir, os.getenv("STAGE_INFO_DIR"))
 
+    os.makedirs(issue_log_dir, exist_ok=True)  # ディレクトリが存在しない場合は作成する
+    os.makedirs(issues_resolve_dir, exist_ok=True)  # ディレクトリが存在しない場合は作成する
+    os.makedirs(stage_info_dir, exist_ok=True)  # ディレクトリが存在しない場合は作成する
 
-    folders = os.getenv("FOLDERS").split(",")  # カンマ区切りの文字列をリストに変換
-    source_sage = SourceSage(folders, ignore_file=os.getenv("IGNORE_FILE"),
-                             output_file=os.getenv("OUTPUT_FILE"),
-                             language_map_file=os.getenv("LANGUAGE_MAP_FILE"))
+    folders = [os.path.join(repo_path, folder) for folder in os.getenv("FOLDERS").split(",")]  # カンマ区切りの文字列をリストに変換
+    source_sage = SourceSage(folders, ignore_file=os.path.join(config_dir, os.getenv("IGNORE_FILE")),
+                             output_file=os.path.join(source_sage_assets_dir, os.getenv("OUTPUT_FILE")),
+                             language_map_file=os.path.join(config_dir, os.getenv("LANGUAGE_MAP_FILE")))
     source_sage.generate_markdown()
 
-    changelog_output_dir = f"{source_sage_assets_dir}/Changelog"
+    changelog_output_dir = os.path.join(source_sage_assets_dir, "Changelog")
     os.makedirs(changelog_output_dir, exist_ok=True)  # ディレクトリが存在しない場合は作成する
 
     generator = ChangelogGenerator(repo_path, changelog_output_dir)
@@ -300,39 +366,37 @@ if __name__ == "__main__":
     repository = os.getenv("REPOSITORY")
     issues_file_name = os.getenv("ISSUES_FILE_NAME")
 
-    issue_retriever = GitHubIssueRetriever(owner, repository, source_sage_assets_dir + "/" + issue_log_dir, issues_file_name)
+    issue_retriever = GitHubIssueRetriever(owner, repository, issue_log_dir, issues_file_name)
     issue_retriever.run()
-
 
     diff_generator = StagedDiffGenerator(
         repo_path=repo_path,
         output_dir=source_sage_assets_dir,
-        language_map_file=f"{config_dir}/language_map.json"
+        language_map_file=os.path.join(config_dir, "language_map.json")
     )
     diff_generator.run()
 
     stage_info_generator = StageInfoGenerator(
-        issue_file_path=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
-        stage_diff_file_path=f"{source_sage_assets_dir}/STAGED_DIFF.md",
-        template_file_path=f"{docs_dir}/STAGE_INFO/STAGE_INFO_AND_ISSUES_TEMPLATE.md",
-        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO/STAGE_INFO_AND_ISSUES_AND_PROMT.md"
+        issue_file_path=os.path.join(issue_log_dir, issues_file_name),
+        stage_diff_file_path=os.path.join(source_sage_assets_dir, "STAGED_DIFF.md"),
+        template_file_path=os.path.join(docs_dir, os.getenv("STAGE_INFO_DIR"), "STAGE_INFO_AND_ISSUES_TEMPLATE.md"),
+        output_file_path=os.path.join(stage_info_dir, "STAGE_INFO_AND_ISSUES_AND_PROMT.md")
     )
     stage_info_generator.run()
 
     stage_info_generator = StageInfoGenerator(
-        issue_file_path=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
-        stage_diff_file_path=f"{source_sage_assets_dir}/STAGED_DIFF.md",
-        template_file_path=f"{docs_dir}/STAGE_INFO/STAGE_INFO_TEMPLATE.md",
-        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO/STAGE_INFO_AND_PROMT.md"
+        issue_file_path=os.path.join(issue_log_dir, issues_file_name),
+        stage_diff_file_path=os.path.join(source_sage_assets_dir, "STAGED_DIFF.md"),
+        template_file_path=os.path.join(docs_dir, os.getenv("STAGE_INFO_DIR"), "STAGE_INFO_TEMPLATE.md"),
+        output_file_path=os.path.join(stage_info_dir, "STAGE_INFO_AND_PROMT.md")
     )
     stage_info_generator.run()
 
-    issues_markdown_output_dir = f"{source_sage_assets_dir}/ISSUES_RESOLVE"
     converter = IssuesToMarkdown(
-        issues_file=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
-        sourcesage_file=f"{source_sage_assets_dir}/SourceSage.md",
-        template_file=f"{docs_dir}/ISSUES_RESOLVE/ISSUES_RESOLVE_TEMPLATE.md",
-        output_folder=issues_markdown_output_dir
+        issues_file=os.path.join(issue_log_dir, issues_file_name),
+        sourcesage_file=os.path.join(source_sage_assets_dir, "SourceSage.md"),
+        template_file=os.path.join(docs_dir, os.getenv("ISSUES_RESOLVE_DIR"), "ISSUES_RESOLVE_TEMPLATE.md"),
+        output_folder=issues_resolve_dir
     )
     converter.load_data()
     converter.create_markdown_files()
@@ -342,7 +406,7 @@ if __name__ == "__main__":
 
 `.vscode\settings.json`
 
-```json
+```plaintext
 {
     "gitlens.ai.experimental.openai.url": "",
     "gitlens.ai.experimental.provider": "anthropic",
@@ -355,7 +419,7 @@ if __name__ == "__main__":
 
 `config\language_map.json`
 
-```json
+```plaintext
 {
     ".py": "python",
     ".js": "javascript",
@@ -389,7 +453,7 @@ if __name__ == "__main__":
 
 `demo\get_diff.py`
 
-```python
+```plaintext
 import git
 
 # 現在のリポジトリのパスを指定
@@ -414,7 +478,7 @@ except Exception as e:
 
 `demo\get_issues.py`
 
-```python
+```plaintext
 import requests
 import json
 import os
@@ -457,7 +521,7 @@ print(f'Filtered open issues saved to {os.path.join(save_path, file_name)}')
 
 `demo\make_issue_res.py`
 
-```python
+```plaintext
 import json
 import os
 
@@ -501,7 +565,7 @@ print("全てのissueのマークダウンファイルを作成しました。")
 
 `docs\css\style.css`
 
-```css
+```plaintext
 .cp_timeline04 {
     position: relative;
     margin: 3em auto;
@@ -578,7 +642,7 @@ print("全てのissueのマークダウンファイルを作成しました。")
 
 `docs\HTML\timeline_sample.md`
 
-```markdown
+```plaintext
 <style>
 .cp_timeline04 {
    position: relative;
@@ -709,7 +773,7 @@ print("全てのissueのマークダウンファイルを作成しました。")
 
 `docs\ISSUES_RESOLVE\ISSUES_RESOLVE_TEMPLATE.md`
 
-```markdown
+```plaintext
 下記のissueについてリポジトリ情報を参照して修正して
 
 # ISSUE {{number}} : {{title}}
@@ -758,7 +822,7 @@ issueの番号も記載して
 
 `docs\STAGE_INFO\STAGE_INFO_AND_ISSUES_TEMPLATE.md`
 
-```markdown
+```plaintext
 下記はissuesの情報です
 
 
@@ -814,7 +878,7 @@ issueを解決していればそれも含めてコミットメッセージを書
 
 `docs\STAGE_INFO\STAGE_INFO_TEMPLATE.md`
 
-```markdown
+```plaintext
 下記はgitはStageの情報です
 
 issueは掲載しないで
@@ -862,7 +926,7 @@ issueは掲載しないで
 
 `modules\ChangelogGenerator.py`
 
-```python
+```plaintext
 # modules/ChangelogGenerator.py (変更後)
 
 import os
@@ -955,7 +1019,7 @@ if __name__ == "__main__":
 
 `modules\ChangelogUtils.py`
 
-```python
+```plaintext
 # modules/ChangelogUtils.py (新規作成)
 
 from datetime import datetime
@@ -995,7 +1059,7 @@ class ChangelogUtils:
 
 `modules\DiffChangelogGenerator.py`
 
-```python
+```plaintext
 # modules/DiffChangelogGenerator.py (変更後)
 
 import json
@@ -1089,7 +1153,7 @@ if name == "main":
 
 `modules\EnvFileHandler.py`
 
-```python
+```plaintext
 # modules/EnvFileHandler.py
 
 import os
@@ -1102,7 +1166,7 @@ CONFIG_DIR=config
 DOCS_DIR=docs
 FOLDERS=./
 IGNORE_FILE=.SourceSageignore
-OUTPUT_FILE=SourceSageAssets/SourceSage.md
+OUTPUT_FILE=SourceSage.md
 LANGUAGE_MAP_FILE=config/language_map.json
 
 OWNER=Sunwood-ai-labs
@@ -1126,7 +1190,7 @@ ISSUES_FILE_NAME=open_issues_filtered.json"""
 
 `modules\file_utils.py`
 
-```python
+```plaintext
 import os
 import fnmatch
 import json
@@ -1152,11 +1216,15 @@ def is_excluded(path, exclude_patterns):
         if fnmatch.fnmatch(os.path.basename(path), pattern):
             return True
     return False
+
+def is_excluded_extension(filename, exclude_patterns):
+    _, extension = os.path.splitext(filename)
+    return any(fnmatch.fnmatch(extension, pattern) for pattern in exclude_patterns)
 ```
 
 `modules\GitHubIssueRetrieve.py`
 
-```python
+```plaintext
 # modules/GitHubIssueRetrieve.py (変更後)
 
 from modules.GitHubUtils import GitHubUtils
@@ -1186,7 +1254,7 @@ if __name__ == "__main__":
 
 `modules\GitHubUtils.py`
 
-```python
+```plaintext
 # modules/GitHubUtils.py (新規作成)
 
 import requests
@@ -1231,7 +1299,7 @@ class GitHubUtils:
 
 `modules\IssuesToMarkdown.py`
 
-```python
+```plaintext
 import json
 import os
 from loguru import logger
@@ -1290,9 +1358,9 @@ if __name__ == "__main__":
 
 `modules\markdown_utils.py`
 
-```python
+```plaintext
 import os
-from modules.file_utils import is_excluded
+from modules.file_utils import is_excluded, is_excluded_extension
 
 def generate_markdown_for_folder(folder_path, exclude_patterns, language_map):
     markdown_content = "```plaintext\n"
@@ -1301,14 +1369,13 @@ def generate_markdown_for_folder(folder_path, exclude_patterns, language_map):
     base_level = folder_path.count(os.sep)
     for root, dirs, files in os.walk(folder_path, topdown=True):
         dirs[:] = [d for d in dirs if not is_excluded(os.path.join(root, d), exclude_patterns)]
+        files = [f for f in files if not is_excluded(os.path.join(root, f), exclude_patterns) and not is_excluded_extension(f, exclude_patterns)]
         level = root.count(os.sep) - base_level + 1
         header_level = '#' * (level + 1)
         relative_path = os.path.relpath(root, folder_path)
         markdown_content += f"{header_level} {relative_path}\n\n"
         for f in files:
             file_path = os.path.join(root, f)
-            if is_excluded(file_path, exclude_patterns):
-                continue
             relative_file_path = os.path.relpath(file_path, folder_path)
             try:
                 with open(file_path, 'r', encoding='utf-8') as file_content:
@@ -1333,17 +1400,18 @@ def _build_tree_string(dir_path, max_depth, show_hidden, exclude_patterns, depth
     tree_string = ""
     if depth == max_depth:
         return tree_string
-    for item in os.listdir(dir_path):
+    dir_contents = [(item, os.path.join(dir_path, item)) for item in os.listdir(dir_path)]
+    dirs = [(item, path) for item, path in dir_contents if os.path.isdir(path) and not is_excluded(path, exclude_patterns)]
+    files = [(item, path) for item, path in dir_contents if os.path.isfile(path) and not is_excluded(path, exclude_patterns) and not is_excluded_extension(item, exclude_patterns)]
+    for item, path in dirs:
         if not show_hidden and item.startswith('.'):
             continue
-        item_path = os.path.join(dir_path, item)
-        if is_excluded(item_path, exclude_patterns):
+        tree_string += '│  ' * depth + '├─ ' + item + '/\n'
+        tree_string += _build_tree_string(path, max_depth, show_hidden, exclude_patterns, depth + 1)
+    for item, path in files:
+        if not show_hidden and item.startswith('.'):
             continue
-        if os.path.isdir(item_path):
-            tree_string += '│  ' * depth + '├─ ' + item + '/\n'
-            tree_string += _build_tree_string(item_path, max_depth, show_hidden, exclude_patterns, depth + 1)
-        else:
-            tree_string += '│  ' * depth + '├─ ' + item + '\n'
+        tree_string += '│  ' * depth + '├─ ' + item + '\n'
     return tree_string
 
 def _get_language_for_file(filename, language_map):
@@ -1354,17 +1422,19 @@ def _get_language_for_file(filename, language_map):
 
 `modules\source_sage.py`
 
-```python
+```plaintext
 import os
-from modules.file_utils import load_ignore_patterns, load_language_map, is_excluded
+from modules.file_utils import load_ignore_patterns, load_language_map
 from modules.markdown_utils import generate_markdown_for_folder
 
 class SourceSage:
     def __init__(self, folders, ignore_file='.SourceSageignore', output_file='output.md', language_map_file='language_map.json'):
         self.folders = folders
+        print(ignore_file)
         self.ignore_file = ignore_file
         self.output_file = output_file
         self.exclude_patterns = load_ignore_patterns(ignore_file)
+        print(self.exclude_patterns)
         self.language_map = load_language_map(language_map_file)
 
     def generate_markdown(self):
@@ -1378,7 +1448,7 @@ class SourceSage:
 
 `modules\StagedDiffGenerator.py`
 
-```python
+```plaintext
 # modules/StagedDiffGenerator.py (変更後)
 
 import json
@@ -1452,7 +1522,7 @@ if __name__ == "__main__":
 
 `modules\StageInfoGenerator.py`
 
-```python
+```plaintext
 # modules/StageInfoGenerator.py (変更後)
 
 import json
@@ -1534,7 +1604,7 @@ if __name__ == "__main__":
 
 `modules\__init__.py`
 
-```python
+```plaintext
 
 ```
 
