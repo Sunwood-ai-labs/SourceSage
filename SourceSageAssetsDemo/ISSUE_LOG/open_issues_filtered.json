@@ -1,1 +1,7 @@
-[]
+[
+    {
+        "number": 7,
+        "title": "READMEの更新と生成物のリンクの対応",
+        "body": "- リポジトリ全体の変更に合わせてREADMEの大幅変更\r\n- SourceSage.py の生成物に合わせて生成物へのリンクをREADMEに記載\r\n\r\n\r\n下記の内容を盛り込んで、必要に応じて内容を修正して\r\n\r\n```\r\n開発前\r\n\r\n課題の確認とAIによる自動修正\r\n\r\n- GitHubのオープンなissueを取得し、JSONファイルに保存する\r\n- SourceSage.pyを使用して現在のプロジェクトのソースコードとファイル構成を1つのマークダウンファイルに統合する\r\n- issueデータとSourceSage.pyで生成したマークダウンをClaude AIに入力する\r\n- AIがissueの内容を理解し、現在のソースコードを分析して自動的にissueの修正を提案する\r\n- 提案された修正内容を確認し、必要に応じて手動で調整を行う\r\n\r\n開発中\r\n\r\nステージされた変更の確認とコミットメッセージの自動生成\r\n\r\n- StagedDiffGeneratorクラスを使用してステージされた差分を取得し、マークダウンファイルに出力する\r\n- ステージされた変更とissueの情報をAIに入力し、適切なコミットメッセージを生成する\r\n- get_issues.pyで取得したissueデータとStagedDiffGeneratorで生成したマークダウン（SourceSageAssetsDemo\\STAGED_DIFF.md）をClaude AIに入力する\r\n- AIが既存のissueを考慮してコミットメッセージを自動生成する\r\n\r\n\r\nリリース後\r\n\r\nプロジェクトの統合とドキュメント化\r\n\r\n- SourceSage.pyを使用してプロジェクト全体のソースコードとファイル構成をAIが理解しやすい形式で統合する\r\n- プロジェクトのディレクトリ構成とファイル内容を1つのマークダウンファイル（SourceSageAssetsDemo\\SourceSage.md）にまとめる\r\n- 不要なファイルやディレクトリを除外するための設定が可能\r\n- 複数のプログラミング言語に対応し、シンタックスハイライト機能を提供\r\n- Gitの変更履歴を自動生成し、ドキュメント化する\r\n- ブランチごとに変更履歴をマークダウンファイルに出力する\r\n- すべてのブランチの変更履歴を1つのファイルに統合する\r\n```"
+    }
+]

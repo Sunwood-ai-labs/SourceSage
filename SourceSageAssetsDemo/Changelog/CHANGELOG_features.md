@@ -151,8 +151,18 @@ Change the output file name to 'SourceSage.md' for improved clarity and consiste
 - [7b2c70f] - Create SourceSage_icon.png (Maki, 2024-03-29)
 - [8a96c27] - Initial commit (Maki, 2024-03-29)
 
-## feature/git-refactor
+## feature/update-docs
 
+- [d4686e4] - Update README.md (Maki, 2024-03-31)
+- [9ffa3b6] - Update README.md (Maki, 2024-03-31)
+- [7610747] - 簡潔にREADMEファイルのスタイル、文言およびコンテンツに改善を加えました。
+
+- READMEの見栄えを向上するためにCSSファイルを追加しました。
+- 更新内容や主な使い方などの説明を分かりやすく整理しました。
+- 読みやすさを高めるためにコード行を簡潔にまとめました。 (Maki, 2024-03-31)
+- [555cfd6] - Merge branch 'feature/git-refactor' into develop (Maki, 2024-03-31)
+- [eedd0ca] - add demo assets (Maki, 2024-03-31)
+- [28487ce] - 指定された環境変数 `ISSUE_LOG_DIR` を使用するように SourceSage スクリプトを更新しました。これにより、GitHub イシューログが保存される場所を明確に定義できるようになりました。このチェンジは保守性と可読性を向上させるために行いました。 (Maki, 2024-03-31)
 - [51e3612] - [refactor] SourceSage.pyのリファクタリング
 
 ## 変更内容
@@ -791,8 +801,18 @@ Change the output file name to 'SourceSage.md' for improved clarity and consiste
 - [7b2c70f] - Create SourceSage_icon.png (Maki, 2024-03-29)
 - [8a96c27] - Initial commit (Maki, 2024-03-29)
 
-## feature/git-refactor
+## feature/update-docs
 
+- [d4686e4] - Update README.md (Maki, 2024-03-31)
+- [9ffa3b6] - Update README.md (Maki, 2024-03-31)
+- [7610747] - 簡潔にREADMEファイルのスタイル、文言およびコンテンツに改善を加えました。
+
+- READMEの見栄えを向上するためにCSSファイルを追加しました。
+- 更新内容や主な使い方などの説明を分かりやすく整理しました。
+- 読みやすさを高めるためにコード行を簡潔にまとめました。 (Maki, 2024-03-31)
+- [555cfd6] - Merge branch 'feature/git-refactor' into develop (Maki, 2024-03-31)
+- [eedd0ca] - add demo assets (Maki, 2024-03-31)
+- [28487ce] - 指定された環境変数 `ISSUE_LOG_DIR` を使用するように SourceSage スクリプトを更新しました。これにより、GitHub イシューログが保存される場所を明確に定義できるようになりました。このチェンジは保守性と可読性を向上させるために行いました。 (Maki, 2024-03-31)
 - [51e3612] - [refactor] SourceSage.pyのリファクタリング
 
 ## 変更内容
