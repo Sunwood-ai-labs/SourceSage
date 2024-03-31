@@ -1,5 +1,6 @@
 import json
 import os
+from loguru import logger
 
 class IssuesToMarkdown:
     def __init__(self, issues_file, sourcesage_file, template_file, output_folder):
@@ -9,16 +10,21 @@ class IssuesToMarkdown:
         self.output_folder = output_folder
 
     def load_data(self):
+        logger.info("Loading data...")
         with open(self.issues_file, "r", encoding="utf-8") as f:
             self.issues = json.load(f)
+        logger.info(f"Loaded {len(self.issues)} issues from {self.issues_file}")
 
         with open(self.sourcesage_file, "r", encoding="utf-8") as f:
             self.sourcesage_md = f.read()
+        logger.info(f"Loaded SourceSage markdown from {self.sourcesage_file}")
 
         with open(self.template_file, "r", encoding="utf-8") as f:
             self.template = f.read()
+        logger.info(f"Loaded template from {self.template_file}")
 
     def create_markdown_files(self):
+        logger.info("Creating markdown files for issues...")
         for issue in self.issues:
             number = issue["number"]
             title = issue["title"]
@@ -33,9 +39,9 @@ class IssuesToMarkdown:
             with open(filename, "w", encoding="utf-8") as f:
                 f.write(content)
 
-            print(f"Issue {number}のマークダウンファイルを作成しました。")
+            logger.info(f"Created markdown file for issue {number}")
 
-        print("全てのissueのマークダウンファイルを作成しました。")
+        logger.info("Created markdown files for all issues")
 
 if __name__ == "__main__":
     issues_file = "SourceSageAssets\\open_issues_filtered.json"
