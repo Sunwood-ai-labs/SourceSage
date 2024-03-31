@@ -4,7 +4,9 @@ import os
 
 def create_or_append_env_file():
     env_file = ".env"
-    env_vars = """REPO_PATH=./
+    env_vars = """
+    
+REPO_PATH=./
 SOURCE_SAGE_ASSETS_DIR=SourceSageAssets
 CONFIG_DIR=config
 DOCS_DIR=docs
@@ -12,10 +14,15 @@ FOLDERS=./
 IGNORE_FILE=.SourceSageignore
 OUTPUT_FILE=SourceSage.md
 LANGUAGE_MAP_FILE=config/language_map.json
+ISSUE_LOG_DIR=ISSUE_LOG
 
 OWNER=Sunwood-ai-labs
 REPOSITORY=SourceSage
-ISSUES_FILE_NAME=open_issues_filtered.json"""
+ISSUES_FILE_NAME=open_issues_filtered.json
+
+ISSUES_RESOLVE_DIR=ISSUES_RESOLVE
+STAGE_INFO_DIR=STAGE_INFO
+"""
 
     if not os.path.exists(env_file):
         with open(env_file, "w") as f:
