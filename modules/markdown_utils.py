@@ -1,5 +1,5 @@
 import os
-from file_utils import is_excluded
+from modules.file_utils import is_excluded
 
 def generate_markdown_for_folder(folder_path, exclude_patterns, language_map):
     markdown_content = "```plaintext\n"

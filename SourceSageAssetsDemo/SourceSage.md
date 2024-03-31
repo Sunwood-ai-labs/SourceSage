@@ -1,44 +1,3 @@
-
-下記のissueについてリポジトリ情報を参照して修正して
-
-# 4 : Git関係のモジュールのリファクタリング。
-
-重複しているモジュールがある気がするのでその修正！
-
-
-## 補足事項
-
-修正に対するコミットメッセージは日本語にして
-正確にstep-by-stepで処理して
-
-コミットメッセージは下記のフォーマットにして
-
-## フォーマット
-
-```markdown
-
-[種類] 概要
-
-詳細な説明（必要に応じて）
-
-```
-
-種類は下記を参考にして
-
-例：
-  - feat: 新機能
-  - fix: バグ修正
-  - docs: ドキュメントのみの変更
-  - style: コードの動作に影響しない変更（空白、フォーマット、セミコロンの欠落など） 
-  - refactor: バグの修正も機能の追加も行わないコードの変更
-  - perf: パフォーマンスを向上させるコードの変更
-  - test: 欠けているテストの追加や既存のテストの修正
-  - chore: ビルドプロセスやドキュメント生成などの補助ツールやライブラリの変更
-
-
-
-# リポジトリ情報
-
 # Project: SourceSage
 
 ```plaintext
@@ -50,6 +9,7 @@ Directory: C:\Prj\SourceSage
 ├─ demo/
 │  ├─ get_diff.py
 │  ├─ get_issues.py
+│  ├─ make_issue_res.py
 ├─ docs/
 │  ├─ css/
 │  │  ├─ style.css
@@ -57,14 +17,20 @@ Directory: C:\Prj\SourceSage
 │  ├─ HTML/
 │  │  ├─ timeline_sample.md
 │  ├─ icon/
+│  ├─ ISSUES_RESOLVE/
+│  │  ├─ ISSUES_RESOLVE_TEMPLATE.md
 │  ├─ STAGE_INFO/
 │  │  ├─ STAGE_INFO_AND_ISSUES_TEMPLATE.md
 │  │  ├─ STAGE_INFO_TEMPLATE.md
 ├─ modules/
 │  ├─ ChangelogGenerator.py
+│  ├─ ChangelogUtils.py
 │  ├─ DiffChangelogGenerator.py
+│  ├─ EnvFileHandler.py
 │  ├─ file_utils.py
 │  ├─ GitHubIssueRetrieve.py
+│  ├─ GitHubUtils.py
+│  ├─ IssuesToMarkdown.py
 │  ├─ markdown_utils.py
 │  ├─ source_sage.py
 │  ├─ StagedDiffGenerator.py
@@ -75,6 +41,41 @@ Directory: C:\Prj\SourceSage
 ```
 
 ## .
+
+`.env`
+
+```plaintext
+REPO_PATH=./
+SOURCE_SAGE_ASSETS_DIR=SourceSageAssets
+CONFIG_DIR=config
+DOCS_DIR=docs
+FOLDERS=./
+IGNORE_FILE=.SourceSageignore
+OUTPUT_FILE=SourceSageAssets/SourceSage.md
+LANGUAGE_MAP_FILE=config/language_map.json
+ISSUE_LOG_DIR=ISSUE_LOG
+
+OWNER=Sunwood-ai-labs
+REPOSITORY=SourceSage
+ISSUES_FILE_NAME=open_issues_filtered.json
+```
+
+`.env.example`
+
+```plaintext
+REPO_PATH=./
+SOURCE_SAGE_ASSETS_DIR=SourceSageAssets
+CONFIG_DIR=config
+DOCS_DIR=docs
+FOLDERS=./
+IGNORE_FILE=.SourceSageignore
+OUTPUT_FILE=SourceSageAssets/SourceSage.md
+LANGUAGE_MAP_FILE=config/language_map.json
+
+OWNER=Sunwood-ai-labs
+REPOSITORY=SourceSage
+ISSUES_FILE_NAME=open_issues_filtered.json
+```
 
 `README.md`
 
@@ -256,62 +257,85 @@ SourceSageの改善にご協力ください！バグの報告や機能追加の�
 ```python
 import os
 import sys
-import pprint
-
-sys.path.append(os.path.join(os.path.dirname(__file__), 'modules'))
-pprint.pprint(sys.path)
-
+from modules.EnvFileHandler import create_or_append_env_file
 from modules.source_sage import SourceSage
 from modules.ChangelogGenerator import ChangelogGenerator
 from modules.StageInfoGenerator import StageInfoGenerator
 from modules.GitHubIssueRetrieve import GitHubIssueRetriever
 from modules.StagedDiffGenerator import StagedDiffGenerator
+from modules.IssuesToMarkdown import IssuesToMarkdown
+
+create_or_append_env_file()  # .envファイルがない場合は作成、ある場合は追記
+
+try:
+    from dotenv import load_dotenv
+    # .envファイルから環境変数を読み込む
+    load_dotenv()
+except ImportError:
+    pass
+
 
 if __name__ == "__main__":
-    folders = ['./']
-    source_sage = SourceSage(folders, ignore_file='.SourceSageignore',
-                             output_file='SourceSageAssets/SourceSage.md',
-                             language_map_file='config/language_map.json')
+    repo_path = os.getenv("REPO_PATH")
+    source_sage_assets_dir = os.getenv("SOURCE_SAGE_ASSETS_DIR")
+    config_dir = os.getenv("CONFIG_DIR")
+    docs_dir = os.getenv("DOCS_DIR")
+    issue_log_dir = os.getenv("ISSUE_LOG_DIR")
+
+
+    folders = os.getenv("FOLDERS").split(",")  # カンマ区切りの文字列をリストに変換
+    source_sage = SourceSage(folders, ignore_file=os.getenv("IGNORE_FILE"),
+                             output_file=os.getenv("OUTPUT_FILE"),
+                             language_map_file=os.getenv("LANGUAGE_MAP_FILE"))
     source_sage.generate_markdown()
 
-    repo_path = "./"
-    output_dir = "SourceSageAssets/Changelog"
-    os.makedirs(output_dir, exist_ok=True)  # ディレクトリが存在しない場合は作成する
+    changelog_output_dir = f"{source_sage_assets_dir}/Changelog"
+    os.makedirs(changelog_output_dir, exist_ok=True)  # ディレクトリが存在しない場合は作成する
 
-    generator = ChangelogGenerator(repo_path, output_dir)
+    generator = ChangelogGenerator(repo_path, changelog_output_dir)
     generator.generate_changelog_for_all_branches()
     generator.integrate_changelogs()
 
-    owner = "Sunwood-ai-labs"
-    repository = "SourceSage"
-    save_path = "SourceSageAssets"
-    file_name = "open_issues_filtered.json"
+    owner = os.getenv("OWNER")
+    repository = os.getenv("REPOSITORY")
+    issues_file_name = os.getenv("ISSUES_FILE_NAME")
 
-    issue_retriever = GitHubIssueRetriever(owner, repository, save_path, file_name)
+    issue_retriever = GitHubIssueRetriever(owner, repository, source_sage_assets_dir + "/" + issue_log_dir, issues_file_name)
     issue_retriever.run()
 
+
     diff_generator = StagedDiffGenerator(
-        repo_path="./",
-        output_dir="SourceSageAssets",
-        language_map_file="config/language_map.json"
+        repo_path=repo_path,
+        output_dir=source_sage_assets_dir,
+        language_map_file=f"{config_dir}/language_map.json"
     )
     diff_generator.run()
 
     stage_info_generator = StageInfoGenerator(
-        issue_file_path="SourceSageAssets/open_issues_filtered.json",
-        stage_diff_file_path="SourceSageAssets/STAGED_DIFF.md",
-        template_file_path="docs/STAGE_INFO/STAGE_INFO_AND_ISSUES_TEMPLATE.md",
-        output_file_path="SourceSageAssets/STAGE_INFO_AND_ISSUES_AND_PROMT.md"
+        issue_file_path=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
+        stage_diff_file_path=f"{source_sage_assets_dir}/STAGED_DIFF.md",
+        template_file_path=f"{docs_dir}/STAGE_INFO/STAGE_INFO_AND_ISSUES_TEMPLATE.md",
+        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO/STAGE_INFO_AND_ISSUES_AND_PROMT.md"
     )
     stage_info_generator.run()
 
     stage_info_generator = StageInfoGenerator(
-        issue_file_path="SourceSageAssets/open_issues_filtered.json",
-        stage_diff_file_path="SourceSageAssets/STAGED_DIFF.md",
-        template_file_path="docs/STAGE_INFO/STAGE_INFO_TEMPLATE.md",
-        output_file_path="SourceSageAssets/STAGE_INFO_AND_PROMT.md"
+        issue_file_path=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
+        stage_diff_file_path=f"{source_sage_assets_dir}/STAGED_DIFF.md",
+        template_file_path=f"{docs_dir}/STAGE_INFO/STAGE_INFO_TEMPLATE.md",
+        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO/STAGE_INFO_AND_PROMT.md"
     )
     stage_info_generator.run()
+
+    issues_markdown_output_dir = f"{source_sage_assets_dir}/ISSUES_RESOLVE"
+    converter = IssuesToMarkdown(
+        issues_file=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
+        sourcesage_file=f"{source_sage_assets_dir}/SourceSage.md",
+        template_file=f"{docs_dir}/ISSUES_RESOLVE/ISSUES_RESOLVE_TEMPLATE.md",
+        output_folder=issues_markdown_output_dir
+    )
+    converter.load_data()
+    converter.create_markdown_files()
 ```
 
 ## .vscode
@@ -400,6 +424,7 @@ owner = "Sunwood-ai-labs"
 repository = "SourceSage"
 save_path = "SourceSageAssets"  # 保存先のディレクトリパス
 file_name = "open_issues_filtered.json"  # 保存するファイル名
+file_name_full = "open_issues_full.json"  # 保存するファイル名
 
 # GitHub APIのURLを構築（開いているIssueを全て取得する）
 api_url = f'https://api.github.com/repos/{owner}/{repository}/issues?state=open'
@@ -423,7 +448,51 @@ if not os.path.exists(save_path):
 with open(os.path.join(save_path, file_name), 'w', encoding='utf-8') as f:
     json.dump(filtered_issues, f, ensure_ascii=False, indent=4)
 
+# 取得したIssueデータをJSON形式で保存
+with open(os.path.join(save_path, file_name_full), 'w', encoding='utf-8') as f:
+    json.dump(issues, f, ensure_ascii=False, indent=4)
+
 print(f'Filtered open issues saved to {os.path.join(save_path, file_name)}')
+```
+
+`demo\make_issue_res.py`
+
+```python
+import json
+import os
+
+# open_issues_filtered.jsonを読み込む
+with open("SourceSageAssets\\open_issues_filtered.json", "r", encoding="utf-8") as f:
+    issues = json.load(f)
+
+# SourceSage.mdを読み込む
+with open("SourceSageAssets\\SourceSage.md", "r", encoding="utf-8") as f:
+    sourcesage_md = f.read()
+
+# テンプレートを読み込む
+with open("docs\\ISSUES_RESOLVE\\ISSUES_RESOLVE_TEMPLATE.md", "r", encoding="utf-8") as f:
+    template = f.read()
+
+# 各issueに対してマークダウンファイルを作成
+for issue in issues:
+    number = issue["number"]
+    title = issue["title"]
+    body = issue["body"]
+
+    # テンプレートの変数を置換
+    content = template.replace("{{number}}", str(number))
+    content = content.replace("{{title}}", title)
+    content = content.replace("{{body}}", body or "")
+    content = content.replace("{{sourcesage_md}}", sourcesage_md)
+
+    # マークダウンファイルを保存
+    filename = f"docs\\ISSUES_RESOLVE\\ISSUE_{number}.md"
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(content)
+
+    print(f"Issue {number}のマークダウンファイルを作成しました。")
+
+print("全てのissueのマークダウンファイルを作成しました。")
 ```
 
 ## docs
@@ -636,6 +705,55 @@ print(f'Filtered open issues saved to {os.path.join(save_path, file_name)}')
 
 ### docs\icon
 
+### docs\ISSUES_RESOLVE
+
+`docs\ISSUES_RESOLVE\ISSUES_RESOLVE_TEMPLATE.md`
+
+```markdown
+下記のissueについてリポジトリ情報を参照して修正して
+
+# ISSUE {{number}} : {{title}}
+
+{{body}}
+
+
+## 補足事項
+
+修正に対するコミットメッセージは日本語にして
+正確にstep-by-stepで処理して
+issueの番号も記載して
+
+コミットメッセージは下記のフォーマットにして
+
+## フォーマット
+
+```markdown
+
+[種類] 概要
+
+詳細な説明（必要に応じて）
+
+```
+
+種類は下記を参考にして
+
+例：
+  - feat: 新機能
+  - fix: バグ修正
+  - docs: ドキュメントのみの変更
+  - style: コードの動作に影響しない変更（空白、フォーマット、セミコロンの欠落など） 
+  - refactor: バグの修正も機能の追加も行わないコードの変更
+  - perf: パフォーマンスを向上させるコードの変更
+  - test: 欠けているテストの追加や既存のテストの修正
+  - chore: ビルドプロセスやドキュメント生成などの補助ツールやライブラリの変更
+
+
+
+# リポジトリ情報
+
+{{sourcesage_md}}
+```
+
 ### docs\STAGE_INFO
 
 `docs\STAGE_INFO\STAGE_INFO_AND_ISSUES_TEMPLATE.md`
@@ -745,9 +863,11 @@ issueは掲載しないで
 `modules\ChangelogGenerator.py`
 
 ```python
+# modules/ChangelogGenerator.py (変更後)
+
 import os
 from git import Repo
-from datetime import datetime
+from modules.ChangelogUtils import ChangelogUtils
 from loguru import logger
 
 class ChangelogGenerator:
@@ -762,13 +882,6 @@ class ChangelogGenerator:
     def _get_commits(self, branch):
         return list(self.repo.iter_commits(branch))
 
-    def _format_commit(self, commit):
-        message = commit.message.strip()
-        sha = commit.hexsha[:7]
-        author = commit.author.name
-        date = datetime.fromtimestamp(commit.committed_date).strftime("%Y-%m-%d")
-        return f"- [{sha}] - {message} ({author}, {date})"
-
     def generate_changelog(self, branch, output_file):
         commits = self._get_commits(branch)
 
@@ -777,7 +890,7 @@ class ChangelogGenerator:
             f.write(f"## {branch}\n\n")
 
             for commit in commits:
-                formatted_commit = self._format_commit(commit)
+                formatted_commit = ChangelogUtils.format_commit(commit)
                 f.write(formatted_commit + "\n")
 
         logger.info(f"Changelog generated successfully for branch '{branch}' at {output_file}")
@@ -807,7 +920,7 @@ class ChangelogGenerator:
                     f.write(f"## {branch_name}\n\n")
                     commits = self._get_commits(branch)
                     for commit in commits:
-                        formatted_commit = self._format_commit(commit)
+                        formatted_commit = ChangelogUtils.format_commit(commit)
                         f.write(formatted_commit + "\n")
                     f.write("\n")
             logger.info(f"Changelog generated successfully for feature branches at {output_file}")
@@ -840,12 +953,55 @@ if __name__ == "__main__":
     generator.integrate_changelogs()
 ```
 
+`modules\ChangelogUtils.py`
+
+```python
+# modules/ChangelogUtils.py (新規作成)
+
+from datetime import datetime
+
+class ChangelogUtils:
+    @staticmethod
+    def format_commit(commit):
+        message = commit.message.strip()
+        sha = commit.hexsha[:7]
+        author = commit.author.name
+        date = datetime.fromtimestamp(commit.committed_date).strftime("%Y-%m-%d")
+        return f"- [{sha}] - {message} ({author}, {date})"
+
+    @staticmethod
+    def generate_git_tree(repo, branch, num_commits):
+        tree_text = "```\n"
+        tree_text += "Git Commit Log Tree:\n"
+        commits = list(repo.iter_commits(branch, max_count=num_commits))
+        for i, commit in enumerate(commits, start=1):
+            if i == len(commits):  # 最後のコミット
+                prefix = "└──"
+            else:
+                prefix = "├──"
+            tree_text += f"{prefix} {commit.hexsha[:7]} - {commit.summary}\n"
+        tree_text += "```\n"
+        return tree_text
+
+    @staticmethod
+    def write_commit_details(file, commits, index):
+        commit = commits[index]
+        formatted_message = commit.message.replace('\n', '\n    ')
+        file.write(f"### コミットハッシュ: {commit.hexsha[:5]}...\n\n")
+        file.write(f"- **作者**: {commit.author.name}\n")
+        file.write(f"- **日時**: {commit.authored_datetime}\n")
+        file.write(f"- **メッセージ**: \n\n    {formatted_message}\n\n")
+```
+
 `modules\DiffChangelogGenerator.py`
 
 ```python
+# modules/DiffChangelogGenerator.py (変更後)
+
 import json
 import os
 from git import Repo
+from modules.ChangelogUtils import ChangelogUtils
 
 class RepositoryChangelogGenerator:
     def __init__(self, repo_path, changelog_dir, language_map_file):
@@ -866,37 +1022,15 @@ class RepositoryChangelogGenerator:
 
         with open(self.changelog_file, "w", encoding="utf-8") as file:
             # Git ログのツリー表示を追加
-            git_tree = self.generate_git_tree(branch, num_commits)
+            git_tree = ChangelogUtils.generate_git_tree(self.repo, branch, num_commits)
             file.write(git_tree + "\n\n")
 
             for i in range(min(num_commits, len(commits) - 1)):
-                self.write_commit_details(file, commits, i)
-
-    def generate_git_tree(self, branch, num_commits):
-        # ツリー表示用のテキストを生成
-        tree_text = "```\n"
-        tree_text += "Git Commit Log Tree:\n"
-        commits = list(self.repo.iter_commits(branch, max_count=num_commits))
-        for i, commit in enumerate(commits, start=1):
-            if i == len(commits):  # 最後のコミット
-                prefix = "└──"
-            else:
-                prefix = "├──"
-            tree_text += f"{prefix} {commit.hexsha[:7]} - {commit.summary}\n"
-        tree_text += "```\n"
-        return tree_text
+                ChangelogUtils.write_commit_details(file, commits, i)
+                self.write_changed_files(file, commits, i)
 
     def ensure_directory_exists(self, path):
         os.makedirs(path, exist_ok=True)
-
-    def write_commit_details(self, file, commits, index):
-        commit = commits[index]
-        formatted_message = commit.message.replace('\n', '\n    ')
-        file.write(f"### コミットハッシュ: {commit.hexsha[:5]}...\n\n")
-        file.write(f"- **作者**: {commit.author.name}\n")
-        file.write(f"- **日時**: {commit.authored_datetime}\n")
-        file.write(f"- **メッセージ**: \n\n    {formatted_message}\n\n")
-        self.write_changed_files(file, commits, index)
 
     def write_changed_files(self, file, commits, index):
         commit = commits[index]
@@ -927,13 +1061,13 @@ class RepositoryChangelogGenerator:
                 blob = self.repo.git.show(f"{commit.hexsha if diff_item.new_file else previous_commit.hexsha}:{file_path}")
                 content = self.escape_code_block(blob, language)
                 action = '追加された内容' if diff_item.new_file else '削除された内容'
-                file.write(f"    - **{action}:**\n\n{content}\n\n")
-            else:
+                file.write(f"    - {action}:\n\n{content}\n\n")
+                else:
                 diff_content = diff_item.diff.decode('utf-8')
                 diff_content_escaped = self.escape_code_block(diff_content, 'diff')
-                file.write(f"    - **差分:**\n\n{diff_content_escaped}\n\n")
-        except Exception as e:
-            file.write(f"    - 内容の取得に失敗しました: {e}\n")
+                file.write(f"    - 差分:\n\n{diff_content_escaped}\n\n")
+                except Exception as e:
+                file.write(f"    - 内容の取得に失敗しました: {e}\n")
 
     def escape_code_block(self, content, language):
         # マークダウンのコードブロックをエスケープする
@@ -944,13 +1078,50 @@ class RepositoryChangelogGenerator:
             fenced_code_block = f"```{language}\n{content}\n```"
         return fenced_code_block
 
-if __name__ == "__main__":
+if name == "main":
     changelog_generator = RepositoryChangelogGenerator(
         repo_path="./",
         changelog_dir="SourceSageAssets",
         language_map_file="config/language_map.json"
     )
     changelog_generator.generate_changelog(branch='main', num_commits=10)
+```
+
+`modules\EnvFileHandler.py`
+
+```python
+# modules/EnvFileHandler.py
+
+import os
+
+def create_or_append_env_file():
+    env_file = ".env"
+    env_vars = """REPO_PATH=./
+SOURCE_SAGE_ASSETS_DIR=SourceSageAssets
+CONFIG_DIR=config
+DOCS_DIR=docs
+FOLDERS=./
+IGNORE_FILE=.SourceSageignore
+OUTPUT_FILE=SourceSageAssets/SourceSage.md
+LANGUAGE_MAP_FILE=config/language_map.json
+
+OWNER=Sunwood-ai-labs
+REPOSITORY=SourceSage
+ISSUES_FILE_NAME=open_issues_filtered.json"""
+
+    if not os.path.exists(env_file):
+        with open(env_file, "w") as f:
+            f.write(env_vars)
+        print(f"{env_file} created successfully.")
+    else:
+        with open(env_file, "r") as f:
+            existing_vars = f.read()
+        if not all(var in existing_vars for var in env_vars.split("\n")):
+            with open(env_file, "a") as f:
+                f.write("\n" + env_vars)
+            print(f"{env_file} updated successfully.")
+        else:
+            print(f"{env_file} already contains the required variables.")
 ```
 
 `modules\file_utils.py`
@@ -986,9 +1157,9 @@ def is_excluded(path, exclude_patterns):
 `modules\GitHubIssueRetrieve.py`
 
 ```python
-import requests
-import json
-import os
+# modules/GitHubIssueRetrieve.py (変更後)
+
+from modules.GitHubUtils import GitHubUtils
 
 class GitHubIssueRetriever:
     def __init__(self, owner, repository, save_path, file_name):
@@ -997,33 +1168,10 @@ class GitHubIssueRetriever:
         self.save_path = save_path
         self.file_name = file_name
 
-    def retrieve_issues(self):
-        api_url = f'https://api.github.com/repos/{self.owner}/{self.repository}/issues?state=open'
-        response = requests.get(api_url)
-        issues = response.json()
-        return issues
-
-    def filter_issues(self, issues):
-        filtered_issues = [
-            {"number": issue["number"], "title": issue["title"], "body": issue["body"]}
-            for issue in issues
-            if "pull_request" not in issue
-        ]
-        return filtered_issues
-
-    def save_issues(self, issues):
-        if not os.path.exists(self.save_path):
-            os.makedirs(self.save_path)
-
-        with open(os.path.join(self.save_path, self.file_name), 'w', encoding='utf-8') as f:
-            json.dump(issues, f, ensure_ascii=False, indent=4)
-
-        print(f'Filtered open issues saved to {os.path.join(self.save_path, self.file_name)}')
-
     def run(self):
-        issues = self.retrieve_issues()
-        filtered_issues = self.filter_issues(issues)
-        self.save_issues(filtered_issues)
+        issues = GitHubUtils.retrieve_issues(self.owner, self.repository)
+        filtered_issues = GitHubUtils.filter_issues(issues)
+        GitHubUtils.save_issues(filtered_issues, self.save_path, self.file_name)
 
 
 if __name__ == "__main__":
@@ -1036,11 +1184,115 @@ if __name__ == "__main__":
     retriever.run()
 ```
 
+`modules\GitHubUtils.py`
+
+```python
+# modules/GitHubUtils.py (新規作成)
+
+import requests
+import json
+import os
+from git import Repo
+
+class GitHubUtils:
+    @staticmethod
+    def retrieve_issues(owner, repository):
+        api_url = f'https://api.github.com/repos/{owner}/{repository}/issues?state=open'
+        response = requests.get(api_url)
+        issues = response.json()
+        return issues
+
+    @staticmethod
+    def filter_issues(issues):
+        filtered_issues = [
+            {"number": issue["number"], "title": issue["title"], "body": issue["body"]}
+            for issue in issues
+            if "pull_request" not in issue
+        ]
+        return filtered_issues
+
+    @staticmethod
+    def save_issues(issues, save_path, file_name):
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
+
+        with open(os.path.join(save_path, file_name), 'w', encoding='utf-8') as f:
+            json.dump(issues, f, ensure_ascii=False, indent=4)
+
+        print(f'Filtered open issues saved to {os.path.join(save_path, file_name)}')
+
+    @staticmethod
+    def get_staged_diff(repo_path):
+        repo = Repo(repo_path)
+        previous_commit = repo.head.commit
+        staged_diff = previous_commit.diff(None, create_patch=True)
+        return staged_diff
+```
+
+`modules\IssuesToMarkdown.py`
+
+```python
+import json
+import os
+from loguru import logger
+
+class IssuesToMarkdown:
+    def __init__(self, issues_file, sourcesage_file, template_file, output_folder):
+        self.issues_file = issues_file
+        self.sourcesage_file = sourcesage_file
+        self.template_file = template_file
+        self.output_folder = output_folder
+
+    def load_data(self):
+        logger.info("Loading data...")
+        with open(self.issues_file, "r", encoding="utf-8") as f:
+            self.issues = json.load(f)
+        logger.info(f"Loaded {len(self.issues)} issues from {self.issues_file}")
+
+        with open(self.sourcesage_file, "r", encoding="utf-8") as f:
+            self.sourcesage_md = f.read()
+        logger.info(f"Loaded SourceSage markdown from {self.sourcesage_file}")
+
+        with open(self.template_file, "r", encoding="utf-8") as f:
+            self.template = f.read()
+        logger.info(f"Loaded template from {self.template_file}")
+
+    def create_markdown_files(self):
+        logger.info("Creating markdown files for issues...")
+        for issue in self.issues:
+            number = issue["number"]
+            title = issue["title"]
+            body = issue["body"]
+
+            content = self.template.replace("{{number}}", str(number))
+            content = content.replace("{{title}}", title)
+            content = content.replace("{{body}}", body or "")
+            content = content.replace("{{sourcesage_md}}", self.sourcesage_md)
+
+            filename = os.path.join(self.output_folder, f"ISSUE_{number}.md")
+            with open(filename, "w", encoding="utf-8") as f:
+                f.write(content)
+
+            logger.info(f"Created markdown file for issue {number}")
+
+        logger.info("Created markdown files for all issues")
+
+if __name__ == "__main__":
+    issues_file = "SourceSageAssets\\open_issues_filtered.json"
+    sourcesage_file = "SourceSageAssets\\SourceSage.md"
+    template_file = "docs\\ISSUES_RESOLVE\\ISSUES_RESOLVE_TEMPLATE.md"
+    output_folder = "docs\\ISSUES_RESOLVE"
+
+    converter = IssuesToMarkdown(issues_file, sourcesage_file, template_file, output_folder)
+    converter.load_data()
+    converter.create_markdown_files()
+```
+
 `modules\markdown_utils.py`
 
 ```python
 import os
-from file_utils import is_excluded
+from modules.file_utils import is_excluded
 
 def generate_markdown_for_folder(folder_path, exclude_patterns, language_map):
     markdown_content = "```plaintext\n"
@@ -1127,9 +1379,11 @@ class SourceSage:
 `modules\StagedDiffGenerator.py`
 
 ```python
+# modules/StagedDiffGenerator.py (変更後)
+
 import json
 import os
-from git import Repo
+from modules.GitHubUtils import GitHubUtils
 
 class StagedDiffGenerator:
     def __init__(self, repo_path, output_dir, language_map_file):
@@ -1137,7 +1391,6 @@ class StagedDiffGenerator:
         self.output_dir = output_dir
         self.output_file = os.path.join(output_dir, "STAGED_DIFF.md")
         self.language_map_file = language_map_file
-        self.repo = Repo(repo_path)
         self.language_map = self.load_language_map()
 
     def load_language_map(self):
@@ -1145,17 +1398,16 @@ class StagedDiffGenerator:
             return json.load(lang_file)
 
     def generate_staged_diff(self):
-        previous_commit = self.repo.head.commit
-        staged_diff = previous_commit.diff(None, create_patch=True)
+        staged_diff = GitHubUtils.get_staged_diff(self.repo_path)
 
         os.makedirs(self.output_dir, exist_ok=True)  # フォルダが存在しない場合は作成
 
         with open(self.output_file, "w", encoding="utf-8") as file:
             file.write("# Staged Files Diff\n\n")
             for diff_item in staged_diff:
-                self.write_file_diff(file, diff_item, previous_commit)
+                self.write_file_diff(file, diff_item)
 
-    def write_file_diff(self, file, diff_item, previous_commit):
+    def write_file_diff(self, file, diff_item):
         file_path = diff_item.a_path or diff_item.b_path
         if file_path:
             _, extension = os.path.splitext(file_path)
@@ -1163,26 +1415,17 @@ class StagedDiffGenerator:
             file.write(f"## {file_path}\n\n")
 
             try:
-                self.write_diff_content(file, diff_item, previous_commit, language, file_path)
+                self.write_diff_content(file, diff_item, language, file_path)
             except Exception as e:
                 file.write(f"- 内容の取得に失敗しました: {e}\n")
         else:
             file.write("- 有効なファイルパスが見つかりませんでした。\n\n")
 
-    def write_diff_content(self, file, diff_item, previous_commit, language, file_path):
+    def write_diff_content(self, file, diff_item, language, file_path):
         try:
-            if diff_item.new_file:
-                blob = self.repo.git.show(f":{file_path}")
-                content = self.escape_code_block(blob, language)
-                file.write(f"### 追加された内容:\n\n{content}\n\n")
-            elif diff_item.deleted_file:
-                blob = self.repo.git.show(f"{previous_commit.hexsha}:{file_path}")
-                content = self.escape_code_block(blob, language)
-                file.write(f"### 削除された内容:\n\n{content}\n\n")
-            else:
-                diff_content = diff_item.diff.decode('utf-8')
-                diff_content_escaped = self.escape_code_block(diff_content, 'diff')
-                file.write(f"### 差分:\n\n{diff_content_escaped}\n\n")
+            diff_content = diff_item.diff.decode('utf-8')
+            diff_content_escaped = self.escape_code_block(diff_content, 'diff')
+            file.write(f"### 差分:\n\n{diff_content_escaped}\n\n")
         except Exception as e:
             file.write(f"- 内容の取得に失敗しました: {e}\n")
 
@@ -1210,21 +1453,12 @@ if __name__ == "__main__":
 `modules\StageInfoGenerator.py`
 
 ```python
+# modules/StageInfoGenerator.py (変更後)
+
 import json
 import os
-from git import Repo
-
-
-import os
-import sys
-import pprint
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-pprint.pprint(sys.path)
-
 from modules.GitHubIssueRetrieve import GitHubIssueRetriever
 from modules.StagedDiffGenerator import StagedDiffGenerator
-
 
 class StageInfoGenerator:
     def __init__(self, issue_file_path, stage_diff_file_path, template_file_path, output_file_path):
@@ -1303,8 +1537,6 @@ if __name__ == "__main__":
 ```python
 
 ```
-
-
 
 
 
