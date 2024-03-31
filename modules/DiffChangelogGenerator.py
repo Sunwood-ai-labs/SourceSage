@@ -1,6 +1,9 @@
+# modules/DiffChangelogGenerator.py (変更後)
+
 import json
 import os
 from git import Repo
+from modules.ChangelogUtils import ChangelogUtils
 
 class RepositoryChangelogGenerator:
     def __init__(self, repo_path, changelog_dir, language_map_file):
@@ -21,37 +24,15 @@ class RepositoryChangelogGenerator:
 
         with open(self.changelog_file, "w", encoding="utf-8") as file:
             # Git ログのツリー表示を追加
-            git_tree = self.generate_git_tree(branch, num_commits)
+            git_tree = ChangelogUtils.generate_git_tree(self.repo, branch, num_commits)
             file.write(git_tree + "\n\n")
 
             for i in range(min(num_commits, len(commits) - 1)):
-                self.write_commit_details(file, commits, i)
-
-    def generate_git_tree(self, branch, num_commits):
-        # ツリー表示用のテキストを生成
-        tree_text = "```\n"
-        tree_text += "Git Commit Log Tree:\n"
-        commits = list(self.repo.iter_commits(branch, max_count=num_commits))
-        for i, commit in enumerate(commits, start=1):
-            if i == len(commits):  # 最後のコミット
-                prefix = "└──"
-            else:
-                prefix = "├──"
-            tree_text += f"{prefix} {commit.hexsha[:7]} - {commit.summary}\n"
-        tree_text += "```\n"
-        return tree_text
+                ChangelogUtils.write_commit_details(file, commits, i)
+                self.write_changed_files(file, commits, i)
 
     def ensure_directory_exists(self, path):
         os.makedirs(path, exist_ok=True)
-
-    def write_commit_details(self, file, commits, index):
-        commit = commits[index]
-        formatted_message = commit.message.replace('\n', '\n    ')
-        file.write(f"### コミットハッシュ: {commit.hexsha[:5]}...\n\n")
-        file.write(f"- **作者**: {commit.author.name}\n")
-        file.write(f"- **日時**: {commit.authored_datetime}\n")
-        file.write(f"- **メッセージ**: \n\n    {formatted_message}\n\n")
-        self.write_changed_files(file, commits, index)
 
     def write_changed_files(self, file, commits, index):
         commit = commits[index]
@@ -82,13 +63,13 @@ class RepositoryChangelogGenerator:
                 blob = self.repo.git.show(f"{commit.hexsha if diff_item.new_file else previous_commit.hexsha}:{file_path}")
                 content = self.escape_code_block(blob, language)
                 action = '追加された内容' if diff_item.new_file else '削除された内容'
-                file.write(f"    - **{action}:**\n\n{content}\n\n")
-            else:
+                file.write(f"    - {action}:\n\n{content}\n\n")
+                else:
                 diff_content = diff_item.diff.decode('utf-8')
                 diff_content_escaped = self.escape_code_block(diff_content, 'diff')
-                file.write(f"    - **差分:**\n\n{diff_content_escaped}\n\n")
-        except Exception as e:
-            file.write(f"    - 内容の取得に失敗しました: {e}\n")
+                file.write(f"    - 差分:\n\n{diff_content_escaped}\n\n")
+                except Exception as e:
+                file.write(f"    - 内容の取得に失敗しました: {e}\n")
 
     def escape_code_block(self, content, language):
         # マークダウンのコードブロックをエスケープする
@@ -99,7 +80,7 @@ class RepositoryChangelogGenerator:
             fenced_code_block = f"```{language}\n{content}\n```"
         return fenced_code_block
 
-if __name__ == "__main__":
+if name == "main":
     changelog_generator = RepositoryChangelogGenerator(
         repo_path="./",
         changelog_dir="SourceSageAssets",

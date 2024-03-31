@@ -1,18 +1,9 @@
+# modules/StageInfoGenerator.py (変更後)
+
 import json
 import os
-from git import Repo
-
-
-import os
-import sys
-import pprint
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-pprint.pprint(sys.path)
-
 from modules.GitHubIssueRetrieve import GitHubIssueRetriever
 from modules.StagedDiffGenerator import StagedDiffGenerator
-
 
 class StageInfoGenerator:
     def __init__(self, issue_file_path, stage_diff_file_path, template_file_path, output_file_path):

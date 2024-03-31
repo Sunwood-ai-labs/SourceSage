@@ -1,6 +1,8 @@
+# modules/ChangelogGenerator.py (変更後)
+
 import os
 from git import Repo
-from datetime import datetime
+from modules.ChangelogUtils import ChangelogUtils
 from loguru import logger
 
 class ChangelogGenerator:
@@ -15,13 +17,6 @@ class ChangelogGenerator:
     def _get_commits(self, branch):
         return list(self.repo.iter_commits(branch))
 
-    def _format_commit(self, commit):
-        message = commit.message.strip()
-        sha = commit.hexsha[:7]
-        author = commit.author.name
-        date = datetime.fromtimestamp(commit.committed_date).strftime("%Y-%m-%d")
-        return f"- [{sha}] - {message} ({author}, {date})"
-
     def generate_changelog(self, branch, output_file):
         commits = self._get_commits(branch)
 
@@ -30,7 +25,7 @@ class ChangelogGenerator:
             f.write(f"## {branch}\n\n")
 
             for commit in commits:
-                formatted_commit = self._format_commit(commit)
+                formatted_commit = ChangelogUtils.format_commit(commit)
                 f.write(formatted_commit + "\n")
 
         logger.info(f"Changelog generated successfully for branch '{branch}' at {output_file}")
@@ -60,7 +55,7 @@ class ChangelogGenerator:
                     f.write(f"## {branch_name}\n\n")
                     commits = self._get_commits(branch)
                     for commit in commits:
-                        formatted_commit = self._format_commit(commit)
+                        formatted_commit = ChangelogUtils.format_commit(commit)
                         f.write(formatted_commit + "\n")
                     f.write("\n")
             logger.info(f"Changelog generated successfully for feature branches at {output_file}")
