@@ -1,38 +1,6 @@
-# SourceSage.py (リファクタリング後)
-
-import os
-
-def create_env_file():
-    env_file = ".env"
-    if not os.path.exists(env_file):
-        with open(env_file, "w") as f:
-            f.write("""REPO_PATH=./
-SOURCE_SAGE_ASSETS_DIR=SourceSageAssets
-CONFIG_DIR=config
-DOCS_DIR=docs
-FOLDERS=./
-IGNORE_FILE=.SourceSageignore
-OUTPUT_FILE=SourceSageAssets/SourceSage.md
-LANGUAGE_MAP_FILE=config/language_map.json
-
-OWNER=Sunwood-ai-labs
-REPOSITORY=SourceSage
-ISSUES_FILE_NAME=open_issues_filtered.json""")
-
-        print(f"{env_file} created successfully.")
-    else:
-        print(f"{env_file} already exists.")
-
-create_env_file()  # .envファイルがない場合に作成
-try:
-    from dotenv import load_dotenv
-    # .envファイルから環境変数を読み込む
-    load_dotenv()
-except ImportError:
-    pass
-
 import os
 import sys
+from modules.EnvFileHandler import create_or_append_env_file
 from modules.source_sage import SourceSage
 from modules.ChangelogGenerator import ChangelogGenerator
 from modules.StageInfoGenerator import StageInfoGenerator
@@ -40,6 +8,14 @@ from modules.GitHubIssueRetrieve import GitHubIssueRetriever
 from modules.StagedDiffGenerator import StagedDiffGenerator
 from modules.IssuesToMarkdown import IssuesToMarkdown
 
+create_or_append_env_file()  # .envファイルがない場合は作成、ある場合は追記
+
+try:
+    from dotenv import load_dotenv
+    # .envファイルから環境変数を読み込む
+    load_dotenv()
+except ImportError:
+    pass
 
 
 if __name__ == "__main__":
