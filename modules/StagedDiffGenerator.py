@@ -66,6 +66,9 @@ class StagedDiffGenerator:
             fenced_code_block = f"```{language}\n{content}\n```"
         return fenced_code_block
 
+    def run(self):
+        self.generate_staged_diff()
+
 if __name__ == "__main__":
     diff_generator = StagedDiffGenerator(
         repo_path="./",

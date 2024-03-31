@@ -1,6 +1,6 @@
 <p align="center">
 
-<img src="docs/SourceSage_icon4.png" width="100%">
+<img src="docs/icon/SourceSage_icon4.png" width="100%">
 
 <br>
 
