@@ -23,6 +23,8 @@ if __name__ == "__main__":
     source_sage_assets_dir = os.getenv("SOURCE_SAGE_ASSETS_DIR")
     config_dir = os.getenv("CONFIG_DIR")
     docs_dir = os.getenv("DOCS_DIR")
+    issue_log_dir = os.getenv("ISSUE_LOG_DIR")
+
 
     folders = os.getenv("FOLDERS").split(",")  # カンマ区切りの文字列をリストに変換
     source_sage = SourceSage(folders, ignore_file=os.getenv("IGNORE_FILE"),
@@ -41,7 +43,7 @@ if __name__ == "__main__":
     repository = os.getenv("REPOSITORY")
     issues_file_name = os.getenv("ISSUES_FILE_NAME")
 
-    issue_retriever = GitHubIssueRetriever(owner, repository, source_sage_assets_dir, issues_file_name)
+    issue_retriever = GitHubIssueRetriever(owner, repository, source_sage_assets_dir + "/" + issue_log_dir, issues_file_name)
     issue_retriever.run()
 
 
@@ -53,24 +55,24 @@ if __name__ == "__main__":
     diff_generator.run()
 
     stage_info_generator = StageInfoGenerator(
-        issue_file_path=f"{source_sage_assets_dir}/{issues_file_name}",
+        issue_file_path=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
         stage_diff_file_path=f"{source_sage_assets_dir}/STAGED_DIFF.md",
         template_file_path=f"{docs_dir}/STAGE_INFO/STAGE_INFO_AND_ISSUES_TEMPLATE.md",
-        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO_AND_ISSUES_AND_PROMT.md"
+        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO/STAGE_INFO_AND_ISSUES_AND_PROMT.md"
     )
     stage_info_generator.run()
 
     stage_info_generator = StageInfoGenerator(
-        issue_file_path=f"{source_sage_assets_dir}/{issues_file_name}",
+        issue_file_path=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
         stage_diff_file_path=f"{source_sage_assets_dir}/STAGED_DIFF.md",
         template_file_path=f"{docs_dir}/STAGE_INFO/STAGE_INFO_TEMPLATE.md",
-        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO_AND_PROMT.md"
+        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO/STAGE_INFO_AND_PROMT.md"
     )
     stage_info_generator.run()
 
     issues_markdown_output_dir = f"{source_sage_assets_dir}/ISSUES_RESOLVE"
     converter = IssuesToMarkdown(
-        issues_file=f"{source_sage_assets_dir}/{issues_file_name}",
+        issues_file=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
         sourcesage_file=f"{source_sage_assets_dir}/SourceSage.md",
         template_file=f"{docs_dir}/ISSUES_RESOLVE/ISSUES_RESOLVE_TEMPLATE.md",
         output_folder=issues_markdown_output_dir
