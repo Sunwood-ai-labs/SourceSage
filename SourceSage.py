@@ -7,6 +7,7 @@ from modules.ChangelogGenerator import ChangelogGenerator
 from modules.StageInfoGenerator import StageInfoGenerator
 from modules.GitHubIssueRetrieve import GitHubIssueRetriever
 from modules.StagedDiffGenerator import StagedDiffGenerator
+from modules.IssuesToMarkdown import IssuesToMarkdown
 
 if __name__ == "__main__":
     folders = ['./']
@@ -53,3 +54,12 @@ if __name__ == "__main__":
         output_file_path="SourceSageAssets/STAGE_INFO_AND_PROMT.md"
     )
     stage_info_generator.run()
+
+    issues_file = "SourceSageAssets/open_issues_filtered.json"
+    sourcesage_file = "SourceSageAssets/SourceSage.md"
+    template_file = "docs/ISSUES_RESOLVE/ISSUES_RESOLVE_TEMPLATE.md"
+    output_folder = "SourceSageAssets/ISSUES_RESOLVE"
+
+    converter = IssuesToMarkdown(issues_file, sourcesage_file, template_file, output_folder)
+    converter.load_data()
+    converter.create_markdown_files()
