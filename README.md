@@ -9,7 +9,6 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 ## 更新内容
 
-
 - [【2024/03/31】 SourceSage 3.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag3.0.0)
   - [IssueWise](#1-issuewise開発前の課題解決)機能を追加し、GitHubのオープンIssueを取得してAIによる自動修正をサポート
   - [CommitCraft](#2-commitcraft開発中のコミット管理)機能を追加し、変更差分を追跡してAIが適切なコミットメッセージを生成
@@ -19,7 +18,6 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
   - 言語ごとのシンタックスハイライト機能を追加
   - .SourceSageignoreファイルを導入し、不要なファイルやフォルダを自動的に除外
 - 【2024/03/29】 初期リリース
-
 
 ## 主な機能
 
