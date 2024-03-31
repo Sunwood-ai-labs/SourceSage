@@ -1,6 +1,12 @@
 # SourceSage.py (リファクタリング後)
 
 import os
+
+from dotenv import load_dotenv
+# .envファイルから環境変数を読み込む
+load_dotenv()
+
+import os
 import sys
 from modules.source_sage import SourceSage
 from modules.ChangelogGenerator import ChangelogGenerator
@@ -9,16 +15,18 @@ from modules.GitHubIssueRetrieve import GitHubIssueRetriever
 from modules.StagedDiffGenerator import StagedDiffGenerator
 from modules.IssuesToMarkdown import IssuesToMarkdown
 
-if __name__ == "__main__":
-    repo_path = "./"
-    source_sage_assets_dir = "SourceSageAssets"
-    config_dir = "config"
-    docs_dir = "docs"
 
-    folders = [repo_path]
-    source_sage = SourceSage(folders, ignore_file='.SourceSageignore',
-                             output_file=f"{source_sage_assets_dir}/SourceSage.md",
-                             language_map_file=f"{config_dir}/language_map.json")
+
+if __name__ == "__main__":
+    repo_path = os.getenv("REPO_PATH")
+    source_sage_assets_dir = os.getenv("SOURCE_SAGE_ASSETS_DIR")
+    config_dir = os.getenv("CONFIG_DIR")
+    docs_dir = os.getenv("DOCS_DIR")
+
+    folders = os.getenv("FOLDERS").split(",")  # カンマ区切りの文字列をリストに変換
+    source_sage = SourceSage(folders, ignore_file=os.getenv("IGNORE_FILE"),
+                             output_file=os.getenv("OUTPUT_FILE"),
+                             language_map_file=os.getenv("LANGUAGE_MAP_FILE"))
     source_sage.generate_markdown()
 
     changelog_output_dir = f"{source_sage_assets_dir}/Changelog"
@@ -28,12 +36,13 @@ if __name__ == "__main__":
     generator.generate_changelog_for_all_branches()
     generator.integrate_changelogs()
 
-    owner = "Sunwood-ai-labs"
-    repository = "SourceSage"
-    issues_file_name = "open_issues_filtered.json"
+    owner = os.getenv("OWNER")
+    repository = os.getenv("REPOSITORY")
+    issues_file_name = os.getenv("ISSUES_FILE_NAME")
 
     issue_retriever = GitHubIssueRetriever(owner, repository, source_sage_assets_dir, issues_file_name)
     issue_retriever.run()
+
 
     diff_generator = StagedDiffGenerator(
         repo_path=repo_path,
