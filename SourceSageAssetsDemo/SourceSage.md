@@ -1,45 +1,3 @@
-
-下記のissueについてリポジトリ情報を参照して修正して
-
-# ISSUE 2 : ハイパーパラメータを環境変数(.env)から設定できるようにしたい
-
-
-
-
-## 補足事項
-
-修正に対するコミットメッセージは日本語にして
-正確にstep-by-stepで処理して
-issueの番号も記載して
-
-コミットメッセージは下記のフォーマットにして
-
-## フォーマット
-
-```markdown
-
-[種類] 概要
-
-詳細な説明（必要に応じて）
-
-```
-
-種類は下記を参考にして
-
-例：
-  - feat: 新機能
-  - fix: バグ修正
-  - docs: ドキュメントのみの変更
-  - style: コードの動作に影響しない変更（空白、フォーマット、セミコロンの欠落など） 
-  - refactor: バグの修正も機能の追加も行わないコードの変更
-  - perf: パフォーマンスを向上させるコードの変更
-  - test: 欠けているテストの追加や既存のテストの修正
-  - chore: ビルドプロセスやドキュメント生成などの補助ツールやライブラリの変更
-
-
-
-# リポジトリ情報
-
 # Project: SourceSage
 
 ```plaintext
@@ -68,6 +26,7 @@ Directory: C:\Prj\SourceSage
 │  ├─ ChangelogGenerator.py
 │  ├─ ChangelogUtils.py
 │  ├─ DiffChangelogGenerator.py
+│  ├─ EnvFileHandler.py
 │  ├─ file_utils.py
 │  ├─ GitHubIssueRetrieve.py
 │  ├─ GitHubUtils.py
@@ -82,6 +41,41 @@ Directory: C:\Prj\SourceSage
 ```
 
 ## .
+
+`.env`
+
+```plaintext
+REPO_PATH=./
+SOURCE_SAGE_ASSETS_DIR=SourceSageAssets
+CONFIG_DIR=config
+DOCS_DIR=docs
+FOLDERS=./
+IGNORE_FILE=.SourceSageignore
+OUTPUT_FILE=SourceSageAssets/SourceSage.md
+LANGUAGE_MAP_FILE=config/language_map.json
+ISSUE_LOG_DIR=ISSUE_LOG
+
+OWNER=Sunwood-ai-labs
+REPOSITORY=SourceSage
+ISSUES_FILE_NAME=open_issues_filtered.json
+```
+
+`.env.example`
+
+```plaintext
+REPO_PATH=./
+SOURCE_SAGE_ASSETS_DIR=SourceSageAssets
+CONFIG_DIR=config
+DOCS_DIR=docs
+FOLDERS=./
+IGNORE_FILE=.SourceSageignore
+OUTPUT_FILE=SourceSageAssets/SourceSage.md
+LANGUAGE_MAP_FILE=config/language_map.json
+
+OWNER=Sunwood-ai-labs
+REPOSITORY=SourceSage
+ISSUES_FILE_NAME=open_issues_filtered.json
+```
 
 `README.md`
 
@@ -261,10 +255,9 @@ SourceSageの改善にご協力ください！バグの報告や機能追加の�
 `SourceSage.py`
 
 ```python
-# SourceSage.py (リファクタリング後)
-
 import os
 import sys
+from modules.EnvFileHandler import create_or_append_env_file
 from modules.source_sage import SourceSage
 from modules.ChangelogGenerator import ChangelogGenerator
 from modules.StageInfoGenerator import StageInfoGenerator
@@ -272,16 +265,28 @@ from modules.GitHubIssueRetrieve import GitHubIssueRetriever
 from modules.StagedDiffGenerator import StagedDiffGenerator
 from modules.IssuesToMarkdown import IssuesToMarkdown
 
-if __name__ == "__main__":
-    repo_path = "./"
-    source_sage_assets_dir = "SourceSageAssets"
-    config_dir = "config"
-    docs_dir = "docs"
+create_or_append_env_file()  # .envファイルがない場合は作成、ある場合は追記
 
-    folders = [repo_path]
-    source_sage = SourceSage(folders, ignore_file='.SourceSageignore',
-                             output_file=f"{source_sage_assets_dir}/SourceSage.md",
-                             language_map_file=f"{config_dir}/language_map.json")
+try:
+    from dotenv import load_dotenv
+    # .envファイルから環境変数を読み込む
+    load_dotenv()
+except ImportError:
+    pass
+
+
+if __name__ == "__main__":
+    repo_path = os.getenv("REPO_PATH")
+    source_sage_assets_dir = os.getenv("SOURCE_SAGE_ASSETS_DIR")
+    config_dir = os.getenv("CONFIG_DIR")
+    docs_dir = os.getenv("DOCS_DIR")
+    issue_log_dir = os.getenv("ISSUE_LOG_DIR")
+
+
+    folders = os.getenv("FOLDERS").split(",")  # カンマ区切りの文字列をリストに変換
+    source_sage = SourceSage(folders, ignore_file=os.getenv("IGNORE_FILE"),
+                             output_file=os.getenv("OUTPUT_FILE"),
+                             language_map_file=os.getenv("LANGUAGE_MAP_FILE"))
     source_sage.generate_markdown()
 
     changelog_output_dir = f"{source_sage_assets_dir}/Changelog"
@@ -291,12 +296,13 @@ if __name__ == "__main__":
     generator.generate_changelog_for_all_branches()
     generator.integrate_changelogs()
 
-    owner = "Sunwood-ai-labs"
-    repository = "SourceSage"
-    issues_file_name = "open_issues_filtered.json"
+    owner = os.getenv("OWNER")
+    repository = os.getenv("REPOSITORY")
+    issues_file_name = os.getenv("ISSUES_FILE_NAME")
 
-    issue_retriever = GitHubIssueRetriever(owner, repository, source_sage_assets_dir, issues_file_name)
+    issue_retriever = GitHubIssueRetriever(owner, repository, source_sage_assets_dir + "/" + issue_log_dir, issues_file_name)
     issue_retriever.run()
+
 
     diff_generator = StagedDiffGenerator(
         repo_path=repo_path,
@@ -306,24 +312,24 @@ if __name__ == "__main__":
     diff_generator.run()
 
     stage_info_generator = StageInfoGenerator(
-        issue_file_path=f"{source_sage_assets_dir}/{issues_file_name}",
+        issue_file_path=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
         stage_diff_file_path=f"{source_sage_assets_dir}/STAGED_DIFF.md",
         template_file_path=f"{docs_dir}/STAGE_INFO/STAGE_INFO_AND_ISSUES_TEMPLATE.md",
-        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO_AND_ISSUES_AND_PROMT.md"
+        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO/STAGE_INFO_AND_ISSUES_AND_PROMT.md"
     )
     stage_info_generator.run()
 
     stage_info_generator = StageInfoGenerator(
-        issue_file_path=f"{source_sage_assets_dir}/{issues_file_name}",
+        issue_file_path=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
         stage_diff_file_path=f"{source_sage_assets_dir}/STAGED_DIFF.md",
         template_file_path=f"{docs_dir}/STAGE_INFO/STAGE_INFO_TEMPLATE.md",
-        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO_AND_PROMT.md"
+        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO/STAGE_INFO_AND_PROMT.md"
     )
     stage_info_generator.run()
 
     issues_markdown_output_dir = f"{source_sage_assets_dir}/ISSUES_RESOLVE"
     converter = IssuesToMarkdown(
-        issues_file=f"{source_sage_assets_dir}/{issues_file_name}",
+        issues_file=f"{source_sage_assets_dir}/{issue_log_dir}/{issues_file_name}",
         sourcesage_file=f"{source_sage_assets_dir}/SourceSage.md",
         template_file=f"{docs_dir}/ISSUES_RESOLVE/ISSUES_RESOLVE_TEMPLATE.md",
         output_folder=issues_markdown_output_dir
@@ -418,6 +424,7 @@ owner = "Sunwood-ai-labs"
 repository = "SourceSage"
 save_path = "SourceSageAssets"  # 保存先のディレクトリパス
 file_name = "open_issues_filtered.json"  # 保存するファイル名
+file_name_full = "open_issues_full.json"  # 保存するファイル名
 
 # GitHub APIのURLを構築（開いているIssueを全て取得する）
 api_url = f'https://api.github.com/repos/{owner}/{repository}/issues?state=open'
@@ -440,6 +447,10 @@ if not os.path.exists(save_path):
 # 取得したIssueデータをJSON形式で保存
 with open(os.path.join(save_path, file_name), 'w', encoding='utf-8') as f:
     json.dump(filtered_issues, f, ensure_ascii=False, indent=4)
+
+# 取得したIssueデータをJSON形式で保存
+with open(os.path.join(save_path, file_name_full), 'w', encoding='utf-8') as f:
+    json.dump(issues, f, ensure_ascii=False, indent=4)
 
 print(f'Filtered open issues saved to {os.path.join(save_path, file_name)}')
 ```
@@ -1076,6 +1087,43 @@ if name == "main":
     changelog_generator.generate_changelog(branch='main', num_commits=10)
 ```
 
+`modules\EnvFileHandler.py`
+
+```python
+# modules/EnvFileHandler.py
+
+import os
+
+def create_or_append_env_file():
+    env_file = ".env"
+    env_vars = """REPO_PATH=./
+SOURCE_SAGE_ASSETS_DIR=SourceSageAssets
+CONFIG_DIR=config
+DOCS_DIR=docs
+FOLDERS=./
+IGNORE_FILE=.SourceSageignore
+OUTPUT_FILE=SourceSageAssets/SourceSage.md
+LANGUAGE_MAP_FILE=config/language_map.json
+
+OWNER=Sunwood-ai-labs
+REPOSITORY=SourceSage
+ISSUES_FILE_NAME=open_issues_filtered.json"""
+
+    if not os.path.exists(env_file):
+        with open(env_file, "w") as f:
+            f.write(env_vars)
+        print(f"{env_file} created successfully.")
+    else:
+        with open(env_file, "r") as f:
+            existing_vars = f.read()
+        if not all(var in existing_vars for var in env_vars.split("\n")):
+            with open(env_file, "a") as f:
+                f.write("\n" + env_vars)
+            print(f"{env_file} updated successfully.")
+        else:
+            print(f"{env_file} already contains the required variables.")
+```
+
 `modules\file_utils.py`
 
 ```python
@@ -1489,8 +1537,6 @@ if __name__ == "__main__":
 ```python
 
 ```
-
-
 
 
 
