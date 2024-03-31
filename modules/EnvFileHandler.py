@@ -10,7 +10,7 @@ CONFIG_DIR=config
 DOCS_DIR=docs
 FOLDERS=./
 IGNORE_FILE=.SourceSageignore
-OUTPUT_FILE=SourceSageAssets/SourceSage.md
+OUTPUT_FILE=SourceSage.md
 LANGUAGE_MAP_FILE=config/language_map.json
 
 OWNER=Sunwood-ai-labs
