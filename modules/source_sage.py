@@ -6,6 +6,7 @@ class SourceSage:
     def __init__(self, folders, ignore_file='.SourceSageignore', output_file='output.md', language_map_file='language_map.json'):
         self.folders = folders
         print(ignore_file)
+        print(folders)
         self.ignore_file = ignore_file
         self.output_file = output_file
         self.exclude_patterns = load_ignore_patterns(ignore_file)
