@@ -1,4 +1,4 @@
-# SourceSage.py (変更後)
+# SourceSage.py (リファクタリング後)
 
 import os
 import sys
@@ -10,56 +10,60 @@ from modules.StagedDiffGenerator import StagedDiffGenerator
 from modules.IssuesToMarkdown import IssuesToMarkdown
 
 if __name__ == "__main__":
-    folders = ['./']
+    repo_path = "./"
+    source_sage_assets_dir = "SourceSageAssets"
+    config_dir = "config"
+    docs_dir = "docs"
+
+    folders = [repo_path]
     source_sage = SourceSage(folders, ignore_file='.SourceSageignore',
-                             output_file='SourceSageAssets/SourceSage.md',
-                             language_map_file='config/language_map.json')
+                             output_file=f"{source_sage_assets_dir}/SourceSage.md",
+                             language_map_file=f"{config_dir}/language_map.json")
     source_sage.generate_markdown()
 
-    repo_path = "./"
-    output_dir = "SourceSageAssets/Changelog"
-    os.makedirs(output_dir, exist_ok=True)  # ディレクトリが存在しない場合は作成する
+    changelog_output_dir = f"{source_sage_assets_dir}/Changelog"
+    os.makedirs(changelog_output_dir, exist_ok=True)  # ディレクトリが存在しない場合は作成する
 
-    generator = ChangelogGenerator(repo_path, output_dir)
+    generator = ChangelogGenerator(repo_path, changelog_output_dir)
     generator.generate_changelog_for_all_branches()
     generator.integrate_changelogs()
 
     owner = "Sunwood-ai-labs"
     repository = "SourceSage"
-    save_path = "SourceSageAssets"
-    file_name = "open_issues_filtered.json"
+    issues_file_name = "open_issues_filtered.json"
 
-    issue_retriever = GitHubIssueRetriever(owner, repository, save_path, file_name)
+    issue_retriever = GitHubIssueRetriever(owner, repository, source_sage_assets_dir, issues_file_name)
     issue_retriever.run()
 
     diff_generator = StagedDiffGenerator(
-        repo_path="./",
-        output_dir="SourceSageAssets",
-        language_map_file="config/language_map.json"
+        repo_path=repo_path,
+        output_dir=source_sage_assets_dir,
+        language_map_file=f"{config_dir}/language_map.json"
     )
     diff_generator.run()
 
     stage_info_generator = StageInfoGenerator(
-        issue_file_path="SourceSageAssets/open_issues_filtered.json",
-        stage_diff_file_path="SourceSageAssets/STAGED_DIFF.md",
-        template_file_path="docs/STAGE_INFO/STAGE_INFO_AND_ISSUES_TEMPLATE.md",
-        output_file_path="SourceSageAssets/STAGE_INFO_AND_ISSUES_AND_PROMT.md"
+        issue_file_path=f"{source_sage_assets_dir}/{issues_file_name}",
+        stage_diff_file_path=f"{source_sage_assets_dir}/STAGED_DIFF.md",
+        template_file_path=f"{docs_dir}/STAGE_INFO/STAGE_INFO_AND_ISSUES_TEMPLATE.md",
+        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO_AND_ISSUES_AND_PROMT.md"
     )
     stage_info_generator.run()
 
     stage_info_generator = StageInfoGenerator(
-        issue_file_path="SourceSageAssets/open_issues_filtered.json",
-        stage_diff_file_path="SourceSageAssets/STAGED_DIFF.md",
-        template_file_path="docs/STAGE_INFO/STAGE_INFO_TEMPLATE.md",
-        output_file_path="SourceSageAssets/STAGE_INFO_AND_PROMT.md"
+        issue_file_path=f"{source_sage_assets_dir}/{issues_file_name}",
+        stage_diff_file_path=f"{source_sage_assets_dir}/STAGED_DIFF.md",
+        template_file_path=f"{docs_dir}/STAGE_INFO/STAGE_INFO_TEMPLATE.md",
+        output_file_path=f"{source_sage_assets_dir}/STAGE_INFO_AND_PROMT.md"
     )
     stage_info_generator.run()
 
-    issues_file = "SourceSageAssets/open_issues_filtered.json"
-    sourcesage_file = "SourceSageAssets/SourceSage.md"
-    template_file = "docs/ISSUES_RESOLVE/ISSUES_RESOLVE_TEMPLATE.md"
-    output_folder = "SourceSageAssets/ISSUES_RESOLVE"
-
-    converter = IssuesToMarkdown(issues_file, sourcesage_file, template_file, output_folder)
+    issues_markdown_output_dir = f"{source_sage_assets_dir}/ISSUES_RESOLVE"
+    converter = IssuesToMarkdown(
+        issues_file=f"{source_sage_assets_dir}/{issues_file_name}",
+        sourcesage_file=f"{source_sage_assets_dir}/SourceSage.md",
+        template_file=f"{docs_dir}/ISSUES_RESOLVE/ISSUES_RESOLVE_TEMPLATE.md",
+        output_folder=issues_markdown_output_dir
+    )
     converter.load_data()
     converter.create_markdown_files()
