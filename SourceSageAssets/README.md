@@ -1,0 +1,3 @@
+# SourceSageAssets
+
+このフォルダにSourceSageAseetsの生成物が格納されます

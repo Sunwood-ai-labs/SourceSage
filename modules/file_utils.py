@@ -23,3 +23,7 @@ def is_excluded(path, exclude_patterns):
         if fnmatch.fnmatch(os.path.basename(path), pattern):
             return True
     return False
+
+def is_excluded_extension(filename, exclude_patterns):
+    _, extension = os.path.splitext(filename)
+    return any(fnmatch.fnmatch(extension, pattern) for pattern in exclude_patterns)

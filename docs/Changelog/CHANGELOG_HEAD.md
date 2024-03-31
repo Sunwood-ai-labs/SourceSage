@@ -2,6 +2,19 @@
 
 ## HEAD
 
+- [327a4ce] - Update README.md (Maki, 2024-03-30)
+- [664664e] - コミットメッセージ:
+
+ChangelogGeneratorクラスを導入し、コードの可読性と保守性を向上しました。
+シンタックスハイライトの機能を追加し、複数の言語に対応しました。
+ファイル/フォルダの除外設定を改善し、柔軟性を向上させました。
+設定ファイルの場所を外部化することで、全体的な設定の管理が容易になりました。
+.SourceSageignoreファイルを導入し、不要なファイルやフォルダを自動的に除外できるようにしました。
+Gitの変更履歴を自動生成し、ドキュメント化する機能を追加しました。 (Maki, 2024-03-30)
+- [2129f83] - Update SourceSage.md (Maki, 2024-03-30)
+- [d8d53bf] - Update CHANGELOG_integrated.md (Maki, 2024-03-30)
+- [4a079c6] - Update CHANGELOG_HEAD.md (Maki, 2024-03-30)
+- [f93f470] - Update CHANGELOG_develop.md (Maki, 2024-03-30)
 - [c980f40] - Merge branch 'feature/add-git-logs' into develop (Maki, 2024-03-30)
 - [c67b909] - ソースコードの忽視対象ファイルリストを更新し、変更履歴生成機能を追加
 
