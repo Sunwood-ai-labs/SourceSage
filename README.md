@@ -1,6 +1,9 @@
 
 <link href="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/develop/docs/css/style.css" rel="stylesheet"></link>
 
+<link href="docs/css/style.css" rel="stylesheet"></link>
+
+
 <p align="center">
 
 <img src="docs/icon/SourceSage_icon4.png" width="100%">
