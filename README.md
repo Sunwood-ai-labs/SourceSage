@@ -1,3 +1,6 @@
+
+<link href="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/develop/docs/css/style.css" rel="stylesheet"></link>
+
 <p align="center">
 
 <img src="docs/icon/SourceSage_icon4.png" width="100%">
@@ -11,6 +14,9 @@
 </p>
 
 SourceSageは、プロジェクトのソースコードとファイル構成を単一のマークダウンファイルに統合するPythonスクリプトです。これにより、大規模言語モデル（AI）がプロジェクト全体の構造と内容を容易に理解できるようになります。
+
+
+
 
 ## 更新内容
 
@@ -32,6 +38,61 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 - 複数のプログラミング言語に対応し、シンタックスハイライト機能を提供します
 - 設定ファイルを外部化することで、柔軟性と保守性を向上させています
 - Gitの変更履歴を自動生成し、ドキュメント化することができます
+
+## 主な使い方
+
+
+<div class="cp_timeline04">
+ <div class="timeline_item">
+   <div class="time_date">
+     <p class="time">開発前</p>
+     <p class="flag">課題の確認とAIによる自動修正</p>
+   </div>
+   <div class="desc">
+     <p>
+       - <code>get_issues.py</code>を使用してGitHubのオープンなissueを取得し、JSONファイルに保存する<br>
+       - issueの内容と現在のソースコードの情報をClaude AIに入力し、自動でissueの修正を行う<br>
+         - <code>SourceSage.py</code>を使用して現在のプロジェクトのソースコードとファイル構成を1つのマークダウンファイルに統合する<br>
+         - <code>get_issues.py</code>で取得したissueデータと<code>SourceSage.py</code>で生成したマークダウンをClaude AIに入力する<br>
+         - AIがissueの内容を理解し、現在のソースコードを分析して自動的にissueの修正を提案する<br>
+         - 提案された修正内容を確認し、必要に応じて手動で調整を行う
+     </p>
+   </div>
+ </div>
+
+ <div class="timeline_item">
+   <div class="time_date">
+     <p class="time">開発中</p>
+     <p class="flag">ステージされた変更の確認とコミットメッセージの自動生成</p>
+   </div>
+   <div class="desc">
+     <p>
+       - <code>StagedDiffGenerator</code>クラスを使用してステージされた差分を取得し、マークダウンファイルに出力する<br>
+       - ステージされた変更とissueの情報をAIに入力し、適切なコミットメッセージを生成する<br>
+         - <code>get_issues.py</code>で取得したissueデータと<code>StagedDiffGenerator</code>で生成したマークダウンをClaude AIに入力する<br>
+         - AIが既存のissueを考慮してコミットメッセージを自動生成する<br>
+     </p>
+   </div>
+ </div>
+
+ <div class="timeline_item">
+   <div class="time_date">
+     <p class="time">リリース後</p>
+     <p class="flag">プロジェクトの統合とドキュメント化</p>
+   </div>
+   <div class="desc">
+     <p>
+       - <code>SourceSage.py</code>を使用してプロジェクト全体のソースコードとファイル構成をAIが理解しやすい形式で統合する<br>
+         - プロジェクトのディレクトリ構成とファイル内容を1つのマークダウンファイルにまとめる<br>
+         - 不要なファイルやディレクトリを除外するための設定が可能<br>
+         - 複数のプログラミング言語に対応し、シンタックスハイライト機能を提供<br>
+       - Gitの変更履歴を自動生成し、ドキュメント化する<br>
+         - ブランチごとに変更履歴をマークダウンファイルに出力する<br>
+         - すべてのブランチの変更履歴を1つのファイルに統合する<br>
+     </p>
+   </div>
+ </div>
+</div>
 
 ## 使用方法
 
