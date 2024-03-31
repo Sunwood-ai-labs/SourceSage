@@ -1,8 +1,8 @@
 
+<head>
 <link href="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/develop/docs/css/style.css" rel="stylesheet"></link>
-
 <link href="docs/css/style.css" rel="stylesheet"></link>
-
+</head>
 
 <p align="center">
 
