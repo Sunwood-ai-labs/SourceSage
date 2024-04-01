@@ -40,7 +40,7 @@ def main():
     issue_retriever = GitHubIssueRetriever(const.OWNER, const.REPOSITORY, const.ISSUE_LOG_DIR, const.ISSUES_FILE_NAME)
     issue_retriever.run()
 
-    diff_generator = StagedDiffGenerator(repo_path=const.REPO_PATH, output_dir=const.SOURCE_SAGE_ASSETS_DIR,
+    diff_generator = StagedDiffGenerator(repo_path=os.getcwd(), output_dir=const.SOURCE_SAGE_ASSETS_DIR,
                                          language_map_file=const.LANGUAGE_MAP_FILE)
     diff_generator.run()
 
