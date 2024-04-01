@@ -1,0 +1,33 @@
+import os
+
+OWNER = "Sunwood-ai-labs"
+REPOSITORY = "SourceSage"
+ISSUES_FILE_NAME = "open_issues_filtered.json"
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+REPO_PATH = BASE_DIR
+SOURCE_SAGE_ASSETS_DIR = os.path.join(REPO_PATH, "SourceSageAssets")
+DOCS_DIR = os.path.join(REPO_PATH, "docs")
+ISSUE_LOG_DIR = os.path.join(SOURCE_SAGE_ASSETS_DIR, "ISSUE_LOG")
+ISSUES_RESOLVE_DIR = os.path.join(SOURCE_SAGE_ASSETS_DIR, "ISSUES_RESOLVE")
+TEMPLATE_ISSUES_RESOLVE_DIR = os.path.join(DOCS_DIR, "ISSUES_RESOLVE")
+ISSUES_RESOLVE_TEMPLATE_MD = "ISSUES_RESOLVE_TEMPLATE.md"
+
+STAGE_INFO_DIR = os.path.join(SOURCE_SAGE_ASSETS_DIR, "STAGE_INFO")
+TEMPLATE_STAGE_INFO_DIR = os.path.join(DOCS_DIR, "STAGE_INFO")
+STAGE_INFO_OUTPUT_MD = "STAGE_INFO_AND_ISSUES_AND_PROMT.md"
+STAGE_INFO_TEMPLATE_MD = "STAGE_INFO_AND_ISSUES_TEMPLATE.md"
+
+STAGE_INFO_SIMPLE_OUTPUT_MD = "STAGE_INFO_AND_PROMT.md"
+STAGE_INFO_SIMPLE_TEMPLATE_MD = "STAGE_INFO_TEMPLATE.md"
+
+CONFIG_DIR = os.path.join(BASE_DIR, 'config')
+LANGUAGE_MAP_FILE = os.path.join(CONFIG_DIR, 'language_map.json')
+IGNORE_FILE = os.path.join(CONFIG_DIR, '.SourceSageignore')
+
+# マークダウンファイルのファイル名とフォルダ名
+SOURCE_SAGE_MD = "SourceSage.md"
+CHANGELOG_DIR = "Changelog"
+STAGED_DIFF_MD = "STAGED_DIFF.md"
+
+

@@ -3,6 +3,7 @@ from modules.file_utils import is_excluded, is_excluded_extension
 
 def generate_markdown_for_folder(folder_path, exclude_patterns, language_map):
     markdown_content = "```plaintext\n"
+    print(folder_path)
     markdown_content += _display_tree(dir_path=folder_path, exclude_patterns=exclude_patterns)
     markdown_content += "\n```\n\n"
     base_level = folder_path.count(os.sep)
@@ -39,6 +40,8 @@ def _build_tree_string(dir_path, max_depth, show_hidden, exclude_patterns, depth
     tree_string = ""
     if depth == max_depth:
         return tree_string
+    
+    print(dir_path)
     dir_contents = [(item, os.path.join(dir_path, item)) for item in os.listdir(dir_path)]
     dirs = [(item, path) for item, path in dir_contents if os.path.isdir(path) and not is_excluded(path, exclude_patterns)]
     files = [(item, path) for item, path in dir_contents if os.path.isfile(path) and not is_excluded(path, exclude_patterns) and not is_excluded_extension(item, exclude_patterns)]
