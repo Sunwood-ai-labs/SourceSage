@@ -42,7 +42,7 @@ class ChangelogGenerator:
 
         for branch in other_branches:
             branch_name = branch.replace('origin/', '')
-            output_file = os.path.join(self.output_dir, f"CHANGELOG_{branch_name}.md")
+            output_file = os.path.join(self.output_dir, f"CHANGELOG_{branch_name}.md").replace("release/", "release_")
             logger.info(f"Generating changelog for branch '{branch_name}'...")
             self.generate_changelog(branch_name, output_file)
 
