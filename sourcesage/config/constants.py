@@ -1,9 +1,9 @@
 import os
 
 class Constants:
-    def __init__(self, output_dir):
-        self.OWNER = "Sunwood-ai-labs"
-        self.REPOSITORY = "SourceSage"
+    def __init__(self, output_dir, owner, repository):
+        self.OWNER = owner
+        self.REPOSITORY = repository
         self.ISSUES_FILE_NAME = "open_issues_filtered.json"
 
         self.BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

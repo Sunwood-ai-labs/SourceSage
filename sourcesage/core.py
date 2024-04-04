@@ -10,12 +10,12 @@ from .modules.IssuesToMarkdown import IssuesToMarkdown
 from .config.constants import Constants
 
 class SourceSage:
-    def __init__(self, config_path, output_dir, repo_path):
+    def __init__(self, config_path, output_dir, repo_path, owner, repository):
         self.config_path = config_path
         self.output_dir = output_dir
         self.repo_path = repo_path
 
-        self.constants = Constants(output_dir)  # Constantsクラスのインスタンスを作成
+        self.constants = Constants(output_dir, owner, repository) 
 
     def run(self):
         print("Running SourceSage...")

@@ -6,6 +6,14 @@
 テストを実行するためには、以下のコマンドを使用します。
 
 ```bash
-sourcesage  --config sourcesage.yml  --output ./ --repo ./
+sourcesage
 ```
 
+## リポジトリ指定
+
+issueの情報も取得できます
+
+
+```bash
+sourcesage  --config sourcesage.yml  --owner Sunwood-ai-labs --repository SourceSage
+```
