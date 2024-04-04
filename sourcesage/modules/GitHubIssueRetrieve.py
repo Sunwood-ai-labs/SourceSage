@@ -1,6 +1,6 @@
 # modules/GitHubIssueRetrieve.py (変更後)
 
-from modules.GitHubUtils import GitHubUtils
+from .GitHubUtils import GitHubUtils
 
 class GitHubIssueRetriever:
     def __init__(self, owner, repository, save_path, file_name):

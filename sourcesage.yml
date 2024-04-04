@@ -1,0 +1,7 @@
+exclude_patterns:
+  - "*.pyc"
+  - "__pycache__"
+  - ".git"
+  - ".vscode"
+
+output_dir: "output"
