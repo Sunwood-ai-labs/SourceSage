@@ -9,7 +9,7 @@ class Constants:
         self.BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         self.REPO_PATH = self.BASE_DIR
         self.CONFIG_DIR = os.path.join(self.BASE_DIR, 'config')
-        self.DOCS_DIR = os.path.join(self.BASE_DIR, "docs")
+        self.DOCS_DIR = os.path.join(self.BASE_DIR, "config")
 
         self.LANGUAGE_MAP_FILE = os.path.join(self.CONFIG_DIR, 'language_map.json')
         self.IGNORE_FILE = os.path.join(self.CONFIG_DIR, '.SourceSageignore')
