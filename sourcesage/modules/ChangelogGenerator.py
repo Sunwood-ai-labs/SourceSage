@@ -2,7 +2,7 @@
 
 import os
 from git import Repo
-from modules.ChangelogUtils import ChangelogUtils
+from .ChangelogUtils import ChangelogUtils
 from loguru import logger
 
 class ChangelogGenerator:
@@ -19,6 +19,9 @@ class ChangelogGenerator:
 
     def generate_changelog(self, branch, output_file):
         commits = self._get_commits(branch)
+
+        # 出力ファイルのディレクトリを確認し、存在しない場合は作成
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(f"# Changelog\n\n")

@@ -1,6 +1,6 @@
 import os
-from modules.file_utils import load_ignore_patterns, load_language_map
-from modules.markdown_utils import generate_markdown_for_folder
+from .file_utils import load_ignore_patterns, load_language_map  # 相対インポートを修正
+from .markdown_utils import generate_markdown_for_folder
 
 class SourceSage:
     def __init__(self, folders, ignore_file='.SourceSageignore', output_file='output.md', language_map_file='language_map.json'):
