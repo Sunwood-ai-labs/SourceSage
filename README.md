@@ -42,43 +42,18 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 ## 使用方法
 
-### 設定
-
-1. `SourceSage.py`ファイルと`modules`フォルダを、分析対象のプロジェクトのルートディレクトリにコピーします。
-
-2. 必要に応じて、`config/.SourceSageignore`ファイルを作成し、除外したいファイルやフォルダのパターンを記述します。
-
-3. `config/language_map.json`ファイルを編集し、必要なプログラミング言語とそれに対応するシンタックスハイライトの識別子を設定します。
-
-4. 必要に応じて、`.env`内の以下の設定を変更します：
+### セットアップ
 
 ```bash
-
-REPO_PATH=./
-SOURCE_SAGE_ASSETS_DIR=SourceSageAssets
-CONFIG_DIR=config
-DOCS_DIR=docs
-FOLDERS=./
-IGNORE_FILE=.SourceSageignore
-OUTPUT_FILE=SourceSage.md
-LANGUAGE_MAP_FILE=config/language_map.json
-ISSUE_LOG_DIR=ISSUE_LOG
-
-OWNER=Sunwood-ai-labs
-REPOSITORY=SourceSage
-ISSUES_FILE_NAME=open_issues_filtered.json
-
-ISSUES_RESOLVE_DIR=ISSUES_RESOLVE
-STAGE_INFO_DIR=STAGE_INFO
+pip install sourcesage
 ```
-
 
 ### 実行
 
 ターミナルまたはコマンドプロンプトで、プロジェクトのルートディレクトリに移動し、以下のコマンドを実行します：
 
 ```bash
-python SourceSage.py
+sourcesage
 ```
 
 これにより、以下のファイルが生成されます：
@@ -87,8 +62,6 @@ python SourceSage.py
 - `SourceSageAssets/Changelog`：Gitの変更履歴を保存するディレクトリ
 - `SourceSageAssets/open_issues_filtered.json`：GitHubからフェッチしたオープンなIssueのJSONファイル
 - `SourceSageAssets/STAGED_DIFF.md`：ステージされた変更の差分情報を含むマークダウンファイル
-
-
 
 
 ## 1. IssueWise：開発前の課題解決
