@@ -1,5 +1,5 @@
 <p align="center">
-<img src="docs/icon/SourceSage_icon4.png" width="100%">
+<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/main/docs/icon/SourceSage_icon4.png" width="100%">
 <br>
 <h1 align="center">SourceSage</h1>
 <h2 align="center">～Transforming code for AI～</h2>
@@ -94,7 +94,7 @@ python SourceSage.py
 ## 1. IssueWise：開発前の課題解決
 
 <p align="center">
-<img src="docs/icon/head_icon4.png" width="50%">
+<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/main/docs/icon/head_icon4.png" width="50%">
 </p>
 
 IssueWiseは、GitHubのオープンなIssue(課題)を自動的に取得し、SourceSageが生成したプロジェクトの概要と組み合わせることで、AIによる課題の自動修正を可能にするツールです。これにより、開発者はプロジェクトの課題を効率的に特定し、解決策を迅速に見つけることができます。
@@ -154,7 +154,7 @@ IssueWiseは、GitHubのオープンなIssue(課題)を自動的に取得し、S
 ## 2. CommitCraft：開発中のコミット管理
 
 <p align="center">
-<img src="docs/icon/head_icon5.png" width="50%">
+<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/main/docs/icon/head_icon5.png" width="50%">
 </p>
 
 CommitCraftは、開発中のステージされた変更を追跡し、AIを活用して適切なコミットメッセージを自動生成するツールです。これにより、開発者はコミットの内容を正確に記述することができ、プロジェクトの変更履歴をより明確に管理できます。
@@ -193,7 +193,7 @@ CommitCraftは、開発中のステージされた変更を追跡し、AIを活�
 ## 3. DocuMind：リリース後のドキュメント化
 
 <p align="center">
-<img src="docs/icon/head_icon7.png" width="100%">
+<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/main/docs/icon/head_icon7.png" width="100%">
 </p>
 
 DocuMindは、リリース後のプロジェクトの統合とドキュメント化を支援するツールです。SourceSageが生成するプロジェクトの概要と、自動生成されたGitの変更履歴を組み合わせることで、プロジェクトの全体像を明確に把握できます。これにより、開発者はプロジェクトのドキュメントを効率的に作成し、メンテナンス性を向上させることができます。
