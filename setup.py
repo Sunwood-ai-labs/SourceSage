@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='sourcesage',
-    version='4.0.3',
+    version='4.0.4',
     packages=find_packages(),
     entry_points={
         'console_scripts': [

@@ -10,7 +10,7 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 ## 更新内容
 
-- [【2024/04/05】 SourceSage 4.0.3](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/4.0.3)
+- [【2024/04/05】 SourceSage 4.0.3](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/undefined4.0.3)
   - README.mdのセットアップ手順と実行手順を簡素化
   - リポジトリのオーナーと名前をコマンドライン引数で指定可能に
   - テスト実行方法のドキュメントを更新
@@ -49,24 +49,49 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 ### セットアップ
 
+SourceSageを使用するには、まずPythonのパッケージマネージャーであるpipを使ってインストールします。以下のコマンドをターミナルまたはコマンドプロンプトで実行してください：
+
 ```bash
 pip install sourcesage
 ```
 
-### 実行
+これにより、SourceSageがシステムにインストールされ、コマンドラインから実行できるようになります。
 
-ターミナルまたはコマンドプロンプトで、プロジェクトのルートディレクトリに移動し、以下のコマンドを実行します：
+### クイックスタート
+
+SourceSageをプロジェクトで使用するには、以下の手順に従ってください：
+
+1. ターミナルまたはコマンドプロンプトを開きます。
+
+2. `cd`コマンドを使って、解析対象のプロジェクトのルートディレクトリに移動します。例えば、プロジェクトが`~/my_project`ディレクトリにある場合は、以下のコマンドを実行します：
+   ```bash
+   cd ~/my_project
+   ```
+
+3. 次に、以下のコマンドを実行してSourceSageを起動します：
+   ```bash
+   sourcesage
+   ```
+
+4. SourceSageが実行されると、以下のファイルが`SourceSageAssets`ディレクトリに生成されます：
+   - `SourceSage.md`：AIがプロジェクトの構造と内容を理解しやすい形式のマークダウンファイルです。
+   - `Changelog`：Gitの変更履歴を保存するディレクトリです。
+   - `open_issues_filtered.json`：GitHubからフェッチしたオープンなIssueのJSONファイルです。
+   - `STAGED_DIFF.md`：ステージされた変更の差分情報を含むマークダウンファイルです。
+
+これらのファイルを使って、AIによるプロジェクトの解析や自動修正、ドキュメント化などを行うことができます。
+
+### リポジトリのIssueも取得する方法
+
+デフォルトでは、SourceSageは現在のディレクトリをプロジェクトのルートとして解析します。ただし、GitHub上のリポジトリのIssueも取得したい場合は、以下のようにリポジトリのオーナー名とリポジトリ名をコマンドライン引数で指定します：
 
 ```bash
-sourcesage
+sourcesage --owner Sunwood-ai-labs --repository SourceSage
 ```
 
-これにより、以下のファイルが生成されます：
+上記の例では、`Sunwood-ai-labs`がリポジトリのオーナー名、`SourceSage`がリポジトリ名です。これらの引数を指定することで、SourceSageはGitHub APIを使ってリポジトリのオープンなIssueを取得し、`open_issues_filtered.json`ファイルに保存します。
 
-- `SourceSageAssets/SourceSage.md`：AIがプロジェクトの構造と内容を理解しやすい形式のマークダウンファイル
-- `SourceSageAssets/Changelog`：Gitの変更履歴を保存するディレクトリ
-- `SourceSageAssets/open_issues_filtered.json`：GitHubからフェッチしたオープンなIssueのJSONファイル
-- `SourceSageAssets/STAGED_DIFF.md`：ステージされた変更の差分情報を含むマークダウンファイル
+以上が、SourceSageの基本的な使用方法です。ぜひ自分のプロジェクトでSourceSageを活用して、開発効率の向上を体験してみてください！
 
 
 ## 1. IssueWise：開発前の課題解決
