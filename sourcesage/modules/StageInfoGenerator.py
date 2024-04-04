@@ -2,8 +2,8 @@
 
 import json
 import os
-from modules.GitHubIssueRetrieve import GitHubIssueRetriever
-from modules.StagedDiffGenerator import StagedDiffGenerator
+from .GitHubIssueRetrieve import GitHubIssueRetriever
+from .StagedDiffGenerator import StagedDiffGenerator
 
 class StageInfoGenerator:
     def __init__(self, issue_file_path, stage_diff_file_path, template_file_path, output_file_path):

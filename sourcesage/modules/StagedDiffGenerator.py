@@ -2,7 +2,7 @@
 
 import json
 import os
-from modules.GitHubUtils import GitHubUtils
+from .GitHubUtils import GitHubUtils
 
 class StagedDiffGenerator:
     def __init__(self, repo_path, output_dir, language_map_file):

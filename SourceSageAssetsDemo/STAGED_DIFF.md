@@ -1,2 +1,0 @@
-# Staged Files Diff
-
