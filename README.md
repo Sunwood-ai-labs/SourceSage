@@ -2,8 +2,20 @@
 <img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/main/docs/icon/SourceSage_icon4.png" width="100%">
 <br>
 <h1 align="center">SourceSage</h1>
-<h2 align="center">～Transforming code for AI～</h2>
+<h2 align="center">
+  ～Transforming code for AI～
+
+  <br>
+  <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/sourcesage">
+  
+  <br>
+
+</h2>
+
+
 </p>
+
+
 
 SourceSageは、プロジェクトのソースコードとファイル構成を単一のマークダウンファイルに統合し、AIによる自動修正やドキュメント化を実現するPythonスクリプトです。開発のライフサイクル全体を通して、コードの品質向上と生産性の向上を支援します。
 
