@@ -1,3 +1,0 @@
-exclude_patterns:
-  - "*.pyc"
-  - "__pycache__"
