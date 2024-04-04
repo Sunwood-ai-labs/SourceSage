@@ -7,14 +7,19 @@
 
 SourceSageは、プロジェクトのソースコードとファイル構成を単一のマークダウンファイルに統合し、AIによる自動修正やドキュメント化を実現するPythonスクリプトです。開発のライフサイクル全体を通して、コードの品質向上と生産性の向上を支援します。
 
+
 ## 更新内容
 
+- [【2024/04/05】 SourceSage 4.0.3](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/4.0.3)
+  - README.mdのセットアップ手順と実行手順を簡素化
+  - リポジトリのオーナーと名前をコマンドライン引数で指定可能に
+  - テスト実行方法のドキュメントを更新
 - [【2024/04/01】 SourceSage 3.1.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag3.1.0)
   - コードの品質と保守性を向上させるためのリファクタリングと機能改善
   - コミットメッセージのフォーマットとタイプの説明を追加
   - コマンドラインからソースコードのリポジトリパスを取得するように修正
   - 定数の管理方法を改善し、[`config/constants.py`](config/constants.py)ファイルで一元管理
-- [【2024/03/31】 SourceSage 3.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag3.0.0)
+- [【2024/03/31】 SourceSage 3.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag3.0.0) 
   - [IssueWise](#1-issuewise開発前の課題解決)機能を追加し、GitHubのオープンIssueを取得してAIによる自動修正をサポート
   - [CommitCraft](#2-commitcraft開発中のコミット管理)機能を追加し、変更差分を追跡してAIが適切なコミットメッセージを生成
   - [DocuMind](#3-documindリリース後のドキュメント化)機能を追加し、プロジェクトの概要とGitの変更履歴を組み合わせてドキュメント化
