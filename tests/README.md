@@ -15,5 +15,5 @@ issueの情報も取得できます
 
 
 ```bash
-sourcesage  --config sourcesage.yml  --owner Sunwood-ai-labs --repository SourceSage
+sourcesage --owner Sunwood-ai-labs --repository SourceSage
 ```
