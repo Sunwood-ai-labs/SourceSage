@@ -7,7 +7,11 @@
 
   <br>
   <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/sourcesage">
-  
+  <img alt="PyPI - Format" src="https://img.shields.io/pypi/format/sourcesage">
+  <img alt="PyPI - Implementation" src="https://img.shields.io/pypi/implementation/sourcesage">
+  <img alt="PyPI - Status" src="https://img.shields.io/pypi/status/sourcesage">
+
+
   <br>
 
 </h2>
