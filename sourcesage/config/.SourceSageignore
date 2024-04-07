@@ -8,7 +8,6 @@ output
 streamlit
 SourceSage.md
 data
-SourceSage
 .gitignore
 .SourceSageignore
 *.png
@@ -20,3 +19,7 @@ __pycache__
 **/__pycache__/**
 modules\__pycache__
 .svg
+sourcesage.egg-info
+.pytest_cache
+dist
+build
