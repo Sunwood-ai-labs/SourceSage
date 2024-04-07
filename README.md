@@ -173,11 +173,13 @@ IssueWiseを使用することで、開発者は手作業でIssueを確認する
 CommitCraftは、開発中のステージされた変更を追跡し、AIを活用して適切なコミットメッセージを自動生成するツールです。これにより、開発者はコミットの内容を正確に記述することができ、プロジェクトの変更履歴をより明確に管理できます。
 
 `SourceSageAssets/COMMIT_CRAFT/STAGED_DIFF.md`に生成されるマークダウンファイルを使用します。
+
 例：[`docs/SAMPLE/SAMPLE_STAGE_INFO_AND_PROMT.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_STAGE_INFO_AND_PROMT.md)
 
 このマークダウンファイルをそのままAIに入力することで、AIがコミットメッセージを生成します。AIは、ステージされた変更の差分を分析し、その内容を要約したコミットメッセージを提案します。
 
 Issueとマージされたファイルの例はこちらです。
+
 例：[`docs/SAMPLE/SAMPLE_STAGE_INFO_AND_ISSUES_AND_PROMT.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_STAGE_INFO_AND_ISSUES_AND_PROMT.md)
 
 このファイルには、ステージされた変更の差分とオープンなIssueの情報が含まれています。AIはこれらの情報を組み合わせて分析し、より包括的なコミットメッセージを生成します。
@@ -193,9 +195,11 @@ CommitCraftを使用することで、開発者はコミットメッセージを
 DocuMindは、リリース後のプロジェクトの統合とドキュメント化を支援するツールです。SourceSageが生成するプロジェクトの概要と、自動生成されたGitの変更履歴を組み合わせることで、プロジェクトの全体像を明確に把握できます。これにより、開発者はプロジェクトのドキュメントを効率的に作成し、メンテナンス性を向上させることができます。
 
 `SourceSageAssets/DocuMind.md`に生成されるマークダウンファイルを使用します。 
+
 例：[`docs/SAMPLE/SAMPLE_DocuMind.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_DocuMind.md)
 
-また、`SourceSageAssets/Changelog`に生成されるコミットメッセージのマークダウンファイルを使用します。 
+また、`SourceSageAssets/Changelog`に生成されるコミットメッセージのマークダウンファイルを使用します。
+
 例：[`docs/SAMPLE/SAMPLE_CHANGELOG_release_4.1.0.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_CHANGELOG_release_4.1.0.md)
 
 この2つのマークダウンファイルをそのままAIに入力することで、AIがプロジェクトの構造と変更内容を理解し、リリースノートやドキュメントを生成することができます。AIは、プロジェクトの概要とGitの変更履歴を分析し、プロジェクトの主要な機能や変更点を要約します。
