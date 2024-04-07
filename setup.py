@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='sourcesage',
-    version='4.0.12',
+    version='4.1.1',
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
