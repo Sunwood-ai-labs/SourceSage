@@ -20,7 +20,10 @@ def test_sourcesage_cli(capsys):
     # パッケージのルートディレクトリを取得
     package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    sys.argv = ['sourcesage', '--config', config_path, '--output', temp_dir, '--repo', package_root, '--owner', 'Sunwood-ai-labs', '--repository', 'SourceSage']
+    ignore_file_path = os.path.join(package_root, 'sourcesage', 'config', '.SourceSageignore')  # 修正
+    language_map_path = os.path.join(package_root, 'sourcesage', 'config', 'language_map.json')  # 修正
+
+    sys.argv = ['sourcesage', '--config', config_path, '--output', temp_dir, '--repo', package_root, '--owner', 'Sunwood-ai-labs', '--repository', 'SourceSage', '--ignore-file', ignore_file_path, '--language-map', language_map_path]
     main()
 
     # 出力を確認
@@ -46,13 +49,16 @@ def test_sourcesage_core():
     # パッケージのルートディレクトリを取得
     package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+    ignore_file_path = os.path.join(package_root, 'sourcesage', 'config', '.SourceSageignore')  # 修正
+    language_map_path = os.path.join(package_root, 'sourcesage', 'config', 'language_map.json')  # 修正
+
     # 必要なディレクトリを作成
     necessary_dirs = ['SourceSageAssets/Changelog', 'SourceSageAssets/ISSUE_LOG', 'SourceSageAssets/ISSUES_RESOLVE', 'SourceSageAssets/STAGE_INFO']
     for dir_path in necessary_dirs:
         os.makedirs(os.path.join(temp_dir, dir_path), exist_ok=True)
 
     # SourceSageクラスを直接インスタンス化して実行
-    sourcesage = SourceSage(config_path, temp_dir, package_root, 'Sunwood-ai-labs', 'SourceSage')
+    sourcesage = SourceSage(config_path, temp_dir, package_root, 'Sunwood-ai-labs', 'SourceSage', ignore_file_path, language_map_path)
     sourcesage.run()
 
     # 出力ファイルが生成されたことを確認
