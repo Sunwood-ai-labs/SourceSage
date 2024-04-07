@@ -20,7 +20,7 @@ def test_sourcesage_cli(capsys):
     # パッケージのルートディレクトリを取得
     package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    sys.argv = ['sourcesage', '--config', config_path, '--output', temp_dir, '--repo', package_root]
+    sys.argv = ['sourcesage', '--config', config_path, '--output', temp_dir, '--repo', package_root, '--owner', 'Sunwood-ai-labs', '--repository', 'SourceSage']
     main()
 
     # 出力を確認
@@ -52,7 +52,7 @@ def test_sourcesage_core():
         os.makedirs(os.path.join(temp_dir, dir_path), exist_ok=True)
 
     # SourceSageクラスを直接インスタンス化して実行
-    sourcesage = SourceSage(config_path, temp_dir, package_root)
+    sourcesage = SourceSage(config_path, temp_dir, package_root, 'Sunwood-ai-labs', 'SourceSage')
     sourcesage.run()
 
     # 出力ファイルが生成されたことを確認

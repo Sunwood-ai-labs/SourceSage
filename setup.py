@@ -9,6 +9,9 @@ setup(
     name='sourcesage',
     version='4.0.5',
     packages=find_packages(),
+    package_data={
+        'sourcesage': ['config/*', ],
+    },
     entry_points={
         'console_scripts': [
             'sourcesage=sourcesage.cli:main',
