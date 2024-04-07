@@ -7,10 +7,11 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='sourcesage',
-    version='4.0.9',
+    version='4.0.10',
     packages=find_packages(),
     package_data={
-        'sourcesage': ['config/**/**', ],
+        'sourcesage': ['config/**/**', 
+                       'config/.SourceSageignore'],
     },
     entry_points={
         'console_scripts': [
