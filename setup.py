@@ -7,8 +7,13 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='sourcesage',
-    version='4.0.10',
+    version='4.0.11',
     packages=find_packages(),
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "Topic :: Utilities",
+    ],
     package_data={
         'sourcesage': ['config/**/**', 
                        'config/.SourceSageignore'],
