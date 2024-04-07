@@ -9,15 +9,20 @@ from .modules.IssuesToMarkdown import IssuesToMarkdown
 
 from .config.constants import Constants
 
+from art import *
+
 class SourceSage:
-    def __init__(self, config_path, output_dir, repo_path, owner, repository):
+    def __init__(self, config_path, output_dir, repo_path, owner, repository, ignore_file, language_map_file):
         self.config_path = config_path
         self.output_dir = output_dir
         self.repo_path = repo_path
+        self.ignore_file = ignore_file
+        self.language_map_file = language_map_file
 
         self.constants = Constants(output_dir, owner, repository) 
 
     def run(self):
+        tprint("SourceSage", font="rnd-medium")
         print("Running SourceSage...")
         
         # Load configuration
@@ -29,9 +34,9 @@ class SourceSage:
         os.makedirs(self.constants.STAGE_INFO_DIR, exist_ok=True)
         
         # Generate SourceSage markdown
-        sourcesage_module = SourceSageModule(folders=[self.repo_path], ignore_file=self.constants.IGNORE_FILE,
+        sourcesage_module = SourceSageModule(folders=[self.repo_path], ignore_file=self.ignore_file,
                                              output_file=os.path.join(self.constants.SOURCE_SAGE_ASSETS_DIR, self.constants.SOURCE_SAGE_MD),
-                                             language_map_file=self.constants.LANGUAGE_MAP_FILE)
+                                             language_map_file=self.language_map_file)
         sourcesage_module.generate_markdown()
 
         # Generate changelog
@@ -45,7 +50,7 @@ class SourceSage:
 
         # Generate staged diff
         diff_generator = StagedDiffGenerator(repo_path=self.repo_path, output_dir=self.constants.SOURCE_SAGE_ASSETS_DIR,
-                                             language_map_file=self.constants.LANGUAGE_MAP_FILE)
+                                             language_map_file=self.language_map_file)
         diff_generator.run()
 
         # Generate stage info and issues

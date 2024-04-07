@@ -7,8 +7,17 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='sourcesage',
-    version='4.0.3',
+    version='4.0.12',
     packages=find_packages(),
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "Topic :: Utilities",
+    ],
+    package_data={
+        'sourcesage': ['config/**/**', 
+                       'config/.SourceSageignore'],
+    },
     entry_points={
         'console_scripts': [
             'sourcesage=sourcesage.cli:main',
@@ -21,5 +30,6 @@ setup(
         'loguru',
         'GitPython',
         'requests',
+        'art',
     ],
 )
