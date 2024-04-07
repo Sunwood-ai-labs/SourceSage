@@ -7,10 +7,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='sourcesage',
-    version='4.0.5',
+    version='4.0.9',
     packages=find_packages(),
     package_data={
-        'sourcesage': ['config/*', ],
+        'sourcesage': ['config/**/**', ],
     },
     entry_points={
         'console_scripts': [
@@ -24,5 +24,6 @@ setup(
         'loguru',
         'GitPython',
         'requests',
+        'art',
     ],
 )

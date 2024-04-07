@@ -9,6 +9,8 @@ from .modules.IssuesToMarkdown import IssuesToMarkdown
 
 from .config.constants import Constants
 
+from art import *
+
 class SourceSage:
     def __init__(self, config_path, output_dir, repo_path, owner, repository, ignore_file, language_map_file):
         self.config_path = config_path
@@ -20,6 +22,7 @@ class SourceSage:
         self.constants = Constants(output_dir, owner, repository) 
 
     def run(self):
+        tprint("SourceSage", font="rnd-medium")
         print("Running SourceSage...")
         
         # Load configuration
