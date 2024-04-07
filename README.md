@@ -10,7 +10,9 @@
   <img alt="PyPI - Format" src="https://img.shields.io/pypi/format/sourcesage">
   <img alt="PyPI - Implementation" src="https://img.shields.io/pypi/implementation/sourcesage">
   <img alt="PyPI - Status" src="https://img.shields.io/pypi/status/sourcesage">
-
+  <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dd/sourcesage">
+  <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dw/sourcesage">
+  <a href="https://app.codacy.com/gh/Sunwood-ai-labs/SourceSage/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/77ab7715dd23499d82caca4e7ea3b093"/></a>
 
   <br>
 
@@ -22,6 +24,8 @@
 
 
 SourceSageは、プロジェクトのソースコードとファイル構成を単一のマークダウンファイルに統合し、AIによる自動修正やドキュメント化を実現するPythonスクリプトです。開発のライフサイクル全体を通して、コードの品質向上と生産性の向上を支援します。
+
+**このリポジトリ自体もSourceSageを活用しており、リリースノートやREADME、コミットメッセージの9割はSourceSage X クロードで生成しています。**
 
 
 ## 更新内容
