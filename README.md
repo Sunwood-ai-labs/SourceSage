@@ -46,9 +46,9 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
   - コマンドラインからソースコードのリポジトリパスを取得するように修正
   - 定数の管理方法を改善し、[`config/constants.py`](config/constants.py)ファイルで一元管理
 - [【2024/03/31】 SourceSage 3.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag3.0.0)
-  - [IssueWise](#1-issuewise開発前の課題解決)機能を追加し、GitHubのオープンIssueを取得してAIによる自動修正をサポート
-  - [CommitCraft](#2-commitcraft開発中のコミット管理)機能を追加し、変更差分を追跡してAIが適切なコミットメッセージを生成
-  - [DocuMind](#3-documindリリース後のドキュメント化)機能を追加し、プロジェクトの概要とGitの変更履歴を組み合わせてドキュメント化
+  - [IssueWise](https://github.com/Sunwood-ai-labs/SourceSage/#1-issuewise開発前の課題解決)機能を追加し、GitHubのオープンIssueを取得してAIによる自動修正をサポート
+  - [CommitCraft](https://github.com/Sunwood-ai-labs/SourceSage/#2-commitcraft開発中のコミット管理)機能を追加し、変更差分を追跡してAIが適切なコミットメッセージを生成
+  - [DocuMind](https://github.com/Sunwood-ai-labs/SourceSage/#3-documindリリース後のドキュメント化)機能を追加し、プロジェクトの概要とGitの変更履歴を組み合わせてドキュメント化
 - [【2024/03/30】 SourceSage 2.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag2.0.0)
   - ChangelogGenerator classを導入し、コードの可読性と保守性を向上
   - 言語ごとのシンタックスハイライト機能を追加
@@ -57,16 +57,16 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 ## 主な機能
 
-### [IssueWise（開発前の課題解決）](#1-issuewise開発前の課題解決)
+### [IssueWise（開発前の課題解決）](https://github.com/Sunwood-ai-labs/SourceSage/#1-issuewise開発前の課題解決)
 
 - GitHubのオープンIssueを自動取得し、AIによる課題の自動修正をサポート
 - 課題を効率的に特定し、迅速に解決策を見つけられます
 
-### [CommitCraft（開発中のコミット管理）](#2-commitcraft開発中のコミット管理)
+### [CommitCraft（開発中のコミット管理）](https://github.com/Sunwood-ai-labs/SourceSage/#2-commitcraft開発中のコミット管理)
 - 変更差分を追跡し、AIが適切なコミットメッセージを自動生成
 - コミットの内容を正確に記述でき、変更履歴を明確に管理できます
 
-### [DocuMind（リリース後のドキュメント化）](#3-documindリリース後のドキュメント化)
+### [DocuMind（リリース後のドキュメント化）](https://github.com/Sunwood-ai-labs/SourceSage/#3-documindリリース後のドキュメント化)
 - プロジェクトの概要とGitの変更履歴を組み合わせてドキュメント化 
 - プロジェクトの全体像を把握しやすく、メンテナンス性が向上します
 
@@ -155,12 +155,12 @@ IssueWiseは、GitHubのオープンなIssue(課題)を自動的に取得し、S
 
 `SourceSageAssets/ISSUE_WISE/ISSUES_RESOLVE`に生成されるマークダウンファイルを使用します。
 
-例：[`docs/SAMPLE/SAMPLE_ISSUE_11.md`](docs/SAMPLE/SAMPLE_ISSUE_11.md)
+例：[`docs/SAMPLE/SAMPLE_ISSUE_11.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_ISSUE_11.md)
 
 このマークダウンファイルをそのままAIに入力することで、AIが課題を解決するためのコードを生成します。AIは、Issueの内容とプロジェクトの概要を組み合わせて分析し、適切な修正を提案します。
 
 このマークダウンファイルは、下記のファイルのフォーマットで出力されます。
-[`docs/ISSUES_RESOLVE/ISSUES_RESOLVE_TEMPLATE.md`](docs/ISSUES_RESOLVE/ISSUES_RESOLVE_TEMPLATE.md)
+[`docs/ISSUES_RESOLVE/ISSUES_RESOLVE_TEMPLATE.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/ISSUES_RESOLVE/ISSUES_RESOLVE_TEMPLATE.md)
 
 IssueWiseを使用することで、開発者は手作業でIssueを確認する負担を軽減し、AIによる自動修正の恩恵を受けることができます。
 
@@ -173,12 +173,12 @@ IssueWiseを使用することで、開発者は手作業でIssueを確認する
 CommitCraftは、開発中のステージされた変更を追跡し、AIを活用して適切なコミットメッセージを自動生成するツールです。これにより、開発者はコミットの内容を正確に記述することができ、プロジェクトの変更履歴をより明確に管理できます。
 
 `SourceSageAssets/COMMIT_CRAFT/STAGED_DIFF.md`に生成されるマークダウンファイルを使用します。
-例：[`docs/SAMPLE/SAMPLE_STAGE_INFO_AND_PROMT.md`](docs/SAMPLE/SAMPLE_STAGE_INFO_AND_PROMT.md)
+例：[`docs/SAMPLE/SAMPLE_STAGE_INFO_AND_PROMT.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_STAGE_INFO_AND_PROMT.md)
 
 このマークダウンファイルをそのままAIに入力することで、AIがコミットメッセージを生成します。AIは、ステージされた変更の差分を分析し、その内容を要約したコミットメッセージを提案します。
 
 Issueとマージされたファイルの例はこちらです。
-例：[`docs/SAMPLE/SAMPLE_STAGE_INFO_AND_ISSUES_AND_PROMT.md`](docs/SAMPLE/SAMPLE_STAGE_INFO_AND_ISSUES_AND_PROMT.md)
+例：[`docs/SAMPLE/SAMPLE_STAGE_INFO_AND_ISSUES_AND_PROMT.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_STAGE_INFO_AND_ISSUES_AND_PROMT.md)
 
 このファイルには、ステージされた変更の差分とオープンなIssueの情報が含まれています。AIはこれらの情報を組み合わせて分析し、より包括的なコミットメッセージを生成します。
 
@@ -193,10 +193,10 @@ CommitCraftを使用することで、開発者はコミットメッセージを
 DocuMindは、リリース後のプロジェクトの統合とドキュメント化を支援するツールです。SourceSageが生成するプロジェクトの概要と、自動生成されたGitの変更履歴を組み合わせることで、プロジェクトの全体像を明確に把握できます。これにより、開発者はプロジェクトのドキュメントを効率的に作成し、メンテナンス性を向上させることができます。
 
 `SourceSageAssets/DocuMind.md`に生成されるマークダウンファイルを使用します。 
-例：[`docs/SAMPLE/SAMPLE_DocuMind.md`](docs/SAMPLE/SAMPLE_DocuMind.md)
+例：[`docs/SAMPLE/SAMPLE_DocuMind.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_DocuMind.md)
 
 また、`SourceSageAssets/Changelog`に生成されるコミットメッセージのマークダウンファイルを使用します。 
-例：[`docs/SAMPLE/SAMPLE_CHANGELOG_release_4.1.0.md`](docs/SAMPLE/SAMPLE_CHANGELOG_release_4.1.0.md)
+例：[`docs/SAMPLE/SAMPLE_CHANGELOG_release_4.1.0.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_CHANGELOG_release_4.1.0.md)
 
 この2つのマークダウンファイルをそのままAIに入力することで、AIがプロジェクトの構造と変更内容を理解し、リリースノートやドキュメントを生成することができます。AIは、プロジェクトの概要とGitの変更履歴を分析し、プロジェクトの主要な機能や変更点を要約します。
 
