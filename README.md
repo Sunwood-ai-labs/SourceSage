@@ -10,6 +10,8 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 ## 更新内容
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6d1eb661b566430f8a9a550de6b6f5ba)](https://app.codacy.com/gh/Sunwood-ai-labs/SourceSage?utm_source=github.com&utm_medium=referral&utm_content=Sunwood-ai-labs/SourceSage&utm_campaign=Badge_Grade)
+
 - [【2024/04/05】 SourceSage 4.0.3](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/4.0.3)
   - README.mdのセットアップ手順と実行手順を簡素化
   - リポジトリのオーナーと名前をコマンドライン引数で指定可能に
