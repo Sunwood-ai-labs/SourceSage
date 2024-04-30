@@ -2,6 +2,19 @@ import argparse
 from .core import SourceSage
 import os
 from loguru import logger
+import sys
+# logger.add(sink=sys.stderr, format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {level:<8} | {name}:{line} | {message}")
+
+# ログ出力のフォーマットを指定
+logger.configure(
+    handlers=[
+        {
+            "sink": sys.stderr,
+            "format": "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level:<6}</level> | <cyan>{name:<45}:{line:<5}</cyan> | <level>{message}</level>",
+            "colorize": True,
+        }
+    ]
+)
 
 def main():
     parser = argparse.ArgumentParser(description='SourceSage CLI')

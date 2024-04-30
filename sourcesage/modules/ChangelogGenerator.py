@@ -5,6 +5,9 @@ from git import Repo
 from .ChangelogUtils import ChangelogUtils
 from loguru import logger
 
+import sys
+
+
 class ChangelogGenerator:
     def __init__(self, repo_path, output_dir):
         self.repo_path = repo_path
@@ -38,7 +41,7 @@ class ChangelogGenerator:
         remote_branches = [ref.name for ref in self.repo.remote().refs]
 
         branches = local_branches + remote_branches
-        print(branches)
+        logger.info(branches)
 
         feature_branches = [branch for branch in branches if 'feature/' in branch]
         other_branches = [branch for branch in branches if 'feature/' not in branch]

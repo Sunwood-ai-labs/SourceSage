@@ -1,1 +1,0 @@
-conda activate ss_test
