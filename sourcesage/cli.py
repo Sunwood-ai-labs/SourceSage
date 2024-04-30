@@ -1,6 +1,7 @@
 import argparse
 from .core import SourceSage
 import os
+from loguru import logger
 
 def main():
     parser = argparse.ArgumentParser(description='SourceSage CLI')
@@ -11,11 +12,19 @@ def main():
     parser.add_argument('--repository', help='Name of the repository', default='SourceSage')  # デフォルト値を設定
 
     package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    default_ignore_file = os.path.join(package_root, 'sourcesage', 'config', '.SourceSageignore')  # 修正
-    default_language_map = os.path.join(package_root, 'sourcesage', 'config', 'language_map.json')  # 修正
+    default_ignore_file = os.path.join(package_root, 'sourcesage', 'config', '.SourceSageignore')
+    default_language_map = os.path.join(package_root, 'sourcesage', 'config', 'language_map.json')
 
-    parser.add_argument('--ignore-file', help='Path to the ignore file', default=default_ignore_file)  # 修正
-    parser.add_argument('--language-map', help='Path to the language map file', default=default_language_map)  # 修正
+    current_dir_ignore_file = os.path.join(os.getcwd(), '.SourceSageignore')
+    if os.path.exists(current_dir_ignore_file):
+        ignore_file = current_dir_ignore_file
+        logger.info(f"Using ignore file from current directory: {ignore_file}")
+    else:
+        ignore_file = default_ignore_file
+        logger.info(f"Using default ignore file: {ignore_file}")
+
+    parser.add_argument('--ignore-file', help='Path to the ignore file', default=ignore_file)
+    parser.add_argument('--language-map', help='Path to the language map file', default=default_language_map)
     
     args = parser.parse_args()
 
