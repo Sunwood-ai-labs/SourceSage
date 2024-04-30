@@ -1,3 +1,5 @@
+![](https://github.com/Sunwood-ai-labs/SourceSage/blob/develop/docs/icon/test_icon.jpeg?raw=true)
+
 # Test
 
 このドキュメントでは、テストを実行するためのコマンドラインについて説明します。

@@ -14,7 +14,7 @@ setup(
     name='sourcesage',
     
     # パッケージのバージョン
-    version='4.1.4',
+    version='4.1.5',
     
     # パッケージに含めるモジュールを自動的に探す
     packages=find_packages(),

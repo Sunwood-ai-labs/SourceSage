@@ -14,6 +14,14 @@
   <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dw/sourcesage">
   <a href="https://app.codacy.com/gh/Sunwood-ai-labs/SourceSage/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/77ab7715dd23499d82caca4e7ea3b093"/></a>
 
+  [![SourceSage - Sunwood-ai-labs](https://img.shields.io/static/v1?label=SourceSage&message=Sunwood-ai-labs&color=blue&logo=github)](https://github.com/Sunwood-ai-labs/SourceSage "Go to GitHub repo")
+[![stars - Sunwood-ai-labs](https://img.shields.io/github/stars/SourceSage/Sunwood-ai-labs?style=social)](https://github.com/Sunwood-ai-labs/SourceSage)
+[![forks - Sunwood-ai-labs](https://img.shields.io/github/forks/SourceSage/Sunwood-ai-labs?style=social)](https://github.com/Sunwood-ai-labs/SourceSage)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/Sunwood-ai-labs/SourceSage)](https://github.com/Sunwood-ai-labs/SourceSage)
+[![GitHub Top Language](https://img.shields.io/github/languages/top/Sunwood-ai-labs/SourceSage)](https://github.com/Sunwood-ai-labs/SourceSage)
+[![GitHub Release](https://img.shields.io/github/v/release/Sunwood-ai-labs/SourceSage?sort=date&color=red)](https://github.com/Sunwood-ai-labs/SourceSage)
+[![GitHub Tag](https://img.shields.io/github/v/tag/Sunwood-ai-labs/SourceSage?color=orange)](https://github.com/Sunwood-ai-labs/SourceSage)
+
   <br>
 
 </h2>
@@ -25,12 +33,14 @@
 
 SourceSageは、プロジェクトのソースコードとファイル構成を単一のマークダウンファイルに統合し、AIによる自動修正やドキュメント化を実現するPythonスクリプトです。開発のライフサイクル全体を通して、コードの品質向上と生産性の向上を支援します。
 
-**このリポジトリ自体もSourceSageを活用しており、リリースノートやREADME、コミットメッセージの9割はSourceSage X クロードで生成しています。**
+
+>[!IMPORTANT]
+>このリポジトリ自体も[SourceSage](https://github.com/Sunwood-ai-labs/SourceSage)を活用しており、リリースノートやREADME、コミットメッセージの9割は[SourceSage](https://github.com/Sunwood-ai-labs/SourceSage) ＋ [claude.ai](https://claude.ai/)で生成しています。
 
 
 ## 更新内容
 
-- [【2024/04/30】 SourceSage 4.1.2](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v4.1.2)
+- [【2024/04/30】 SourceSage 4.1.2](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/vv4.1.2)
   - GitHub ActionsによるPyPIへの自動パブリッシュ設定を追加し、リリースプロセスを自動化
 
 - [【2024/04/07】 SourceSage 4.1.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/undefined4.1.1)
@@ -208,6 +218,47 @@ DocuMindは、リリース後のプロジェクトの統合とドキュメント
 この2つのマークダウンファイルをそのままAIに入力することで、AIがプロジェクトの構造と変更内容を理解し、リリースノートやドキュメントを生成することができます。AIは、プロジェクトの概要とGitの変更履歴を分析し、プロジェクトの主要な機能や変更点を要約します。
 
 DocuMindを使用することで、開発者はドキュメント作成の負担を軽減し、常に最新の状態を反映したドキュメントを自動的に生成できます。
+
+## 開発者向け
+
+
+### 単体テスト
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/develop/docs/icon/test_icon.jpeg" width="50%">  
+</p>
+
+
+このドキュメントでは、テストを実行するためのコマンドラインについて説明します。
+
+[tests/README.md](https://github.com/Sunwood-ai-labs/SourceSage/blob/develop/tests/README.md)
+
+#### テストの実行
+
+ユニットテストを実行するには、以下のコマンドを使用します。
+
+```bash
+pytest tests/test_sourcesage.py
+```
+
+このコマンドにより、`tests/test_sourcesage.py`ファイルに定義されたテストケースが実行されます。
+
+
+### パッケージリリースガイド
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/develop/docs/icon/package_icon.png" width="50%">  
+</p>
+
+このドキュメントでは、GitHub Actions CI/CDを使用してPythonパッケージをPyPIに自動的に公開する方法について説明します。
+
+[docs/package_release/README.md](https://github.com/Sunwood-ai-labs/SourceSage/tree/develop/docs/package_release)
+
+#### 前提条件
+
+- PyPIのアカウントを作成済みであること
+- プロジェクトのGitHubリポジトリが存在すること
+
 
 ## 貢献
 
