@@ -4,6 +4,9 @@ import os
 from git import Repo
 from .ChangelogUtils import ChangelogUtils
 from loguru import logger
+from git.exc import GitCommandError
+
+import sys
 
 class ChangelogGenerator:
     def __init__(self, repo_path, output_dir):
@@ -18,7 +21,11 @@ class ChangelogGenerator:
         return list(self.repo.iter_commits(branch))
 
     def generate_changelog(self, branch, output_file):
-        commits = self._get_commits(branch)
+        try:
+            commits = self._get_commits(branch)
+        except GitCommandError:
+            logger.warning(f"Skipping branch '{branch}' as it does not exist.")
+            return
 
         # 出力ファイルのディレクトリを確認し、存在しない場合は作成
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
@@ -38,7 +45,7 @@ class ChangelogGenerator:
         remote_branches = [ref.name for ref in self.repo.remote().refs]
 
         branches = local_branches + remote_branches
-        print(branches)
+        logger.info(branches)
 
         feature_branches = [branch for branch in branches if 'feature/' in branch]
         other_branches = [branch for branch in branches if 'feature/' not in branch]
@@ -55,8 +62,13 @@ class ChangelogGenerator:
                 f.write(f"# Changelog - Features\n\n")
                 for branch in feature_branches:
                     branch_name = branch.replace('origin/', '')
+                    try:
+                        commits = self._get_commits(branch)
+                    except GitCommandError:
+                        logger.warning(f"Skipping feature branch '{branch_name}' as it does not exist.")
+                        continue
+
                     f.write(f"## {branch_name}\n\n")
-                    commits = self._get_commits(branch)
                     for commit in commits:
                         formatted_commit = ChangelogUtils.format_commit(commit)
                         f.write(formatted_commit + "\n")

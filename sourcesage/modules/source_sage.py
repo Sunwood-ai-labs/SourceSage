@@ -1,16 +1,17 @@
 import os
 from .file_utils import load_ignore_patterns, load_language_map  # 相対インポートを修正
 from .markdown_utils import generate_markdown_for_folder
+from loguru import logger
 
 class SourceSage:
     def __init__(self, folders, ignore_file='.SourceSageignore', output_file='output.md', language_map_file='language_map.json'):
         self.folders = folders
-        print(ignore_file)
-        print(folders)
+        logger.info(f"ignore_file is ... {ignore_file}")        
+        logger.info(folders)
         self.ignore_file = ignore_file
         self.output_file = output_file
         self.exclude_patterns = load_ignore_patterns(ignore_file)
-        print(self.exclude_patterns)
+        logger.info(self.exclude_patterns)
         self.language_map = load_language_map(language_map_file)
 
     def generate_markdown(self):

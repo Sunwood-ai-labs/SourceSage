@@ -4,6 +4,7 @@ import requests
 import json
 import os
 from git import Repo
+from loguru import logger
 
 class GitHubUtils:
     @staticmethod
@@ -30,7 +31,7 @@ class GitHubUtils:
         with open(os.path.join(save_path, file_name), 'w', encoding='utf-8') as f:
             json.dump(issues, f, ensure_ascii=False, indent=4)
 
-        print(f'Filtered open issues saved to {os.path.join(save_path, file_name)}')
+        logger.info(f'Filtered open issues saved to {os.path.join(save_path, file_name)}')
 
     @staticmethod
     def get_staged_diff(repo_path):

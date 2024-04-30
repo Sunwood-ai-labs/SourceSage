@@ -11,6 +11,8 @@ from .config.constants import Constants
 
 from art import *
 
+from loguru import logger
+
 class SourceSage:
     def __init__(self, config_path, output_dir, repo_path, owner, repository, ignore_file, language_map_file):
         self.config_path = config_path
@@ -22,8 +24,8 @@ class SourceSage:
         self.constants = Constants(output_dir, owner, repository) 
 
     def run(self):
-        tprint("SourceSage", font="rnd-medium")
-        print("Running SourceSage...")
+        tprint("SourceSage", font="rnd-xlarge")
+        logger.info("Running SourceSage...")
         
         # Load configuration
         config = self.load_config()
@@ -75,8 +77,8 @@ class SourceSage:
         issues_to_markdown.load_data()
         issues_to_markdown.create_markdown_files()
 
-        print("SourceSage completed successfully.")
-
+        logger.info("SourceSage completed successfully.")
+        tprint("!! successfully !!", font="rnd-medium")
     def load_config(self):
         # Load configuration from YAML file
         # Implement this method based on your configuration file structure

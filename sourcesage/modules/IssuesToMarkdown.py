@@ -2,6 +2,9 @@ import json
 import os
 from loguru import logger
 
+import sys
+
+
 class IssuesToMarkdown:
     def __init__(self, issues_file, sourcesage_file, template_file, output_folder):
         self.issues_file = issues_file
