@@ -30,6 +30,9 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 ## 更新内容
 
+- [【2024/04/30】 SourceSage 4.1.2](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v4.1.2)
+  - GitHub ActionsによるPyPIへの自動パブリッシュ設定を追加し、リリースプロセスを自動化
+
 - [【2024/04/07】 SourceSage 4.1.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/undefined4.1.1)
   - プロジェクト全体の出力ファイル名と各モジュールの出力フォルダ名を変更
   - PyPIのダウンロードバッジとCodacyのクオリティバッジを追加
