@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/Sunwood-ai-labs/zoltraak/celsius/assets/images/test_icon.jpeg)
+![](https://github.com/Sunwood-ai-labs/SourceSage/blob/develop/docs/icon/test_icon.jpeg?raw=true)
 
 # Test
 
