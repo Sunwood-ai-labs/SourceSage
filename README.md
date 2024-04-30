@@ -217,6 +217,47 @@ DocuMindは、リリース後のプロジェクトの統合とドキュメント
 
 DocuMindを使用することで、開発者はドキュメント作成の負担を軽減し、常に最新の状態を反映したドキュメントを自動的に生成できます。
 
+## 開発者向け
+
+
+### 単体テスト
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/develop/docs/icon/test_icon.jpeg" width="50%">  
+</p>
+
+
+このドキュメントでは、テストを実行するためのコマンドラインについて説明します。
+
+[tests/README.md](https://github.com/Sunwood-ai-labs/SourceSage/blob/develop/tests/README.md)
+
+#### テストの実行
+
+ユニットテストを実行するには、以下のコマンドを使用します。
+
+```bash
+pytest tests/test_sourcesage.py
+```
+
+このコマンドにより、`tests/test_sourcesage.py`ファイルに定義されたテストケースが実行されます。
+
+
+### パッケージリリースガイド
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/develop/docs/icon/package_icon.png" width="50%">  
+</p>
+
+このドキュメントでは、GitHub Actions CI/CDを使用してPythonパッケージをPyPIに自動的に公開する方法について説明します。
+
+[docs/package_release/README.md](https://github.com/Sunwood-ai-labs/SourceSage/tree/develop/docs/package_release)
+
+#### 前提条件
+
+- PyPIのアカウントを作成済みであること
+- プロジェクトのGitHubリポジトリが存在すること
+
+
 ## 貢献
 
 SourceSageの改善にご協力ください！バグの報告や機能追加の提案がある場合は、[GitHubリポジトリ](https://github.com/Sunwood-ai-labs/SourceSage)でIssueを開くかプルリクエストを送信してください。
