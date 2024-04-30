@@ -1,3 +1,5 @@
+![](https://raw.githubusercontent.com/Sunwood-ai-labs/zoltraak/celsius/assets/images/test_icon.jpeg)
+
 # Test
 
 このドキュメントでは、テストを実行するためのコマンドラインについて説明します。
