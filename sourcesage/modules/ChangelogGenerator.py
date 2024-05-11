@@ -20,6 +20,7 @@ class ChangelogGenerator:
     def _get_commits(self, branch):
         return list(self.repo.iter_commits(branch))
 
+
     def generate_changelog(self, branch, output_file):
         try:
             commits = self._get_commits(branch)
@@ -36,7 +37,9 @@ class ChangelogGenerator:
 
             for commit in commits:
                 formatted_commit = ChangelogUtils.format_commit(commit)
-                f.write(formatted_commit + "\n")
+                if "Merge branch" in formatted_commit and "release/" in formatted_commit:
+                    break  # ループを中断
+                f.write(formatted_commit + "\n---\n")
 
         logger.info(f"Changelog generated successfully for branch '{branch}' at {output_file}")
 
@@ -71,7 +74,7 @@ class ChangelogGenerator:
                     f.write(f"## {branch_name}\n\n")
                     for commit in commits:
                         formatted_commit = ChangelogUtils.format_commit(commit)
-                        f.write(formatted_commit + "\n")
+                        f.write(formatted_commit + "\n---\n")
                     f.write("\n")
             logger.info(f"Changelog generated successfully for feature branches at {output_file}")
 
