@@ -43,9 +43,12 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 ## 更新内容
 
+## 更新内容
+
+- [【2024/05/12】 SourceSage 4.2.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v4.2.0)
+  - ステージング情報のテンプレートに絵文字と[GAIAH](https://github.com/Sunwood-ai-labs/Gaiah)に対応
 - [【2024/04/30】 SourceSage 4.1.2](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/vv4.1.2)
   - GitHub ActionsによるPyPIへの自動パブリッシュ設定を追加し、リリースプロセスを自動化
-
 - [【2024/04/07】 SourceSage 4.1.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/undefined4.1.1)
   - プロジェクト全体の出力ファイル名と各モジュールの出力フォルダ名を変更
   - PyPIのダウンロードバッジとCodacyのクオリティバッジを追加
@@ -70,6 +73,7 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
   - 言語ごとのシンタックスハイライト機能を追加
   - .SourceSageignoreファイルを導入し、不要なファイルやフォルダを自動的に除外
 - 【2024/03/29】 初期リリース
+
 
 ## 主な機能
 
@@ -136,7 +140,7 @@ sourcesage --owner Sunwood-ai-labs --repository SourceSage
 
 上記の例では、`Sunwood-ai-labs`がリポジトリのオーナー名、`SourceSage`がリポジトリ名です。これらの引数を指定することで、SourceSageはGitHub APIを使ってリポジトリのオープンなIssueを取得し、`open_issues_filtered.json`ファイルに保存します。
 
-Note: GitHub APIを使用するには、インターネット接続が必要です。また、リポジトリがプライベートの場合は、適切なアクセストークンを設定する必要があります。
+>[!Note] GitHub APIを使用するには、インターネット接続が必要です。また、リポジトリがプライベートの場合は、適切なアクセストークンを設定する必要があります。
 
 以上が、SourceSageの基本的な使用方法です。ぜひ自分のプロジェクトでSourceSageを活用して、開発効率の向上を体験してみてください！
 
@@ -194,13 +198,25 @@ CommitCraftは、開発中のステージされた変更を追跡し、AIを活�
 
 このマークダウンファイルをそのままAIに入力することで、AIがコミットメッセージを生成します。AIは、ステージされた変更の差分を分析し、その内容を要約したコミットメッセージを提案します。
 
+絵文字を活用した視覚的に分かりやすいコミットメッセージの例はこちらです。
+
+例：[`docs/SAMPLE/SAMPLE_STAGE_INFO_AND_PROMT_EMOJI.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_STAGE_INFO_AND_PROMT_EMOJI.md)
+
+このファイルでは、コミットメッセージのフォーマットに絵文字を取り入れ、変更内容をより直感的に表現しています。
+
+また、Gaiah用のコミットメッセージ生成を支援するテンプレートの例はこちらです。
+
+例：[`docs/SAMPLE/SAMPLE_STAGE_INFO_AND_PROMT_GAIAH.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_STAGE_INFO_AND_PROMT_GAIAH.md)
+
+このテンプレートでは、効果的で意味のあるコミットメッセージを作成するためのベストプラクティスに従ったガイドラインを提供しています。主要な変更とその目的に焦点を当て、コミットで行われた変更を明確かつ簡潔に説明するように促します。
+
 Issueとマージされたファイルの例はこちらです。
 
 例：[`docs/SAMPLE/SAMPLE_STAGE_INFO_AND_ISSUES_AND_PROMT.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/docs/SAMPLE/SAMPLE_STAGE_INFO_AND_ISSUES_AND_PROMT.md)
 
 このファイルには、ステージされた変更の差分とオープンなIssueの情報が含まれています。AIはこれらの情報を組み合わせて分析し、より包括的なコミットメッセージを生成します。
 
-CommitCraftを使用することで、開発者はコミットメッセージを考える負担を軽減し、一貫性のある適切なコミットメッセージを自動的に生成できます。
+CommitCraftを使用することで、開発者はコミットメッセージを考える負担を軽減し、一貫性のある適切なコミットメッセージを自動的に生成できます。絵文字の活用やGaiahのテンプレートを利用することで、よりわかりやすく効果的なコミットメッセージの作成が可能になります。
 
 ## 3. DocuMind：リリース後のドキュメント化
 
