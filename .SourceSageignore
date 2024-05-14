@@ -23,3 +23,5 @@ sourcesage.egg-info
 .pytest_cache
 dist
 build
+.SourceSageAssets
+docs
