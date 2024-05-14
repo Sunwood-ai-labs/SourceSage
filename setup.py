@@ -55,5 +55,6 @@ setup(
             'GitPython',
             'requests',
             'art',
+            'termcolor',
     ],
 )
