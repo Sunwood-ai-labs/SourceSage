@@ -4,6 +4,7 @@ import os
 from loguru import logger
 import argparse
 from art import *
+from .GitCommander import run_command
 
 class GitDiffGenerator:
     def __init__(self, repo_path, git_fetch_tags, git_tag_sort, git_diff_command):
@@ -13,36 +14,27 @@ class GitDiffGenerator:
         self.git_diff_command = git_diff_command
         tprint("GitDiffGenerator")
 
-    def run_command(self, command):
-        """
-        指定されたコマンドを実行し、出力をキャプチャして表示します。
-        """
-        logger.info(f">>>>>> 実行コマンド: {' '.join(command)}")
-        result = subprocess.run(command, capture_output=True, text=True, encoding='utf-8')
-        if result.returncode != 0:
-            raise Exception(f"コマンドが失敗しました: {result.stderr}")
-        return result.stdout.strip()
-
     def get_git_diff(self):
         """
         現在のリリースと前のリリースの間の git diff を取得します。
         """
         logger.info("最新の git タグを取得しています...")
-        self.run_command(self.git_fetch_tags)
+        run_command(self.git_fetch_tags)
 
         logger.info("最新と前のタグを取得しています...")
-        tags_output = self.run_command(self.git_tag_sort)
+        tags_output = run_command(self.git_tag_sort)
         tags = tags_output.split()
 
         if len(tags) < 2:
-            raise Exception("比較するタグが十分にありません。")
+            logger.error("比較するタグが十分にありません。タグを2以上追加してください")
+            return None, None, None
 
         latest_tag, previous_tag = tags[:2]
         logger.success(f"最新タグ: {latest_tag}, 前のタグ: {previous_tag}")
 
         logger.info("git diff を生成しています...")
         diff_command = self.git_diff_command + [previous_tag, latest_tag]
-        diff = self.run_command(diff_command)
+        diff = run_command(diff_command)
 
         return diff, latest_tag, previous_tag
 
