@@ -1,86 +1,122 @@
-# modules/ChangelogGenerator.py (変更後)
+# sourcesage\modules\ChangelogGenerator.py
 
 import os
-from git import Repo
 from .ChangelogUtils import ChangelogUtils
 from loguru import logger
+from .GitCommander import run_command
+
 from git.exc import GitCommandError
 
+from art import *
 import sys
 
+from tqdm import tqdm
 class ChangelogGenerator:
     def __init__(self, repo_path, output_dir):
         self.repo_path = repo_path
         self.output_dir = output_dir
-        self.repo = self._get_repo()
-
-    def _get_repo(self):
-        return Repo(self.repo_path)
+        
+        tprint("ChangelogGenerator")
+        logger.debug(f"repo_path : {self.repo_path}")
+        logger.debug(f"output_dir : {self.output_dir}")
 
     def _get_commits(self, branch):
-        return list(self.repo.iter_commits(branch))
-
+        # GitCommanderのrun_commandを使ってコミットを取得
+        commits_output = run_command(["git", "log", "--pretty=format:%H", branch])
+        commit_hashes = commits_output.split("\n")
+        return commit_hashes
 
     def generate_changelog(self, branch, output_file):
-        try:
-            commits = self._get_commits(branch)
-        except GitCommandError:
-            logger.warning(f"Skipping branch '{branch}' as it does not exist.")
-            return
-
+        logger.debug(f"--------------------------------------------")
+        logger.debug(f"branch : [{branch}]")
+        commits = self._get_commits(branch)
+        
+        logger.info(f"コミットの数:{len(commits)}")
         # 出力ファイルのディレクトリを確認し、存在しない場合は作成
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
         with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(f"# Changelog\n\n")
+            f.write(f"# 変更履歴\n\n")
             f.write(f"## {branch}\n\n")
 
-            for commit in commits:
-                formatted_commit = ChangelogUtils.format_commit(commit)
-                if "Merge branch" in formatted_commit and "release/" in formatted_commit:
-                    break  # ループを中断
-                f.write(formatted_commit + "\n---\n")
+            for commit_hash in tqdm(commits):
+                # GitCommanderのrun_commandを使ってコミットの詳細を取得
+                # commit_details = run_command(["git", "show", "--pretty=format:%an%n%ad%n%s%n%b", "--date=iso", commit_hash])
+                commit_details = run_command(["git", "show", "--pretty=format:%an%n%ad%n%s%n%b", "--date=iso", "--no-patch", commit_hash], preview=False)
+                # commit_details = run_command(["git", "show", "--pretty=format:%an%n%ad%n%s%n%b", "--date=iso", commit_hash], preview=False)
+                # print(commit_details)
 
-        logger.info(f"Changelog generated successfully for branch '{branch}' at {output_file}")
+                commit_info = commit_details.split("\n", 3)
+                author = commit_info[0]
+                date = commit_info[1]
+                subject = commit_info[2]
+                body = commit_info[3] if len(commit_info) > 3 else ""
+                
+                formatted_commit = f"### [{commit_hash[:7]}] - {subject}\n\n"
+                formatted_commit += f"  - 作者: {author}\n"
+                formatted_commit += f"  - 日時: {date}\n"
+                
+                # 差分情報を除外して詳細情報を取得
+                body_lines = body.split("\n")
+                filtered_body = "\n".join("\t\t" + line for line in body_lines if not line.startswith("diff --git"))
+                formatted_commit += f"  - 詳細:\n{filtered_body}\n\n"
+                
+                # 差分情報を取得
+                diff_output = run_command(["git", "show", commit_hash], preview=False)
+                diff_lines = diff_output.split("\n")
+                diff_section = "  - 差分:\n\n```diff\n"
+                for line in diff_lines:
+                    if line.startswith("+") or line.startswith("-") or line.startswith("@"):
+                        diff_section += f"{line}\n"
+                diff_section += "```\n\n"
+                
+                formatted_commit += diff_section
+                
+                # for commit_msg in formatted_commit.split("\n"):
+                #     logger.debug(commit_msg)
+                
+                if "release" in branch:
+                    if "Merge branch" in formatted_commit and "release/" in formatted_commit:
+                        break  # ループを中断
+                f.write(formatted_commit + "---\n")
 
+        logger.info(f"ブランチ '{branch}' の変更履歴が {output_file} に正常に生成されました。")
+        
     def generate_changelog_for_all_branches(self):
-        local_branches = [ref.name for ref in self.repo.branches]
-        remote_branches = [ref.name for ref in self.repo.remote().refs]
-
-        branches = local_branches + remote_branches
-        logger.info(branches)
+        # GitCommanderのrun_commandを使ってブランチ一覧を取得
+        branches_output = run_command(["git", "branch"])
+        branches = [branch.strip().replace("*", "").replace("remotes/", "").replace("origin/", "") for branch in branches_output.split("\n") if branch.strip()]
+        
+        logger.debug("------ branches list ------")
+        for ibranches in branches:
+            logger.debug(ibranches)
 
         feature_branches = [branch for branch in branches if 'feature/' in branch]
         other_branches = [branch for branch in branches if 'feature/' not in branch]
 
-        for branch in other_branches:
-            branch_name = branch.replace('origin/', '')
+        for _branch_name in other_branches:
+            branch_name = _branch_name.replace(" ", "")
+            # branch_name = branch_name.replace("[HEAD->main]", "main")
             output_file = os.path.join(self.output_dir, f"CHANGELOG_{branch_name}.md").replace("release/", "release_").replace("bugfix/", "bugfix_")
-            logger.info(f"Generating changelog for branch '{branch_name}'...")
+            logger.info(f"ブランチ '{branch_name}' の変更履歴を生成しています...")
             self.generate_changelog(branch_name, output_file)
+            logger.info(f"生成しました... '{output_file}'")
 
         if feature_branches:
             output_file = os.path.join(self.output_dir, "CHANGELOG_features.md")
             with open(output_file, 'w', encoding='utf-8') as f:
-                f.write(f"# Changelog - Features\n\n")
-                for branch in feature_branches:
-                    branch_name = branch.replace('origin/', '')
-                    try:
-                        commits = self._get_commits(branch)
-                    except GitCommandError:
-                        logger.warning(f"Skipping feature branch '{branch_name}' as it does not exist.")
-                        continue
-
+                f.write(f"# 機能ブランチの変更履歴\n\n")
+                for branch_name in feature_branches:
+                    branch_name = branch_name.replace('origin/', '').replace('remotes/', '')
                     f.write(f"## {branch_name}\n\n")
-                    for commit in commits:
-                        formatted_commit = ChangelogUtils.format_commit(commit)
-                        f.write(formatted_commit + "\n---\n")
+                    self.generate_changelog(branch_name, output_file)
                     f.write("\n")
-            logger.info(f"Changelog generated successfully for feature branches at {output_file}")
+            logger.info(f"機能ブランチの変更履歴が {output_file} に正常に生成されました。")
+            
 
     def integrate_changelogs(self):
         changelog_files = [file for file in os.listdir(self.output_dir) if file.startswith("CHANGELOG_")]
-        integrated_changelog = "# Integrated Changelog\n\n"
+        integrated_changelog = "# 統合された変更履歴\n\n"
 
         for file in changelog_files:
             with open(os.path.join(self.output_dir, file), 'r', encoding='utf-8') as f:
@@ -91,7 +127,7 @@ class ChangelogGenerator:
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(integrated_changelog)
 
-        logger.info(f"Integrated changelog generated successfully at {output_file}")
+        logger.info(f"統合された変更履歴が {output_file} に正常に生成されました。")
 
 
 if __name__ == "__main__":
