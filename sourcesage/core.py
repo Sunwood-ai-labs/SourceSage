@@ -24,7 +24,6 @@ class SourceSage:
         self.constants = Constants(output_dir, owner, repository) 
 
     def run(self):
-        tprint("SourceSage", font="rnd-xlarge")
         logger.info("Running SourceSage...")
         
         # Load configuration
@@ -37,7 +36,7 @@ class SourceSage:
         
         # Generate SourceSage markdown
         sourcesage_module = SourceSageModule(folders=[self.repo_path], ignore_file=self.ignore_file,
-                                             output_file=os.path.join(self.constants.SOURCE_SAGE_ASSETS_DIR, self.constants.SOURCE_SAGE_MD),
+                                             output_file=os.path.join(self.constants.SOURCE_SAGE_ASSETS_DIR, self.constants.DOCUMIND_DIR, self.constants.SOURCE_SAGE_MD),
                                              language_map_file=self.language_map_file)
         sourcesage_module.generate_markdown()
 
@@ -87,14 +86,14 @@ class SourceSage:
 
         # Convert issues to markdown
         issues_to_markdown = IssuesToMarkdown(issues_file=os.path.join(self.constants.ISSUE_LOG_DIR, self.constants.ISSUES_FILE_NAME),
-                                              sourcesage_file=os.path.join(self.constants.SOURCE_SAGE_ASSETS_DIR, self.constants.SOURCE_SAGE_MD),
+                                              sourcesage_file=os.path.join(self.constants.SOURCE_SAGE_ASSETS_DIR, self.constants.DOCUMIND_DIR, self.constants.SOURCE_SAGE_MD),
                                               template_file=os.path.join(self.constants.DOCS_DIR, self.constants.TEMPLATE_ISSUES_RESOLVE_DIR, self.constants.ISSUES_RESOLVE_TEMPLATE_MD),
                                               output_folder=self.constants.ISSUES_RESOLVE_DIR)
         issues_to_markdown.load_data()
         issues_to_markdown.create_markdown_files()
 
-        logger.info("SourceSage completed successfully.")
-        tprint("!! successfully !!", font="rnd-medium")
+        # logger.info("SourceSage completed successfully.")
+        # tprint("!! successfully !!", font="rnd-medium")
     def load_config(self):
         # Load configuration from YAML file
         # Implement this method based on your configuration file structure

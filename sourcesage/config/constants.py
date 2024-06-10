@@ -14,7 +14,9 @@ class Constants:
         self.LANGUAGE_MAP_FILE = os.path.join(self.CONFIG_DIR, 'language_map.json')
         self.IGNORE_FILE = os.path.join(self.CONFIG_DIR, '.SourceSageignore')
 
-        self.SOURCE_SAGE_MD = "DocuMind.md"
+        self.SOURCE_SAGE_MD = "Repository_summary.md"
+        self.DOCUMIND_DIR = "DOCUMIND"
+        
         self.CHANGELOG_DIR = "Changelog"
         self.STAGED_DIFF_MD = "STAGED_DIFF.md"
 
@@ -25,6 +27,9 @@ class Constants:
         self.ISSUE_LOG_DIR = os.path.join(self.SOURCE_SAGE_ASSETS_DIR, "ISSUE_LOG")
         self.ISSUES_RESOLVE_DIR = os.path.join(self.SOURCE_SAGE_ASSETS_DIR, "ISSUE_WISE/ISSUES_RESOLVE")
         self.STAGE_INFO_DIR = os.path.join(self.SOURCE_SAGE_ASSETS_DIR, "COMMIT_CRAFT/STAGE_INFO")
+        
+        
+        
 
         self.TEMPLATE_ISSUES_RESOLVE_DIR = os.path.join(self.DOCS_DIR, "ISSUES_RESOLVE")
         self.ISSUES_RESOLVE_TEMPLATE_MD = "ISSUES_RESOLVE_TEMPLATE.md"

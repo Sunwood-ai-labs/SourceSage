@@ -4,6 +4,7 @@
     ".java": "java",
     ".c": "c",
     ".cpp": "cpp",
+    ".h": "cpp",
     ".cs": "csharp",
     ".go": "go",
     ".php": "php",

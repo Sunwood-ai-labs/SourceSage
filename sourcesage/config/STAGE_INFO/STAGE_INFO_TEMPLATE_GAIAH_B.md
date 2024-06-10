@@ -10,6 +10,7 @@
 - 正確にstep-by-stepで処理して
 - ブランチで数ファイルごとに分けた方が良いと判断した場合はブランチ名を提案して
 - なるべく少ないブランチ数にして
+- 最適な「commit messages title」を挿入して
 
 下記の差分情報とコミットメッセージの種類を参考に下記のマークダウンフォーマットで出力して
 
@@ -30,9 +31,9 @@
 
 === Commit Messages フォーマット ===
 
-# Commit Messages Title
+# commit messages title
 
-## branch name
+## feature/branch01
 
 ### path/to/file1.txt
 
@@ -50,7 +51,7 @@
 - 詳細な説明（必要に応じて）
 ```
 
-## branch name
+## release/sample
 
 ### path/to/file3.txt
 
