@@ -25,3 +25,5 @@ dist
 build
 .SourceSageAssets
 docs
+.Gaiah.md
+.env
