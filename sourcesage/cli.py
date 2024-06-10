@@ -1,3 +1,4 @@
+# sourcesage\cli.py
 import argparse
 from .core import SourceSage
 from .modules.ReleaseDiffReportGenerator import GitDiffGenerator, MarkdownReportGenerator
@@ -76,7 +77,7 @@ def main():
     # DocuMind用の引数を追加
     #
     parser.add_argument('--docuMind-model', type=str, default=None, help='DocuMindで使用するLLMのモデル名')
-    parser.add_argument('--docuMind-db', type=str, default=".SourceSageAssets/DocuMind.md", help='DocuMindのデータベースファイルのパス')
+    parser.add_argument('--docuMind-db', type=str, default=".SourceSageAssets/DOCUMIND/Repository_summary.md", help='DocuMindのデータベースファイルのパス')
     parser.add_argument('--docuMind-release-report', type=str, default=".SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md", help='リリースレポートのパス。{latest_tag}は最新のタグに置換されます。')
     parser.add_argument('--docuMind-changelog', type=str, default=".SourceSageAssets/Changelog/CHANGELOG_release_{version}.md", help='変更履歴のパス。{version}はバージョンに置換されます。')
     parser.add_argument('--docuMind-output', type=str, default=".SourceSageAssets/DOCUMIND/RELEASE_NOTES.md", help='リリースノートの出力パス')

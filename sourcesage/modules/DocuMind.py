@@ -1,3 +1,4 @@
+# sourcesage\modules\DocuMind.py
 import os
 from litellm import completion
 from loguru import logger
@@ -6,6 +7,9 @@ from art import *
 
 class DocuMind:
     def __init__(self, model_name, documen_db_path, release_report_path, changelog_path, repo_name, repo_version, prompt_output_path):
+        
+        tprint("DocuMind")
+        
         self.model_name = model_name
         self.documen_db_path = documen_db_path
         self.release_report_path = release_report_path.format(latest_tag=repo_version)
@@ -17,7 +21,6 @@ class DocuMind:
         self.release_report = self.load_release_report()
         self.changelog = self.load_changelog()
         
-        tprint("DocuMind")
 
     def load_documen_db(self):
         """DocuMindファイルを読み込む"""
@@ -26,13 +29,21 @@ class DocuMind:
 
     def load_release_report(self):
         """リリースレポートファイルを読み込む"""
-        with open(self.release_report_path, "r", encoding="utf-8") as file:
-            return file.read()
+        if os.path.exists(self.release_report_path):
+            with open(self.release_report_path, "r", encoding="utf-8") as file:
+                return file.read()
+        else:
+            logger.warning(f"リリースレポートファイル'{self.release_report_path}'が見つかりませんでした。スキップします。")
+            return ""
 
     def load_changelog(self):
         """変更履歴ファイルを読み込む"""
-        with open(self.changelog_path, "r", encoding="utf-8") as file:
-            return file.read()
+        if os.path.exists(self.changelog_path):
+            with open(self.changelog_path, "r", encoding="utf-8") as file:
+                return file.read()
+        else:
+            logger.warning(f"変更履歴ファイル'{self.changelog_path}'が見つかりませんでした。スキップします。")
+            return ""
 
     def generate_release_notes(self):
         """リリースノートを生成する"""
@@ -46,8 +57,8 @@ class DocuMind:
         self.save_prompt(prompt)
 
         if self.model_name is None:
-            logger.info("モデル名が指定されていないため、リリースノートの生成をスキップします。")
-            return None
+            logger.warning("モデル名が指定されていないため、リリースノートの生成をスキップします。")
+            return ""
 
         logger.info(f"モデル'{self.model_name}'を使用してLLMにリリースノート生成を依頼しています...")
         try:
@@ -59,7 +70,7 @@ class DocuMind:
             return release_notes
         except Exception as e:
             logger.error(f"リリースノートの生成中にエラーが発生しました: {str(e)}")
-            return None
+            return ""
 
     def save_prompt(self, prompt):
         """プロンプトを保存する"""
