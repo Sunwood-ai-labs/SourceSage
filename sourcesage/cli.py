@@ -97,7 +97,7 @@ def main():
     # -----------------------------------------------
     # レポートの生成
     #
-    if 'all' in args.mode or 'Generate Report' in args.mode:
+    if 'all' in args.mode or 'GenerateReport' in args.mode:
         logger.info("git diff レポートの生成を開始します...")
         git_diff_generator = GitDiffGenerator(args.repo_path, args.git_fetch_tags, args.git_tag_sort, args.git_diff_command)
         diff, latest_tag, previous_tag = git_diff_generator.get_git_diff()
