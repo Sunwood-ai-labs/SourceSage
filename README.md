@@ -38,8 +38,7 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 
 >[!IMPORTANT]
->このリポジトリ自体も[SourceSage](https://github.com/Sunwood-ai-labs/SourceSage)を活用しており、リリースノートやREADME、コミットメッセージの9割は[SourceSage](https://github.com/Sunwood-ai-labs/SourceSage) ＋ [claude.ai](https://claude.ai/)で生成しています。
-
+>このリポジトリのリリースノートやREADME、コミットメッセージの9割近くは[claude.ai](https://claude.ai/)や[ChatGPT4](https://chatgpt.com/)を活用した[AIRA](https://github.com/Sunwood-ai-labs/AIRA), [SourceSage](https://github.com/Sunwood-ai-labs/SourceSage), [Gaiah](https://github.com/Sunwood-ai-labs/Gaiah), [HarmonAI_II](https://github.com/Sunwood-ai-labs/HarmonAI_II)で生成しています。
 
 ## 更新内容
 
@@ -130,6 +129,15 @@ SourceSageをプロジェクトで使用するには、以下の手順に従っ�
 
 これらのファイルを使って、AIによるプロジェクトの解析や自動修正、ドキュメント化などを行うことができます。
 
+```bash
+sourcesage 
+```
+
+```bash
+sourcesage --docuMind-model="gemini/gemini-1.5-pro-latest" --docuMind-release-report=".SourceSageAssets\RELEASE_REPORT\Report_v0.1.0.md" --docuMind-changelog=".SourceSageAssets\Changelog\CHANGELOG_release_v0.2.0.md" --repo-name="AIRA-Sample01" --repo-version="v0.2.0" 
+```
+
+
 ### リポジトリのIssueも取得する方法
 
 デフォルトでは、SourceSageは現在のディレクトリをプロジェクトのルートとして解析します。ただし、GitHub上のリポジトリのIssueも取得したい場合は、以下のようにリポジトリのオーナー名とリポジトリ名をコマンドライン引数で指定します：
@@ -217,6 +225,8 @@ Issueとマージされたファイルの例はこちらです。
 このファイルには、ステージされた変更の差分とオープンなIssueの情報が含まれています。AIはこれらの情報を組み合わせて分析し、より包括的なコミットメッセージを生成します。
 
 CommitCraftを使用することで、開発者はコミットメッセージを考える負担を軽減し、一貫性のある適切なコミットメッセージを自動的に生成できます。絵文字の活用やGaiahのテンプレートを利用することで、よりわかりやすく効果的なコミットメッセージの作成が可能になります。
+
+
 
 ## 3. DocuMind：リリース後のドキュメント化
 
