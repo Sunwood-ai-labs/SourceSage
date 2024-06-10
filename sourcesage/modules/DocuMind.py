@@ -2,6 +2,7 @@ import os
 from litellm import completion
 from loguru import logger
 from dotenv import load_dotenv
+from art import *
 
 class DocuMind:
     def __init__(self, model_name, documen_db_path, release_report_path, changelog_path, repo_name, repo_version, prompt_output_path):
@@ -15,6 +16,8 @@ class DocuMind:
         self.documen_db = self.load_documen_db()
         self.release_report = self.load_release_report()
         self.changelog = self.load_changelog()
+        
+        tprint("DocuMind")
 
     def load_documen_db(self):
         """DocuMindファイルを読み込む"""

@@ -22,16 +22,19 @@
 ![GitHub Release](https://img.shields.io/github/v/release/Sunwood-ai-labs/SourceSage?color=red)
 ![GitHub Tag](https://img.shields.io/github/v/tag/Sunwood-ai-labs/SourceSage?sort=semver&color=orange)
 <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Sunwood-ai-labs/SourceSage/publish-to-pypi.yml">
-
-
-
   <br>
+
+<p align="center">
+  <a href="https://hamaruki.com/"><b>[🌐 Website]</b></a> •
+  <a href="https://github.com/Sunwood-ai-labs"><b>[🐱 GitHub]</b></a>
+  <a href="https://x.com/hAru_mAki_ch"><b>[🐦 Twitter]</b></a> •
+  <a href="https://hamaruki.com/tag/sourcesage/"><b>[🍀 Official Blog]</b></a>
+</p>
 
 </h2>
 
 
 </p>
-
 
 
 SourceSageは、プロジェクトのソースコードとファイル構成を単一のマークダウンファイルに統合し、AIによる自動修正やドキュメント化を実現するPythonスクリプトです。開発のライフサイクル全体を通して、コードの品質向上と生産性の向上を支援します。
@@ -42,31 +45,24 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 ## 更新内容
 
-## 更新内容
-
+- [【2024/06/10】 SourceSage 5.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v5.0.0)
+  - AIRA と Harmon.AI の設定を追加し、コード生成機能を追加(`DocuMind`、`CommitCraft`)
 - [【2024/05/12】 SourceSage 4.2.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v4.2.0)
   - ステージング情報のテンプレートに絵文字と[GAIAH](https://github.com/Sunwood-ai-labs/Gaiah)に対応
 - [【2024/04/30】 SourceSage 4.1.2](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/vv4.1.2)
   - GitHub ActionsによるPyPIへの自動パブリッシュ設定を追加し、リリースプロセスを自動化
 - [【2024/04/07】 SourceSage 4.1.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/undefined4.1.1)
-  - プロジェクト全体の出力ファイル名と各モジュールの出力フォルダ名を変更
-  - PyPIのダウンロードバッジとCodacyのクオリティバッジを追加
-  - CLI引数の追加とコアモジュールの修正
-  - プロジェクトの構成とファイルの変更によるシンプル化
+  - CLI引数の追加とコアモジュールの修正、プロジェクトの構成とファイルの変更によるシンプル化
   - セットアップ手順、実行方法、クイックスタートセクション、テストドキュメントの更新
 - [【2024/04/05】 SourceSage 4.0.3](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/undefined4.0.3)
   - README.mdのセットアップ手順と実行手順を簡素化
   - リポジトリのオーナーと名前をコマンドライン引数で指定可能に
   - テスト実行方法のドキュメントを更新
-- [【2024/04/01】 SourceSage 3.1.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag3.1.0)
-  - コードの品質と保守性を向上させるためのリファクタリングと機能改善
-  - コミットメッセージのフォーマットとタイプの説明を追加
-  - コマンドラインからソースコードのリポジトリパスを取得するように修正
-  - 定数の管理方法を改善し、[`config/constants.py`](config/constants.py)ファイルで一元管理
 - [【2024/03/31】 SourceSage 3.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag3.0.0)
-  - [IssueWise](https://github.com/Sunwood-ai-labs/SourceSage/#1-issuewise開発前の課題解決)機能を追加し、GitHubのオープンIssueを取得してAIによる自動修正をサポート
-  - [CommitCraft](https://github.com/Sunwood-ai-labs/SourceSage/#2-commitcraft開発中のコミット管理)機能を追加し、変更差分を追跡してAIが適切なコミットメッセージを生成
-  - [DocuMind](https://github.com/Sunwood-ai-labs/SourceSage/#3-documindリリース後のドキュメント化)機能を追加し、プロジェクトの概要とGitの変更履歴を組み合わせてドキュメント化
+  - 下記3つの機能の構成を提案
+    - [IssueWise](https://github.com/Sunwood-ai-labs/SourceSage/#1-issuewise開発前の課題解決)機能を追加し、GitHubのオープンIssueを取得してAIによる自動修正をサポート
+    - [CommitCraft](https://github.com/Sunwood-ai-labs/SourceSage/#2-commitcraft開発中のコミット管理)機能を追加し、変更差分を追跡してAIが適切なコミットメッセージを生成
+    - [DocuMind](https://github.com/Sunwood-ai-labs/SourceSage/#3-documindリリース後のドキュメント化)機能を追加し、プロジェクトの概要とGitの変更履歴を組み合わせてドキュメント化
 - [【2024/03/30】 SourceSage 2.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag2.0.0)
   - ChangelogGenerator classを導入し、コードの可読性と保守性を向上
   - 言語ごとのシンタックスハイライト機能を追加
@@ -133,8 +129,24 @@ SourceSageをプロジェクトで使用するには、以下の手順に従っ�
 sourcesage 
 ```
 
+
+#### リポジトリ情報の収集と差分情報のレポート作成
+
 ```bash
-sourcesage --docuMind-model="gemini/gemini-1.5-pro-latest" --docuMind-release-report=".SourceSageAssets\RELEASE_REPORT\Report_v0.1.0.md" --docuMind-changelog=".SourceSageAssets\Changelog\CHANGELOG_release_v0.2.0.md" --repo-name="AIRA-Sample01" --repo-version="v0.2.0" 
+sourcesage --mode Sage GenerateReport
+```
+
+#### コミットメッセージの生成
+
+```bash
+sourcesage --mode Sage GenerateReport CommitCraft --model-name "gemini/gemini-1.5-pro-latest"
+```
+
+#### リリースノートの生成
+
+```bash
+sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets\DOCUMIND\Repository_summary.md" --docuMind-release-report ".SourceSageAssets\RELEASE_REPORT\Report_v5.0.0.md"  --docuMind-changelog ".SourceSageAssets\Changelog\CHANGELOG_release_5.0.0.md"  --docuMind-output ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.0.md"  --docuMind-prompt-output ".SourceSageAssets/DOCUMIND/_PROMPT_v5.0.0.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
+
 ```
 
 
