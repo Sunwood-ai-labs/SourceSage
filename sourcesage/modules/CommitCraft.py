@@ -10,7 +10,7 @@ class CommitCraft:
         self.stage_info_file = stage_info_file
         self.llm_output_file = llm_output_file
         
-        tprint("ChangelogGenerator")
+        tprint("CommitCraft")
 
     def generate_commit_messages(self):
         if self.model_name is None:
