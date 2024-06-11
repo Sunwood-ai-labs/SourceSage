@@ -113,15 +113,18 @@ class ChangelogGenerator:
                     f.write("\n")
             logger.info(f"機能ブランチの変更履歴が {output_file} に正常に生成されました。")
             
-
     def integrate_changelogs(self):
         changelog_files = [file for file in os.listdir(self.output_dir) if file.startswith("CHANGELOG_")]
         integrated_changelog = "# 統合された変更履歴\n\n"
 
         for file in changelog_files:
-            with open(os.path.join(self.output_dir, file), 'r', encoding='utf-8') as f:
-                content = f.read()
-                integrated_changelog += f"{content}\n\n"
+            file_path = os.path.join(self.output_dir, file)
+            try:
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    integrated_changelog += f"{content}\n\n"
+            except UnicodeDecodeError as e:
+                logger.warning(f"ファイル '{file_path}' のデコードエラーをスキップします: {str(e)}")
 
         output_file = os.path.join(self.output_dir, "CHANGELOG_integrated.md")
         with open(output_file, 'w', encoding='utf-8') as f:
