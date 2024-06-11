@@ -45,7 +45,7 @@ SourceSageは、プロジェクトのソースコードとファイル構成を�
 
 ## 更新内容
 
-- [【2024/06/10】 SourceSage 5.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v5.0.0)
+- [【2024/06/10】 SourceSage 5.0.2](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v5.0.2)
   - AIRA と Harmon.AI の設定を追加し、コード生成機能を追加(`DocuMind`、`CommitCraft`)
 - [【2024/05/12】 SourceSage 4.2.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v4.2.0)
   - ステージング情報のテンプレートに絵文字と[GAIAH](https://github.com/Sunwood-ai-labs/Gaiah)に対応
@@ -145,7 +145,7 @@ sourcesage --mode Sage GenerateReport CommitCraft --model-name "gemini/gemini-1.
 #### リリースノートの生成
 
 ```bash
-sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets\DOCUMIND\Repository_summary.md" --docuMind-release-report ".SourceSageAssets\RELEASE_REPORT\Report_v5.0.0.md"  --docuMind-changelog ".SourceSageAssets\Changelog\CHANGELOG_release_5.0.0.md"  --docuMind-output ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.0.md"  --docuMind-prompt-output ".SourceSageAssets/DOCUMIND/_PROMPT_v5.0.0.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
+sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets\DOCUMIND\Repository_summary.md" --docuMind-release-report ".SourceSageAssets\RELEASE_REPORT\Report_v5.0.2.md"  --docuMind-changelog ".SourceSageAssets\Changelog\CHANGELOG_release_5.0.2.md"  --docuMind-output ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.2.md"  --docuMind-prompt-output ".SourceSageAssets/DOCUMIND/_PROMPT_v5.0.2.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
 
 ```
 
