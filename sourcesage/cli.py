@@ -6,6 +6,7 @@ import os
 from loguru import logger
 import sys
 from art import *
+import yaml
 
 from .config.constants import Constants
 from .modules.CommitCraft import CommitCraft
@@ -23,7 +24,7 @@ logger.configure(
 
 def main():
     parser = argparse.ArgumentParser(description='SourceSage CLI')
-    tprint("   SourceSage", font="rnd-xlarge")
+    tprint(" SourceSage", font="rnd-xlarge")
     
     # ==============================================
     # 基本設定
@@ -34,6 +35,13 @@ def main():
     parser.add_argument('--owner', help='リポジトリのオーナー', default='Sunwood-ai-labs')  
     parser.add_argument('--repository', help='リポジトリの名前', default='SourceSage')  
     parser.add_argument('--mode', nargs='+', help='実行するモード: Sage, GenerateReport, CommitCraft, DocuMind, または all', default='all')
+    
+    # ==============================================
+    # 変更履歴の設定
+    #
+    parser.add_argument('--changelog-start-tag', type=str, default=None, help='変更履歴の開始タグ')
+    parser.add_argument('--changelog-end-tag', type=str, default=None, help='変更履歴の終了タグ')
+
 
     package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     default_ignore_file = os.path.join(package_root, 'sourcesage', 'config', '.SourceSageignore')
@@ -84,15 +92,39 @@ def main():
     parser.add_argument('--docuMind-prompt-output', type=str, default=".SourceSageAssets/DOCUMIND/_PROMPT.md", help='リリースノート作成のプロンプト')
     parser.add_argument('--repo-name', type=str, default="SourceSage", help='リポジトリの名前')
     parser.add_argument('--repo-version', type=str, default="v0.2.0", help='リポジトリのバージョン')
-        
-    args = parser.parse_args()
+    
+    # ==============================================
+    # Configファイル
+    #
+    parser.add_argument('-f', '--yaml-file', help='設定をyamlファイルから読み込む', default=None)
 
+    _args = parser.parse_args()
+
+    if _args.yaml_file:
+        logger.info(f"{_args.yaml_file}を読み込みます...")
+        with open(_args.yaml_file, 'r') as f:
+            yaml_args = yaml.safe_load(f)
+            args_dict = vars(_args)
+            for key, value in yaml_args.items():
+                key = key.replace("-", "_")
+                logger.debug(">> {: >30} : {: <20}".format(str(key), str(value)))
+                args_dict[key] = value
+            args = argparse.Namespace(**args_dict)
+    else:
+        args = _args
+        
+    logger.info(f"---------------------------- パラメータ ----------------------------")
+    args_dict = vars(args)
+    for key, value in args_dict.items():
+        key = key.replace("-", "_")
+        logger.debug(">> {: >30} : {: <20}".format(str(key), str(value)))
+        
     # -----------------------------------------------
     # SourceSageの実行
-    #
     if 'all' in args.mode or 'Sage' in args.mode:
         logger.info("SourceSageを起動します...")
-        sourcesage = SourceSage(args.config, args.output, args.repo, args.owner, args.repository, args.ignore_file, args.language_map)
+        sourcesage = SourceSage(args.config, args.output, args.repo, args.owner, args.repository, args.ignore_file, args.language_map,
+                                args.changelog_start_tag, args.changelog_end_tag)
         sourcesage.run()
 
     # -----------------------------------------------
