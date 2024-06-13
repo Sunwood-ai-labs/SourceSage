@@ -1,0 +1,10 @@
+mode:
+ - DocuMind
+docuMind-model: "gemini/gemini-1.5-pro-latest"
+docuMind-db: ".SourceSageAssets\\DOCUMIND\\Repository_summary.md"
+docuMind-release-report: ".SourceSageAssets\\RELEASE_REPORT\\Report_v5.0.2.md"
+docuMind-changelog: ".SourceSageAssets\\Changelog\\CHANGELOG_release_5.0.2.md"
+docuMind-output: ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.2.md"
+docuMind-prompt-output: ".SourceSageAssets/DOCUMIND/_PROMPT_v5.0.2.md"
+repo-name: "SourceSage"
+repo-version: "v5.0.2"
