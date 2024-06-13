@@ -1,3 +1,4 @@
+# sourcesage\core.py
 import os
 from .modules.EnvFileHandler import create_or_append_env_file
 from .modules.source_sage import SourceSage as SourceSageModule
@@ -14,12 +15,15 @@ from art import *
 from loguru import logger
 
 class SourceSage:
-    def __init__(self, config_path, output_dir, repo_path, owner, repository, ignore_file, language_map_file):
+    def __init__(self, config_path, output_dir, repo_path, owner, repository, ignore_file, language_map_file,
+                 changelog_start_tag=None, changelog_end_tag=None):
         self.config_path = config_path
         self.output_dir = output_dir
         self.repo_path = repo_path
         self.ignore_file = ignore_file
         self.language_map_file = language_map_file
+        self.changelog_start_tag = changelog_start_tag
+        self.changelog_end_tag = changelog_end_tag
 
         self.constants = Constants(output_dir, owner, repository) 
 
@@ -41,7 +45,8 @@ class SourceSage:
         sourcesage_module.generate_markdown()
 
         # Generate changelog
-        changelog_generator = ChangelogGenerator(self.repo_path, os.path.join(self.constants.SOURCE_SAGE_ASSETS_DIR, self.constants.CHANGELOG_DIR))
+        changelog_generator = ChangelogGenerator(self.repo_path, os.path.join(self.constants.SOURCE_SAGE_ASSETS_DIR, self.constants.CHANGELOG_DIR),
+                                                 start_tag=self.changelog_start_tag, end_tag=self.changelog_end_tag)
         changelog_generator.generate_changelog_for_all_branches()
         changelog_generator.integrate_changelogs()
 
