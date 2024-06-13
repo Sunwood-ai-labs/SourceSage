@@ -1,146 +1,97 @@
-# Changelog - Features
+# 機能ブランチの変更履歴
 
-## feature/add-git-logs
+## feature/default-ignore
 
-- [c346a22] - 変更の目的を明確にし、ファイル名や具体的な変更箇所の記述は最小限に抑えた簡潔なコミットメッセージを以下のように作成しました:
 
-"ChangelogGeneratorクラスの導入によりコードの可読性と保守性を向上"
+51693d] - 🔖 (#28)[chore] パッケージバージョンを5.0.2に更新
 
-このコミットでは、以下の主な変更が行われています:
+  - 作者: Maki
+  - 日時: 2024-06-11 19:26:37 +0900
+  - 詳細:
+		- setup.pyにおけるバージョン情報を5.0.2に更新
+		- パッケージの整合性を保つためのバージョン更新
 
-- `get_repo()`, `get_commits()`, `format_commit()` の各機能をChangelogGeneratorクラスにまとめ、インスタンス化して使用するように変更
-- クラス化することで、関数の再利用性や拡張性が向上し、コードの可読性と保守性が改善されました
-- 使用方法も簡潔になり、main関数の呼び出しが明確になりました (Maki, 2024-03-30)
-- [0344765] - Update CHANGELOG.md (Maki, 2024-03-30)
-- [5c5e6ac] - Create get_git_log.py (Maki, 2024-03-30)
-- [8d4a253] - Create CHANGELOG.md (Maki, 2024-03-30)
-- [f26fca5] - Merge branch 'feature/modules' into develop (Maki, 2024-03-30)
-- [36d6a4a] - 簡潔にまとめると、このコミットでは以下の変更が行われています:
+  - 差分:
 
-- `SourceSage.py` ファイルの内容を大幅に変更
-- `sys.path.append()` を使ってモジュールのパスを追加
-- `pprint.pprint()` を使ってシステムパスをデバッグ出力
-- `SourceSage` クラスのインスタンス化と `generate_markdown()` 呼び出しの際に、設定ファイルのパスを変更
+```diff
+--- a/setup.py
++++ b/setup.py
+@@ -14,7 +14,7 @@ setup(
+-    version='5.0.1',
++    version='5.0.2',
+```
 
-これらの変更は、ソースコードの構造を改善し、モジュールの読み込みを正しく行うことを目的としています。これにより、ソースコードの可読性と保守性が向上します。 (Maki, 2024-03-30)
-- [60ccecb] - Update SourceSage.md (Maki, 2024-03-30)
-- [6796a56] - Create language_map.json (Maki, 2024-03-30)
-- [d6e1af6] - Delete language_map.json (Maki, 2024-03-30)
-- [01a3876] - Merge branch 'feature/code-block' into develop (Maki, 2024-03-30)
-- [b42c67d] - ソースコード生成ツールの改善
+---
+### [e192375] - 📝 (#28)[docs] READMEファイルのリリースリンク更新
 
-- 言語ごとのシンタックスハイライト機能を追加しました
-- 対象フォルダの指定やファイルの除外設定を複数行対応しました
-- コード生成時のエラー処理を改善しました
-- 設定ファイルの場所を外部化し、柔軟性を高めました
+  - 作者: Maki
+  - 日時: 2024-06-11 19:26:34 +0900
+  - 詳細:
+		- SourceSageの最新リリース情報を5.0.2に更新
+		- リリースリンクとリリースノートの文書を整理
 
-これらの変更により、ソースコード抽出時の表示が改善され、ツールの使い勝手が向上しました。 (Maki, 2024-03-30)
-- [c5cbeff] - Update SourceSage.md (Maki, 2024-03-30)
-- [0229075] - Update README.md (Maki, 2024-03-30)
-- [a7e2de5] - Merge branch 'feature/ignore-file' into develop (Maki, 2024-03-30)
-- [7c2fcc8] - Create SourceSage.md (Maki, 2024-03-30)
-- [d900f91] - Configured GitLens AI settings to use Anthropic's Claude-3 model and generate commit messages in Japanese. (Maki, 2024-03-30)
-- [067e1b2] - ソースコードをより効率的に組織化するために、次の変更を行いました:
+  - 差分:
 
-1. 無視するファイルやフォルダをリスト化した `.SourceSageignore` ファイルを追加しました。これにより、不要なファイルやフォルダを自動的に除外できるようになりました。
-2. `SourceSage.py` の `_is_excluded()` メソッドを改善し、 `.SourceSageignore` ファイルに記載された除外パターンに従って、ファイルとフォルダの除外処理を行うようにしました。
-3. 不要なコメントを削除し、コードの可読性と保守性を向上させました。
+```diff
+--- a/README.md
++++ b/README.md
+@@ -45,7 +45,7 @@ SourceSageは、プロジェクトのソースコードとファイル構成を
+-- [【2024/06/10】 SourceSage 5.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v5.0.0)
++- [【2024/06/10】 SourceSage 5.0.2](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v5.0.2)
+@@ -145,7 +145,7 @@ sourcesage --mode Sage GenerateReport CommitCraft --model-name "gemini/gemini-1.
+-sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets\DOCUMIND\Repository_summary.md" --docuMind-release-report ".SourceSageAssets\RELEASE_REPORT\Report_v5.0.0.md"  --docuMind-changelog ".SourceSageAssets\Changelog\CHANGELOG_release_5.0.0.md"  --docuMind-output ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.0.md"  --docuMind-prompt-output ".SourceSageAssets/DOCUMIND/_PROMPT_v5.0.0.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
++sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets\DOCUMIND\Repository_summary.md" --docuMind-release-report ".SourceSageAssets\RELEASE_REPORT\Report_v5.0.2.md"  --docuMind-changelog ".SourceSageAssets\Changelog\CHANGELOG_release_5.0.2.md"  --docuMind-output ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.2.md"  --docuMind-prompt-output ".SourceSageAssets/DOCUMIND/_PROMPT_v5.0.2.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
+```
 
-これらの変更により、SourceSageツールの使いやすさが向上し、プロジェクトの管理がスムーズになるはずです。 (Maki, 2024-03-30)
-- [79705b5] - Refactor README for SourceSage project
+---
+### [3523c0c] - 🚀 [chore] .SourceSageignoreの更新
 
-Consolidated project structure and content into a single markdown file, enabling easier understanding and analysis for AI language models. Excluded unnecessary files and directories, enhancing clarity. Updated usage instructions and examples to reflect changes. Also localized link to GitHub repository.
+  - 作者: Maki
+  - 日時: 2024-06-11 19:22:30 +0900
+  - 詳細:
+		- STAGE_INFO, example, ISSUES_RESOLVE, testsをignoreリストに追加
+		- ドキュメントと環境設定ファイルの管理を改善
 
-No references. (Maki, 2024-03-30)
-- [1c6ebb6] - Refactor exclude patterns for SourceSage
+  - 差分:
 
-Update exclude patterns to better reflect current project structure and exclude unnecessary files and folders. This change ensures accurate and efficient markdown generation. No associated issues addressed. (Maki, 2024-03-30)
-- [a7c5a82] - Refactor output file name for clarity
+```diff
+--- a/.SourceSageignore
++++ b/.SourceSageignore
+@@ -26,4 +26,8 @@ build
+-.env
++.env
++STAGE_INFO
++example
++ISSUES_RESOLVE
++tests
+```
 
-Change the output file name to 'SourceSage.md' for improved clarity and consistency with the class name. This enhances code readability and maintainability. No associated issues. (Maki, 2024-03-30)
-- [d656a61] - Update README.md (Maki, 2024-03-29)
-- [bc31164] - Create SourceSage.py (Maki, 2024-03-29)
-- [c749d9a] - Create SourceSage_icon6.png (Maki, 2024-03-29)
-- [407ddbe] - Update README.md (Maki, 2024-03-29)
-- [330b107] - Create SourceSage_icon5.png (Maki, 2024-03-29)
-- [77eafaf] - Update README.md (Maki, 2024-03-29)
-- [167e71e] - Create SourceSage_icon4.png (Maki, 2024-03-29)
-- [3d69364] - Update README.md (Maki, 2024-03-29)
-- [4828ab0] - Create SourceSage_icon3.png (Maki, 2024-03-29)
-- [7ed0982] - Update README.md (Maki, 2024-03-29)
-- [3f2bb6d] - Update README.md (Maki, 2024-03-29)
-- [7b2c70f] - Create SourceSage_icon.png (Maki, 2024-03-29)
-- [8a96c27] - Initial commit (Maki, 2024-03-29)
+---
+### [abed214] - 🔧 [refactor] チェンジログ統合機能の堅牢性向上
 
-## feature/add-git-logs
+  - 作者: Maki
+  - 日時: 2024-06-11 19:22:27 +0900
+  - 詳細:
+		- Unicodeデコードエラーを処理する例外処理を追加
+		- チェンジログファイルの読み込みをより堅牢にするためのロギングを改善
 
-- [c346a22] - 変更の目的を明確にし、ファイル名や具体的な変更箇所の記述は最小限に抑えた簡潔なコミットメッセージを以下のように作成しました:
+  - 差分:
 
-"ChangelogGeneratorクラスの導入によりコードの可読性と保守性を向上"
+```diff
+--- a/sourcesage/modules/ChangelogGenerator.py
++++ b/sourcesage/modules/ChangelogGenerator.py
+@@ -113,15 +113,18 @@ class ChangelogGenerator:
+-
+-            with open(os.path.join(self.output_dir, file), 'r', encoding='utf-8') as f:
+-                content = f.read()
+-                integrated_changelog += f"{content}\n\n"
++            file_path = os.path.join(self.output_dir, file)
++            try:
++                with open(file_path, 'r', encoding='utf-8') as f:
++                    content = f.read()
++                    integrated_changelog += f"{content}\n\n"
++            except UnicodeDecodeError as e:
++                logger.warning(f"ファイル '{file_path}' のデコードエラーをスキップします: {str(e)}")
+```
 
-このコミットでは、以下の主な変更が行われています:
-
-- `get_repo()`, `get_commits()`, `format_commit()` の各機能をChangelogGeneratorクラスにまとめ、インスタンス化して使用するように変更
-- クラス化することで、関数の再利用性や拡張性が向上し、コードの可読性と保守性が改善されました
-- 使用方法も簡潔になり、main関数の呼び出しが明確になりました (Maki, 2024-03-30)
-- [0344765] - Update CHANGELOG.md (Maki, 2024-03-30)
-- [5c5e6ac] - Create get_git_log.py (Maki, 2024-03-30)
-- [8d4a253] - Create CHANGELOG.md (Maki, 2024-03-30)
-- [f26fca5] - Merge branch 'feature/modules' into develop (Maki, 2024-03-30)
-- [36d6a4a] - 簡潔にまとめると、このコミットでは以下の変更が行われています:
-
-- `SourceSage.py` ファイルの内容を大幅に変更
-- `sys.path.append()` を使ってモジュールのパスを追加
-- `pprint.pprint()` を使ってシステムパスをデバッグ出力
-- `SourceSage` クラスのインスタンス化と `generate_markdown()` 呼び出しの際に、設定ファイルのパスを変更
-
-これらの変更は、ソースコードの構造を改善し、モジュールの読み込みを正しく行うことを目的としています。これにより、ソースコードの可読性と保守性が向上します。 (Maki, 2024-03-30)
-- [60ccecb] - Update SourceSage.md (Maki, 2024-03-30)
-- [6796a56] - Create language_map.json (Maki, 2024-03-30)
-- [d6e1af6] - Delete language_map.json (Maki, 2024-03-30)
-- [01a3876] - Merge branch 'feature/code-block' into develop (Maki, 2024-03-30)
-- [b42c67d] - ソースコード生成ツールの改善
-
-- 言語ごとのシンタックスハイライト機能を追加しました
-- 対象フォルダの指定やファイルの除外設定を複数行対応しました
-- コード生成時のエラー処理を改善しました
-- 設定ファイルの場所を外部化し、柔軟性を高めました
-
-これらの変更により、ソースコード抽出時の表示が改善され、ツールの使い勝手が向上しました。 (Maki, 2024-03-30)
-- [c5cbeff] - Update SourceSage.md (Maki, 2024-03-30)
-- [0229075] - Update README.md (Maki, 2024-03-30)
-- [a7e2de5] - Merge branch 'feature/ignore-file' into develop (Maki, 2024-03-30)
-- [7c2fcc8] - Create SourceSage.md (Maki, 2024-03-30)
-- [d900f91] - Configured GitLens AI settings to use Anthropic's Claude-3 model and generate commit messages in Japanese. (Maki, 2024-03-30)
-- [067e1b2] - ソースコードをより効率的に組織化するために、次の変更を行いました:
-
-1. 無視するファイルやフォルダをリスト化した `.SourceSageignore` ファイルを追加しました。これにより、不要なファイルやフォルダを自動的に除外できるようになりました。
-2. `SourceSage.py` の `_is_excluded()` メソッドを改善し、 `.SourceSageignore` ファイルに記載された除外パターンに従って、ファイルとフォルダの除外処理を行うようにしました。
-3. 不要なコメントを削除し、コードの可読性と保守性を向上させました。
-
-これらの変更により、SourceSageツールの使いやすさが向上し、プロジェクトの管理がスムーズになるはずです。 (Maki, 2024-03-30)
-- [79705b5] - Refactor README for SourceSage project
-
-Consolidated project structure and content into a single markdown file, enabling easier understanding and analysis for AI language models. Excluded unnecessary files and directories, enhancing clarity. Updated usage instructions and examples to reflect changes. Also localized link to GitHub repository.
-
-No references. (Maki, 2024-03-30)
-- [1c6ebb6] - Refactor exclude patterns for SourceSage
-
-Update exclude patterns to better reflect current project structure and exclude unnecessary files and folders. This change ensures accurate and efficient markdown generation. No associated issues addressed. (Maki, 2024-03-30)
-- [a7c5a82] - Refactor output file name for clarity
-
-Change the output file name to 'SourceSage.md' for improved clarity and consistency with the class name. This enhances code readability and maintainability. No associated issues. (Maki, 2024-03-30)
-- [d656a61] - Update README.md (Maki, 2024-03-29)
-- [bc31164] - Create SourceSage.py (Maki, 2024-03-29)
-- [c749d9a] - Create SourceSage_icon6.png (Maki, 2024-03-29)
-- [407ddbe] - Update README.md (Maki, 2024-03-29)
-- [330b107] - Create SourceSage_icon5.png (Maki, 2024-03-29)
-- [77eafaf] - Update README.md (Maki, 2024-03-29)
-- [167e71e] - Create SourceSage_icon4.png (Maki, 2024-03-29)
-- [3d69364] - Update README.md (Maki, 2024-03-29)
-- [4828ab0] - Create SourceSage_icon3.png (Maki, 2024-03-29)
-- [7ed0982] - Update README.md (Maki, 2024-03-29)
-- [3f2bb6d] - Update README.md (Maki, 2024-03-29)
-- [7b2c70f] - Create SourceSage_icon.png (Maki, 2024-03-29)
-- [8a96c27] - Initial commit (Maki, 2024-03-29)
-
+---
