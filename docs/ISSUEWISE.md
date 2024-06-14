@@ -1,3 +1,7 @@
+<p align="center">
+<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/main/docs/icon/head_icon4.png" width="100%">
+</p>
+
 # IssueWize：AIを活用した効率的なIssue作成
 
 IssueWizeは、開発者が提供するIssueの概要から、AIを活用して詳細なIssueを自動的に作成するツールです。これにより、開発者はIssueの作成にかかる時間を大幅に削減し、プロジェクトの課題を効率的に管理することができます。
