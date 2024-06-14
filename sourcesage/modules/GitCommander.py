@@ -3,6 +3,7 @@ from loguru import logger
 import subprocess
 
 # logger.level("SUBCMD", no=25, color="<green>", icon="✓")
+logger.level("SUBPROCESS", no=15, color="<cyan>", icon="🔍")
 
 def run_command(command, cwd=None, check=True, preview=True):
     """

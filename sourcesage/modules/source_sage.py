@@ -4,10 +4,6 @@ from .markdown_utils import generate_markdown_for_folder
 from loguru import logger
 import sys
 
-# logger.level("CMD", no=25, color="<green>", icon="✓")
-# "subprocess"レベルを追加
-logger.level("SUBPROCESS", no=15, color="<cyan>", icon="🔍")
-
 class SourceSage:
     def __init__(self, folders, ignore_file='.SourceSageignore', output_file='output.md', language_map_file='language_map.json'):
         self.folders = folders
