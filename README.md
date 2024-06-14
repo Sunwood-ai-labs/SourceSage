@@ -150,6 +150,13 @@ sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --doc
 ```
 
 
+#### IssueWizeを使って詳細なissueの作成
+
+```bash
+sourcesage --mode IssueWize  --issue-summary "IssueWize.pyをSourceSageのCLIコマンドから実行できるようにコマンドを追加する。"    --project-name "TaskSphere"  --milestone-name "Sprint01"  --repo-overview-file ".SourceSageAssetsDOCUMINDRepository_summary.md"  --issuewize-model "gemini/gemini-1.5-flash"
+
+```
+
 ### リポジトリのIssueも取得する方法
 
 デフォルトでは、SourceSageは現在のディレクトリをプロジェクトのルートとして解析します。ただし、GitHub上のリポジトリのIssueも取得したい場合は、以下のようにリポジトリのオーナー名とリポジトリ名をコマンドライン引数で指定します：
