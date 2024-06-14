@@ -1,3 +1,4 @@
+# sourcesage\modules\IssueWize.py
 import json
 import os
 import re
@@ -6,7 +7,9 @@ from dotenv import load_dotenv
 from litellm import completion
 from loguru import logger
 
-from GitCommander import run_command
+from art import *
+
+from .GitCommander import run_command
 
 # .envファイルから環境変数を読み込む
 load_dotenv()
@@ -16,6 +19,9 @@ logger.add("issue_creator.log", rotation="1 MB", compression="zip", enqueue=True
 
 class IssueWize:
     def __init__(self, model="gemini/gemini-pro"):
+        
+        tprint("IssueWize")
+        
         self.model = model
 
     def extract_json_from_response(self, response_text):
@@ -53,8 +59,7 @@ class IssueWize:
 以下のissueの概要からタイトルと本文とラベルをJSONフォーマットで生成してください:
 下記のリポジトリの概要を参考にして生成して
 タスクはなるべく分割して。
-JSONのbodyには箇条書きにしてマークダウン形式でください
-JSONのbodyにはマークダウンの章構成を多用して可読性を高めて
+JSONのbodyはなるべく文章にして改行などは使用しないで句読点などで区切って。
 ラベルは下記のラベルリストから参照して
 
 {issue_summary}
@@ -210,12 +215,14 @@ JSONのbodyにはマークダウンの章構成を多用して可読性を高め
 if __name__ == '__main__':
     # 使用例
     issue_summary = """
-    GithubのCLIとLLMを使ってissueの概要から詳細な要件を生成してissueを生成する機能
+    IssueWize.pyをSourceSageのCLIコマンドから実行できるようにコマンドを追加する。
+    SourceSageのCLIコマンドからパラメータを指定できるようにしたい（repo_overview_fileやモデル名などのパラメータ）
     """
     project_name = "TaskSphere"
     milestone = "Sprint01"
-    # repo_overview_file = r".SourceSageAssets\DOCUMIND\Repository_summary.md"
-    repo_overview_file = r"README.md"
-    model = "gemini/gemini-pro"
+    repo_overview_file = r".SourceSageAssets\DOCUMIND\Repository_summary.md"
+    # repo_overview_file = r"README.md"
+    # model = "gemini/gemini-1.5-pro"
+    model = "gemini/gemini-1.5-flash"
     issue_creator = IssueWize(model=model)
     issue_creator.create_optimized_issue(issue_summary, project_name, milestone, repo_overview_file, max_retries=5, retry_delay=10)
