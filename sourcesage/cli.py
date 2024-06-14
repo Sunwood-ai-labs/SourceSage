@@ -11,6 +11,7 @@ import yaml
 from .config.constants import Constants
 from .modules.CommitCraft import CommitCraft
 from .modules.DocuMind import DocuMind
+from .modules.IssueWize import IssueWize
 
 logger.configure(
     handlers=[
@@ -34,8 +35,7 @@ def main():
     parser.add_argument('--repo', help='リポジトリへのパス', default='./')
     parser.add_argument('--owner', help='リポジトリのオーナー', default='Sunwood-ai-labs')  
     parser.add_argument('--repository', help='リポジトリの名前', default='SourceSage')  
-    parser.add_argument('--mode', nargs='+', help='実行するモード: Sage, GenerateReport, CommitCraft, DocuMind, または all', default='all')
-    
+    parser.add_argument('--mode', nargs='+', help='実行するモード: Sage, GenerateReport, CommitCraft, DocuMind, IssueWize, またはall', default='all')
     # ==============================================
     # 変更履歴の設定
     #
@@ -72,6 +72,15 @@ def main():
     parser.add_argument('--report-sections', type=str, nargs='+', default=["version_comparison", "diff_details"], help='レポートに含めるセクション')
     parser.add_argument('--output-path', type=str, default=".SourceSageAssets/RELEASE_REPORT/", help='Markdownレポートの保存先フォルダ')
     parser.add_argument('--report-file-name', type=str, default="Report_{latest_tag}.md", help='Markdownレポートのファイル名。{latest_tag}は最新のタグに置換されます。')
+    
+    # ==============================================
+    # IssueWize用の引数を追加
+    #
+    parser.add_argument('--issue-summary', type=str, default=None, help='Issueの概要')
+    parser.add_argument('--project-name', type=str, default=None, help='IssueWizeのプロジェクト名')
+    parser.add_argument('--milestone-name', type=str, default=None, help='IssueWizeのマイルストーン名')
+    parser.add_argument('--repo-overview-file', type=str, default=None, help='リポジトリ概要のマークダウンファイルパス')
+    parser.add_argument('--issuewize-model', type=str, default=None, help='IssueWizeで使用するモデル名')
     
     # ==============================================
     # CommitCraft用の引数を追加
@@ -119,6 +128,7 @@ def main():
         key = key.replace("-", "_")
         logger.debug(">> {: >30} : {: <20}".format(str(key), str(value)))
         
+
     # -----------------------------------------------
     # SourceSageの実行
     if 'all' in args.mode or 'Sage' in args.mode:
@@ -126,6 +136,18 @@ def main():
         sourcesage = SourceSage(args.config, args.output, args.repo, args.owner, args.repository, args.ignore_file, args.language_map,
                                 args.changelog_start_tag, args.changelog_end_tag)
         sourcesage.run()
+
+    # -----------------------------------------------  
+    # IssueWizeを使用してIssueを作成
+    #
+    if 'all' in args.mode or 'IssueWize' in args.mode:
+        issuewize = IssueWize(model=args.issuewize_model)
+        if args.issue_summary and args.project_name and args.repo_overview_file:
+            logger.info("IssueWizeを使用してIssueを作成します...")
+            issuewize.create_optimized_issue(args.issue_summary, args.project_name, args.milestone_name, args.repo_overview_file)
+        else:
+            logger.warning("IssueWizeの実行に必要なパラメータが指定されていません。--issue-summary, --project-name, --repo-overview-fileを指定してください。")
+        
 
     # -----------------------------------------------
     # レポートの生成
