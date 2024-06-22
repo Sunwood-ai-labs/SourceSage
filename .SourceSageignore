@@ -32,3 +32,5 @@ example
 ISSUES_RESOLVE
 tests
 changelog_generator.log
+issue_creator.log
+issue_response.txt

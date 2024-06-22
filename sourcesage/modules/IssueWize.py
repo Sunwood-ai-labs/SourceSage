@@ -9,8 +9,11 @@ from loguru import logger
 
 from art import *
 
-from .GitCommander import run_command
-
+try:
+    from .GitCommander import run_command
+except:
+    from GitCommander import run_command
+    
 # .envファイルから環境変数を読み込む
 load_dotenv()
 
@@ -214,9 +217,20 @@ JSONのbodyはなるべく文章にして改行などは使用しないで句読
 
 if __name__ == '__main__':
     # 使用例
-    issue_summary = """
-    IssueWize.pyをSourceSageのCLIコマンドから実行できるようにコマンドを追加する。
-    SourceSageのCLIコマンドからパラメータを指定できるようにしたい（repo_overview_fileやモデル名などのパラメータ）
+    issue_summary = r"""
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\makim\miniconda3\Scripts\sourcesage.exe\__main__.py", line 7, in <module>
+  File "C:\Users\makim\miniconda3\Lib\site-packages\sourcesage\cli.py", line 128, in main
+    sourcesage.run()
+  File "C:\Users\makim\miniconda3\Lib\site-packages\sourcesage\core.py", line 51, in run
+    changelog_generator.integrate_changelogs()
+  File "C:\Users\makim\miniconda3\Lib\site-packages\sourcesage\modules\ChangelogGenerator.py", line 150, in integrate_changelogs
+    changelog_files = [file for file in os.listdir(self.output_dir) if file.startswith("CHANGELOG_")]
+FileNotFoundError: [WinError 3] 指定されたパスが見つかりません。: './.SourceSageAssets/Changelog'
+
+(base) C:\Prj\jupytext>
     """
     project_name = "TaskSphere"
     milestone = "Sprint01"
