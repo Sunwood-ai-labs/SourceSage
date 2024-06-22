@@ -146,6 +146,7 @@ class ChangelogGenerator:
         if os.path.exists(integrated_changelog_path):
             os.remove(integrated_changelog_path)
             logger.info(f"既存の {integrated_changelog_path} ファイルを削除しました。")
+        os.makedirs(self.output_dir, exist_ok=True)
             
         changelog_files = [file for file in os.listdir(self.output_dir) if file.startswith("CHANGELOG_")]
         integrated_changelog = "# 統合された変更履歴\n\n"
