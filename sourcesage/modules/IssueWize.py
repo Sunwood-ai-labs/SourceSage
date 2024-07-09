@@ -15,7 +15,6 @@ except:
     from GitCommander import run_command
     
 # .envファイルから環境変数を読み込む
-load_dotenv()
 
 # ロガーの設定
 logger.add("issue_creator.log", rotation="1 MB", compression="zip", enqueue=True)
