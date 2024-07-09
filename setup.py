@@ -14,7 +14,7 @@ setup(
     name='sourcesage',
     
     # パッケージのバージョン
-    version='5.2.1',
+    version='5.3.0',
     
     # パッケージに含めるモジュールを自動的に探す
     packages=find_packages(),
@@ -57,6 +57,9 @@ setup(
             'art',
             'termcolor',
             'google-generativeai',
-            'litellm'
+            'litellm',
+            'beautifulsoup4',
+            'markdown',
+            'html2text'
     ],
 )

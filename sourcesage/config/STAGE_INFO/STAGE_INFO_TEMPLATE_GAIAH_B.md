@@ -9,8 +9,9 @@
 - コミットメッセージは日本語にして
 - 正確にstep-by-stepで処理して
 - ブランチで数ファイルごとに分けた方が良いと判断した場合はブランチ名を提案して
-- なるべく少ないブランチ数にして
+- ブランチ数は少なくして
 - 最適な「commit messages title」を挿入して
+- 下記のCommit Messages フォーマットで出力して、それ以外は出力しないで。
 
 下記の差分情報とコミットメッセージの種類を参考に下記のマークダウンフォーマットで出力して
 
@@ -29,11 +30,14 @@
   - chore: ビルドプロセスやドキュメント生成などの補助ツールやライブラリの変更
 
 
-=== Commit Messages フォーマット ===
+# Commit Messages フォーマット
 
-# commit messages title
 
-## feature/branch01
+```commit-craft
+
+# [Commitのタイトル]
+
+## feature/branch-name
 
 ### path/to/file1.txt
 
@@ -51,7 +55,7 @@
 - 詳細な説明（必要に応じて）
 ```
 
-## release/sample
+## release/branch-name
 
 ### path/to/file3.txt
 
@@ -60,7 +64,9 @@
 
 - 詳細な説明（必要に応じて）
 ```
-===
+
+```
+
 
 # Stageの情報
 
@@ -68,3 +74,4 @@
 [STAGED_DIFF.md]
 
 ```
+

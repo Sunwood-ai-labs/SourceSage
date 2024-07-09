@@ -23,19 +23,18 @@ logger.configure(
     ]
 )
 
-def main():
-    parser = argparse.ArgumentParser(description='SourceSage CLI')
-    tprint(" SourceSage", font="rnd-xlarge")
+def add_arguments(parser):
+    """SourceSage用の引数をパーサーに追加する"""
     
     # ==============================================
     # 基本設定
     #
-    parser.add_argument('--config', help='設定ファイルへのパス', default='sourcesage.yml')
-    parser.add_argument('--output', help='生成されたファイルの出力ディレクトリ', default='./')
+    parser.add_argument('--ss-config', help='設定ファイルへのパス', default='sourcesage.yml')
+    parser.add_argument('--ss-output', help='生成されたファイルの出力ディレクトリ', default='./')
     parser.add_argument('--repo', help='リポジトリへのパス', default='./')
     parser.add_argument('--owner', help='リポジトリのオーナー', default='Sunwood-ai-labs')  
     parser.add_argument('--repository', help='リポジトリの名前', default='SourceSage')  
-    parser.add_argument('--mode', nargs='+', help='実行するモード: Sage, GenerateReport, CommitCraft, DocuMind, IssueWize, またはall', default='all')
+    parser.add_argument('--ss-mode', nargs='+', help='実行するモード: Sage, GenerateReport, CommitCraft, DocuMind, IssueWize, またはall', default='all')
     # ==============================================
     # 変更履歴の設定
     #
@@ -70,7 +69,7 @@ def main():
     parser.add_argument('--git-diff-command', type=str, nargs='+', default=["git", "diff"], help='git diffを生成するコマンド')
     parser.add_argument('--report-title', type=str, default="Git Diff レポート", help='Markdownレポートのタイトル')
     parser.add_argument('--report-sections', type=str, nargs='+', default=["version_comparison", "diff_details"], help='レポートに含めるセクション')
-    parser.add_argument('--output-path', type=str, default=".SourceSageAssets/RELEASE_REPORT/", help='Markdownレポートの保存先フォルダ')
+    parser.add_argument('--ss-output-path', type=str, default=".SourceSageAssets/RELEASE_REPORT/", help='Markdownレポートの保存先フォルダ')
     parser.add_argument('--report-file-name', type=str, default="Report_{latest_tag}.md", help='Markdownレポートのファイル名。{latest_tag}は最新のタグに置換されます。')
     
     # ==============================================
@@ -86,7 +85,7 @@ def main():
     # CommitCraft用の引数を追加
     #
     parser.add_argument('--llm-output', type=str, default="llm_output.md", help='LLMレスポンスの出力ファイル')
-    parser.add_argument('--model-name', type=str, default=None, help='LLMのモデル名（デフォルト: None）')
+    parser.add_argument('--ss-model-name', type=str, default=None, help='LLMのモデル名（デフォルト: None）')
     parser.add_argument('--stage-info-file', type=str, default=".SourceSageAssets\COMMIT_CRAFT/STAGE_INFO\STAGE_INFO_AND_PROMT_GAIAH_B.md", help='ステージファイルパス')
     parser.add_argument('--commit-craft-output', type=str, default=".SourceSageAssets/COMMIT_CRAFT/", help='CommitCraftの出力フォルダ')
     
@@ -107,40 +106,56 @@ def main():
     #
     parser.add_argument('-f', '--yaml-file', help='設定をyamlファイルから読み込む', default=None)
 
-    _args = parser.parse_args()
+def parse_arguments():
+    """コマンドライン引数を解析する"""
+    parser = argparse.ArgumentParser(description='SourceSage CLI')
+    tprint(" SourceSage", font="rnd-xlarge")
+    add_arguments(parser)
+    return parser.parse_args()
 
-    if _args.yaml_file:
-        logger.info(f"{_args.yaml_file}を読み込みます...")
-        with open(_args.yaml_file, 'r') as f:
-            yaml_args = yaml.safe_load(f)
-            args_dict = vars(_args)
-            for key, value in yaml_args.items():
-                key = key.replace("-", "_")
-                logger.debug(">> {: >30} : {: <20}".format(str(key), str(value)))
-                args_dict[key] = value
-            args = argparse.Namespace(**args_dict)
+def load_config_from_yaml(yaml_file=None):
+    """YAMLファイルから設定を読み込み、argparse.Namespaceオブジェクトを返す"""
+    default_config_file = 'sourcesage_config.yml'
+
+    if yaml_file:
+        config_file = yaml_file
+    elif os.path.exists(default_config_file):
+        config_file = default_config_file
     else:
-        args = _args
-        
+        return None  # 設定ファイルが見つからない場合は None を返す
+
+    logger.info(f"{config_file}を読み込みます...")
+    with open(config_file, 'r') as f:
+        yaml_args = yaml.safe_load(f)
+        args_dict = {}  # args_dict を初期化
+        for key, value in yaml_args.items():
+            key = key.replace("-", "_")
+            logger.debug(">> {: >30} : {: <20}".format(str(key), str(value)))
+            args_dict[key] = value
+        return argparse.Namespace(**args_dict)
+
+def log_arguments(args):
+    """引数の内容をログ出力する"""
     logger.info(f"---------------------------- パラメータ ----------------------------")
     args_dict = vars(args)
     for key, value in args_dict.items():
         key = key.replace("-", "_")
         logger.debug(">> {: >30} : {: <20}".format(str(key), str(value)))
-        
 
+def run(args=None):
+      
     # -----------------------------------------------
     # SourceSageの実行
-    if 'all' in args.mode or 'Sage' in args.mode:
+    if 'all' in args.ss_mode or 'Sage' in args.ss_mode:
         logger.info("SourceSageを起動します...")
-        sourcesage = SourceSage(args.config, args.output, args.repo, args.owner, args.repository, args.ignore_file, args.language_map,
+        sourcesage = SourceSage(args.ss_config, args.ss_output, args.repo, args.owner, args.repository, args.ignore_file, args.language_map,
                                 args.changelog_start_tag, args.changelog_end_tag)
         sourcesage.run()
 
     # -----------------------------------------------  
     # IssueWizeを使用してIssueを作成
     #
-    if 'all' in args.mode or 'IssueWize' in args.mode:
+    if 'all' in args.ss_mode or 'IssueWize' in args.ss_mode:
         issuewize = IssueWize(model=args.issuewize_model)
         if args.issue_summary and args.project_name and args.repo_overview_file:
             logger.info("IssueWizeを使用してIssueを作成します...")
@@ -152,15 +167,15 @@ def main():
     # -----------------------------------------------
     # レポートの生成
     #
-    if 'all' in args.mode or 'GenerateReport' in args.mode:
+    if 'all' in args.ss_mode or 'GenerateReport' in args.ss_mode:
         logger.info("git diff レポートの生成を開始します...")
         git_diff_generator = GitDiffGenerator(args.repo_path, args.git_fetch_tags, args.git_tag_sort, args.git_diff_command)
         diff, latest_tag, previous_tag = git_diff_generator.get_git_diff()
 
         if(diff != None):
             report_file_name = args.report_file_name.format(latest_tag=latest_tag)
-            os.makedirs(args.output_path, exist_ok=True)
-            output_path = os.path.join(args.output_path, report_file_name)
+            os.makedirs(args.ss_output_path, exist_ok=True)
+            output_path = os.path.join(args.ss_output_path, report_file_name)
 
             markdown_report_generator = MarkdownReportGenerator(diff, latest_tag, previous_tag, args.report_title, args.report_sections, output_path)
             markdown_report_generator.generate_markdown_report()
@@ -168,23 +183,29 @@ def main():
     # -----------------------------------------------
     # CommitCraftを使用してLLMにステージ情報を送信し、コミットメッセージを生成
     #
-    if 'all' in args.mode or 'CommitCraft' in args.mode:
+    if 'all' in args.ss_mode or 'CommitCraft' in args.ss_mode:
         stage_info_file = args.stage_info_file
         llm_output_file = os.path.join(args.commit_craft_output, args.llm_output)
         os.makedirs(args.commit_craft_output, exist_ok=True)
-        commit_craft = CommitCraft(args.model_name, stage_info_file, llm_output_file)
+        commit_craft = CommitCraft(args.ss_model_name, stage_info_file, llm_output_file)
         commit_craft.generate_commit_messages()
     
     # -----------------------------------------------
     # DocuMindを使用してリリースノートを生成
     #
-    if 'all' in args.mode or 'DocuMind' in args.mode:
+    if 'all' in args.ss_mode or 'DocuMind' in args.ss_mode:
         docuMind = DocuMind(args.docuMind_model, args.docuMind_db, args.docuMind_release_report, args.docuMind_changelog, args.repo_name, args.repo_version, args.docuMind_prompt_output)
         release_notes = docuMind.generate_release_notes()
         docuMind.save_release_notes(args.docuMind_output, release_notes)
 
     logger.success("プロセスが完了しました。")
     tprint("!! successfully !!", font="rnd-medium")
+
+def main():
+    _args = parse_arguments() 
+    args = load_config_from_yaml(_args.yaml_file) or _args 
+    log_arguments(args) 
+    run(args)
 
 if __name__ == '__main__':
     main()
