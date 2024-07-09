@@ -115,6 +115,10 @@ sourcesage --mode CommitCraft --model-name "gemini/gemini-1.5-pro-latest" --stag
 sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets\DOCUMIND\Repository_summary.md" --docuMind-release-report ".SourceSageAssets\RELEASE_REPORT\Report_v5.0.2.md"  --docuMind-changelog ".SourceSageAssets\Changelog\CHANGELOG_release_5.0.2.md"  --docuMind-output ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.2.md"  --docuMind-prompt-output ".SourceSageAssets/DOCUMIND/_PROMPT_v5.0.2.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
 ```
 
+```bash
+sourcesage --mode=DocuMind --yaml-file=docs\.sourcesage_releasenotes.yml
+```
+
 詳しくは[こちら`docs/DOCUMIND.md`](docs/DOCUMIND.md)
 
 

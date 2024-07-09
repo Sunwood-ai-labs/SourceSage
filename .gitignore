@@ -167,3 +167,5 @@ temp/
 .SourceSageAssets
 .Gaiah.md
 issue_response.txt
+llm_output.md
+output.html

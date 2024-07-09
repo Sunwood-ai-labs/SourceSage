@@ -47,7 +47,6 @@ class DocuMind:
 
     def generate_release_notes(self):
         """リリースノートを生成する"""
-        load_dotenv()
 
         prompt = f"以下の情報を元に、{self.repo_name}の新バージョン{self.repo_version}の日本語のリリースノートを生成してください。記載されているissueがあれば番号(#00みたいに)と共に記載して\n\n"
         prompt += f"# DocuMind\n\n{self.documen_db}\n\n"
