@@ -49,9 +49,10 @@ class DocuMind:
         """リリースノートを生成する"""
 
         prompt = f"""
-以下の情報を元に、{self.repo_name}の新バージョン{self.repo_version}の日本語のリリースノートを生成してください。
+以下の情報を元に、リリースノートの要件に従って{self.repo_name}の新バージョン{self.repo_version}の日本語のリリースノートを生成してください。
 
 # リリースノートの要件:
+<Release notes requirements>
 1. 簡潔で明確な概要から始めてください。
 2. 主要な新機能、改善点、バグ修正を箇条書きで列挙してください。
 3. 各項目に関連するコミットハッシュがある場合は、(commit: abc1234のように)括弧内に記載してください。ハッシュは最初の7文字のみ使用してください。
@@ -59,8 +60,17 @@ class DocuMind:
 5. アップグレード手順や互換性に関する注意事項があれば記載してください。
 6. 貢献者への謝辞を含めてください（もし情報があれば）。
 7. 各セクションに適切な絵文字を使用して、視覚的に分かりやすくしてください。
+8. 完成されたマークダウン形式のリリースノートを作成してください。
+
+下記の情報を基に、要件とフォーマットに従ってリリースノートを生成してください。
+情報が不足している場合は、適切に省略するか、一般的な表現で補完してください。
+コミットハッシュが提供されていない場合は、その項目にハッシュを含めないでください。
+絵文字は適切に使用し、読みやすさと視覚的魅力を向上させてください。
+
+</Release notes requirements>
 
 # 絵文字の使用ガイドライン:
+<Emoji usage guidelines>
 - 新機能: 🎉 (パーティーポッパー)
 - 改善点: 🚀 (ロケット)
 - バグ修正: 🐛 (バグ)
@@ -70,9 +80,10 @@ class DocuMind:
 - ドキュメント: 📚 (本)
 - 非推奨: 🗑️ (ゴミ箱)
 - 削除された機能: 🔥 (炎)
+</Emoji usage guidelines>
 
-# フォーマット:
-```
+# リリースノートのフォーマット:
+<Release notes format>
 # 🚀 {self.repo_name} v{self.repo_version} リリースノート
 
 ## 📋 概要
@@ -99,20 +110,28 @@ class DocuMind:
 
 ## 👏 謝辞
 [貢献者への謝辞]
-```
+</Release notes format>
 
 # 入力情報:
+<Input information>
 
-## DocuMind
+## リポジトリ情報
+<Repository information>
 {self.documen_db}
+</Repository information>
 
-## リリースレポート
+## 前のVerとの差分レポート
+<Difference report with previous version>
 {self.release_report}
+</Difference report with previous version>
 
 ## 変更履歴
+<change history>
 {self.changelog}
+</change history>
 
-上記の情報を基に、要件とフォーマットに従ってリリースノートを生成してください。情報が不足している場合は、適切に省略するか、一般的な表現で補完してください。コミットハッシュが提供されていない場合は、その項目にハッシュを含めないでください。絵文字は適切に使用し、読みやすさと視覚的魅力を向上させてください。
+</Input information>
+
         """
 
         self.save_prompt(prompt)
