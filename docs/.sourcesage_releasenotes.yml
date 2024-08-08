@@ -2,11 +2,11 @@ ss-mode:
  - DocuMind
 docuMind-model: "gemini/gemini-1.5-pro-latest"
 docuMind-db: ".SourceSageAssets/DOCUMIND/Repository_summary.md"
-docuMind-release-report: ".SourceSageAssets/RELEASE_REPORT/Report_v5.5.0.md"
+docuMind-release-report: ".SourceSageAssets/RELEASE_REPORT/Report_v5.5.1.md"
 docuMind-changelog: ".SourceSageAssets/Changelog/CHANGELOG_main.md"
-docuMind-output: ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.5.0.md"
-docuMind-prompt-output: ".SourceSageAssets/DOCUMIND/_PROMPT_v5.5.0.md"
+docuMind-output: ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.5.1.md"
+docuMind-prompt-output: ".SourceSageAssets/DOCUMIND/_PROMPT_v5.5.1.md"
 repo-name: "SourceSage"
-repo-version: "v5.5.0"
+repo-version: "v5.5.1"
 
 # sourcesage --ss-mode=DocuMind --yaml-file=docs\.sourcesage_releasenotes.yml
