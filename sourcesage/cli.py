@@ -202,6 +202,12 @@ def run(args=None):
     tprint("!! successfully !!", font="rnd-medium")
 
 def main():
+    
+    from dotenv import load_dotenv
+    dotenv_path=os.path.join(os.getcwd(), '.env')
+    logger.debug(f"dotenv_path : {dotenv_path}")
+    load_dotenv(dotenv_path=dotenv_path, verbose=True, override=True)
+    
     _args = parse_arguments() 
     args = load_config_from_yaml(_args.yaml_file) or _args 
     log_arguments(args) 
