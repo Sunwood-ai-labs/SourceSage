@@ -1,4 +1,4 @@
-.git
+.git/
 __pycache__
 LICENSE
 output.md
