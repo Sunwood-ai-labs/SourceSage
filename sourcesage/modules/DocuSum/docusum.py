@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from loguru import logger
 from art import *
+import requests
 
 try:
     from .file_pattern_matcher import FilePatternMatcher
@@ -41,6 +42,9 @@ class DocuSum:
         self.ignore_file = ignore_file
         self.output_file = output_file
         self.git_path = git_path if git_path else os.path.join(self.folders[0], '.git')
+
+        # .SourceSageIgnoreファイルの初期化
+        self._init_ignore_file()
         
         # language_map_fileが指定されていない場合、モジュールのディレクトリ内のファイルを使用
         if not os.path.exists(language_map_file):
@@ -116,6 +120,25 @@ class DocuSum:
         except Exception as e:
             logger.error(f"マークダウン生成エラー: {e}")
             raise
+
+    def _init_ignore_file(self):
+        """
+        .SourceSageIgnoreファイルの初期化を行う。
+        ファイルが存在しない場合、GitHubからデフォルトの設定をダウンロードして作成する。
+        """
+        if not os.path.exists(self.ignore_file):
+            try:
+                url = "https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/refs/heads/main/sourcesage/config/.SourceSageignore"
+                response = requests.get(url)
+                response.raise_for_status()  # エラーチェック
+                
+                with open(self.ignore_file, 'w', encoding='utf-8') as f:
+                    f.write(response.text)
+                    
+                logger.success(f"{self.ignore_file}を作成しました")
+            except Exception as e:
+                logger.error(f"{self.ignore_file}の作成に失敗しました: {e}")
+                raise
 
     def analyze_repository(self):
         """リポジトリの分析結果を生成する"""
