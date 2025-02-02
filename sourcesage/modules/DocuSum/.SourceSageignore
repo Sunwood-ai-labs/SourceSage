@@ -19,9 +19,6 @@ output.md
 test_output/
 .SourceSageAssets/
 .SourceSageAssetsDemo/
-**/.SourceSageAssets/
-sourcesage/config/
-tests
 
 # アセット
 *.png
@@ -42,7 +39,3 @@ docs/drafts/
 !docs/important.md
 !.github/workflows/
 repository_summary.md
-
-venv/
-.venv/
-docs/

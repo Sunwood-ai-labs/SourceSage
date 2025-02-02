@@ -96,7 +96,7 @@ sourcesage
 #### IssueWizeを使って詳細なIssueの作成
 
 ```bash
-sourcesage --mode IssueWize --issue-summary "IssueWize.pyをSourceSageのCLIコマンドから実行できるようにコマンドを追加する。SourceSageのCLIコマンドからパラメータを指定できるようにしたい（repo_overview_fileやモデル名などのパラメータ）" --project-name "TaskSphere" --milestone-name "Sprint01" --repo-overview-file ".SourceSageAssets\DOCUMIND\Repository_summary.md" --issuewize-model "gemini/gemini-1.5-flash"
+sourcesage --mode IssueWize --issue-summary "IssueWize.pyをSourceSageのCLIコマンドから実行できるようにコマンドを追加する。SourceSageのCLIコマンドからパラメータを指定できるようにしたい（repo_overview_fileやモデル名などのパラメータ）" --project-name "TaskSphere" --milestone-name "Sprint01" --repo-overview-file ".SourceSageAssets/DOCUMIND/Repository_summary.md" --issuewize-model "gemini/gemini-1.5-flash"
 ```
 
 詳しくは[こちら`docs/ISSUEWIZE.md`](docs/ISSUEWIZE.md)
@@ -104,7 +104,7 @@ sourcesage --mode IssueWize --issue-summary "IssueWize.pyをSourceSageのCLIコ�
 #### コミットメッセージの生成
 
 ```bash
-sourcesage --mode CommitCraft --model-name "gemini/gemini-1.5-pro-latest" --stage-info-file ".SourceSageAssets\COMMIT_CRAFT/STAGE_INFO\STAGE_INFO_AND_PROMT_GAIAH_B.md" --commit-craft-output ".SourceSageAssets/COMMIT_CRAFT/" --llm-output "llm_output.md"
+sourcesage --mode CommitCraft --model-name "gemini/gemini-1.5-pro-latest" --stage-info-file ".SourceSageAssets/COMMIT_CRAFT/STAGE_INFO/STAGE_INFO_AND_PROMT_GAIAH_B.md" --commit-craft-output ".SourceSageAssets/COMMIT_CRAFT/" --llm-output "llm_output.md"
 ```
 
 詳しくは[こちら`docs/COMMITCRAFT.md`](docs/COMMITCRAFT.md)
@@ -112,7 +112,7 @@ sourcesage --mode CommitCraft --model-name "gemini/gemini-1.5-pro-latest" --stag
 #### リリースノートの生成
 
 ```bash
-sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets\DOCUMIND\Repository_summary.md" --docuMind-release-report ".SourceSageAssets\RELEASE_REPORT\Report_v5.0.2.md"  --docuMind-changelog ".SourceSageAssets\Changelog\CHANGELOG_release_5.0.2.md"  --docuMind-output ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.2.md"  --docuMind-prompt-output ".SourceSageAssets/DOCUMIND/_PROMPT_v5.0.2.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
+sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets/DOCUMIND/Repository_summary.md" --docuMind-release-report ".SourceSageAssets/RELEASE_REPORT/Report_v5.0.2.md"  --docuMind-changelog ".SourceSageAssets/Changelog/CHANGELOG_release_5.0.2.md"  --docuMind-output ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.2.md"  --docuMind-prompt-output ".SourceSageAssets/DOCUMIND/_PROMPT.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
 ```
 
 ```bash

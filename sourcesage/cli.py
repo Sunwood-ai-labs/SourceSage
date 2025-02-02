@@ -6,8 +6,6 @@ import os
 from loguru import logger
 import sys
 from art import *
-import yaml
-
 from .config.constants import Constants
 from .modules.CommitCraft import CommitCraft
 from .modules.DocuMind import DocuMind
@@ -86,9 +84,9 @@ def add_arguments(parser):
     #
     parser.add_argument('--llm-output', type=str, default="llm_output.md", help='LLMレスポンスの出力ファイル')
     parser.add_argument('--ss-model-name', type=str, default=None, help='LLMのモデル名（デフォルト: None）')
-    parser.add_argument('--stage-info-file', type=str, default=".SourceSageAssets\COMMIT_CRAFT/STAGE_INFO\STAGE_INFO_AND_PROMT_GAIAH_B.md", help='ステージファイルパス')
+    parser.add_argument('--stage-info-file', type=str, default=".SourceSageAssets/COMMIT_CRAFT/STAGE_INFO/STAGE_INFO_AND_PROMT_GAIAH_B.md", help='ステージファイルパス')
     parser.add_argument('--commit-craft-output', type=str, default=".SourceSageAssets/COMMIT_CRAFT/", help='CommitCraftの出力フォルダ')
-    
+
     # ==============================================
     # DocuMind用の引数を追加
     #
@@ -113,26 +111,6 @@ def parse_arguments():
     add_arguments(parser)
     return parser.parse_args()
 
-def load_config_from_yaml(yaml_file=None):
-    """YAMLファイルから設定を読み込み、argparse.Namespaceオブジェクトを返す"""
-    default_config_file = 'sourcesage_config.yml'
-
-    if yaml_file:
-        config_file = yaml_file
-    elif os.path.exists(default_config_file):
-        config_file = default_config_file
-    else:
-        return None  # 設定ファイルが見つからない場合は None を返す
-
-    logger.info(f"{config_file}を読み込みます...")
-    with open(config_file, 'r') as f:
-        yaml_args = yaml.safe_load(f)
-        args_dict = {}  # args_dict を初期化
-        for key, value in yaml_args.items():
-            key = key.replace("-", "_")
-            logger.debug(">> {: >30} : {: <20}".format(str(key), str(value)))
-            args_dict[key] = value
-        return argparse.Namespace(**args_dict)
 
 def log_arguments(args):
     """引数の内容をログ出力する"""
@@ -148,7 +126,7 @@ def run(args=None):
     # SourceSageの実行
     if 'all' in args.ss_mode or 'Sage' in args.ss_mode:
         logger.info("SourceSageを起動します...")
-        sourcesage = SourceSage(args.ss_config, args.ss_output, args.repo, args.owner, args.repository, args.ignore_file, args.language_map,
+        sourcesage = SourceSage(args.ss_output, args.repo, args.owner, args.repository, args.ignore_file, args.language_map,
                                 args.changelog_start_tag, args.changelog_end_tag)
         sourcesage.run()
 
@@ -208,10 +186,9 @@ def main():
     logger.debug(f"dotenv_path : {dotenv_path}")
     load_dotenv(dotenv_path=dotenv_path, verbose=True, override=True)
     
-    _args = parse_arguments() 
-    args = load_config_from_yaml(_args.yaml_file) or _args 
-    log_arguments(args) 
+    
+    args = parse_arguments()
+    log_arguments(args)
     run(args)
-
 if __name__ == '__main__':
     main()

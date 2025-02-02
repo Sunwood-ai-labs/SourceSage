@@ -3,6 +3,7 @@
 import json
 import os
 from .GitHubUtils import GitHubUtils
+from loguru import logger
 
 class StagedDiffGenerator:
     def __init__(self, repo_path, output_dir, language_map_file):
@@ -17,6 +18,9 @@ class StagedDiffGenerator:
             return json.load(lang_file)
 
     def generate_staged_diff(self):
+        if not os.path.exists(os.path.join(self.repo_path, '.git')):
+            logger.warning(f".git directory not found in {self.repo_path}. Skipping StagedDiffGenerator.")
+            return
         staged_diff = GitHubUtils.get_staged_diff(self.repo_path)
 
         os.makedirs(self.output_dir, exist_ok=True)  # フォルダが存在しない場合は作成
