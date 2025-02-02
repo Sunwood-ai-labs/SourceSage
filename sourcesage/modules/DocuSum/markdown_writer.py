@@ -75,10 +75,14 @@ class MarkdownWriter:
         md_file.write("| ファイル | サイズ | 行数 | 言語 |\n")
         md_file.write("|----------|--------|------|------|\n")
         
+        total_lines = 0
         for stat in file_stats:
             size_str = self.stats_collector.format_size(stat['size'])
             line_count = stat['lines'] if stat['lines'] is not None else 'N/A'
             md_file.write(f"| {stat['path']} | {size_str} | {line_count} | {stat['language']} |\n")
+            if isinstance(stat['lines'], int):
+                total_lines += stat['lines']
+        md_file.write(f"| **合計** |  | **{total_lines}** |  |\n") # 合計行数を追記
         md_file.write("\n")
 
     def write_language_stats(self, md_file, language_stats):
