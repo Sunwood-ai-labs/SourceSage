@@ -47,13 +47,7 @@ def add_arguments(parser):
     # ==============================================
     # 無視ファイルと言語マップ設定
     #
-    current_dir_ignore_file = os.path.join(os.getcwd(), '.SourceSageignore')
-    if os.path.exists(current_dir_ignore_file):
-        ignore_file = current_dir_ignore_file
-        logger.info(f"カレントディレクトリの無視ファイルを使用: {ignore_file}")
-    else:
-        ignore_file = default_ignore_file
-        logger.info(f"デフォルトの無視ファイルを使用: {ignore_file}")
+    ignore_file = os.path.join(os.getcwd(), '.SourceSageignore')
 
     parser.add_argument('--ignore-file', help='無視ファイルへのパス', default=ignore_file)
     parser.add_argument('--language-map', help='言語マップファイルへのパス', default=default_language_map)

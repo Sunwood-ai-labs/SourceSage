@@ -1,1 +1,0 @@
-conda activate sourcesage_dev

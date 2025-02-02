@@ -128,7 +128,7 @@ class DocuSum:
         """
         if not os.path.exists(self.ignore_file):
             try:
-                url = "https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/refs/heads/main/sourcesage/config/.SourceSageignore"
+                url = "https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/refs/heads/develop/sourcesage/modules/DocuSum/.SourceSageignore"
                 response = requests.get(url)
                 response.raise_for_status()  # エラーチェック
                 
