@@ -23,6 +23,8 @@ test_output/
 # アセット
 *.png
 *.svg
+*.jpg
+*.jepg
 assets/
 
 # その他
