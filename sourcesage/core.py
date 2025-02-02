@@ -15,9 +15,8 @@ from art import *
 from loguru import logger
 
 class SourceSage:
-    def __init__(self, config_path, output_dir, repo_path, owner, repository, ignore_file, language_map_file,
+    def __init__(self, output_dir, repo_path, owner, repository, ignore_file, language_map_file,
                  changelog_start_tag=None, changelog_end_tag=None):
-        self.config_path = config_path
         self.output_dir = output_dir
         self.repo_path = repo_path
         self.ignore_file = ignore_file
@@ -30,9 +29,6 @@ class SourceSage:
     def run(self):
         logger.info("Running SourceSage...")
         
-        # Load configuration
-        config = self.load_config()
-
         # Create necessary directories
         os.makedirs(self.constants.ISSUE_LOG_DIR, exist_ok=True)
         os.makedirs(self.constants.ISSUES_RESOLVE_DIR, exist_ok=True)
@@ -99,7 +95,4 @@ class SourceSage:
 
         # logger.info("SourceSage completed successfully.")
         # tprint("!! successfully !!", font="rnd-medium")
-    def load_config(self):
-        # Load configuration from YAML file
-        # Implement this method based on your configuration file structure
-        pass
+    
