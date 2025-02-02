@@ -1,31 +1,34 @@
 import os
-from .file_utils import load_ignore_patterns, load_language_map  # 相対インポートを修正
-from .markdown_utils import generate_markdown_for_folder
+from .DocuSum.docusum import DocuSum
 from loguru import logger
-import sys
 
 class SourceSage:
     def __init__(self, folders, ignore_file='.SourceSageignore', output_file='output.md', language_map_file='language_map.json'):
-        self.folders = folders
-        logger.info(f"ignore_file is ... {ignore_file}")        
-        logger.info(folders)
-        self.ignore_file = ignore_file
-        self.output_file = output_file
-        self.exclude_patterns = load_ignore_patterns(ignore_file)
-        logger.info(self.exclude_patterns)
-        self.language_map = load_language_map(language_map_file)
+        """
+        SourceSageの初期化
+
+        Args:
+            folders (list): 処理対象のフォルダパスのリスト
+            ignore_file (str): 除外パターンを記述したファイルのパス
+            output_file (str): 出力マークダウンファイルのパス
+            language_map_file (str): 言語マッピング定義ファイルのパス
+        """
+        self.docusum = DocuSum(
+            folders=folders,
+            ignore_file=ignore_file,
+            language_map_file=language_map_file,
+            output_file=output_file
+        )
+        logger.info(f"SourceSageを初期化: ignore_file={ignore_file}, folders={folders}")
 
     def generate_markdown(self):
-        # output_fileのディレクトリを取得
-        output_dir = os.path.dirname(self.output_file)
-        
-        # ディレクトリが存在しない場合は作成
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-        
-        with open(self.output_file, 'w', encoding='utf-8') as md_file:
-            project_name = os.path.basename(os.path.abspath(self.folders[0]))
-            md_file.write(f"# Project: {project_name}\n\n")
-            for folder in self.folders:
-                markdown_content = generate_markdown_for_folder(folder, self.exclude_patterns, self.language_map)
-                md_file.write(markdown_content + '\n\n')
+        """
+        リポジトリのマークダウンドキュメントを生成する
+        """
+        try:
+            logger.info("マークダウンドキュメントの生成を開始")
+            self.docusum.generate_markdown()
+            logger.success("マークダウンドキュメントの生成が完了しました")
+        except Exception as e:
+            logger.error(f"マークダウンドキュメントの生成中にエラーが発生: {e}")
+            raise
