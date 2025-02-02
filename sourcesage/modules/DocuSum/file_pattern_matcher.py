@@ -16,7 +16,8 @@ class FilePatternMatcher:
             '*.pyc',
             '.DS_Store',
             '.SourceSageAssets',
-            'package-lock.json'
+            'package-lock.json',
+            '*.log'
         ]
         self.patterns = self._load_patterns()
 
