@@ -4,6 +4,7 @@ import json
 import os
 from .GitHubIssueRetrieve import GitHubIssueRetriever
 from .StagedDiffGenerator import StagedDiffGenerator
+from loguru import logger
 
 class StageInfoGenerator:
     def __init__(self, issue_file_path, stage_diff_file_path, template_file_path, output_file_path):
@@ -17,8 +18,12 @@ class StageInfoGenerator:
             return json.load(issue_file)
 
     def load_stage_diff(self):
-        with open(self.stage_diff_file_path, "r", encoding="utf-8") as diff_file:
-            return diff_file.read()
+        if os.path.exists(self.stage_diff_file_path):
+            with open(self.stage_diff_file_path, "r", encoding="utf-8") as diff_file:
+                return diff_file.read()
+        else:
+            logger.warning(f"STAGED_DIFF.md not found at {self.stage_diff_file_path}. Skipping loading stage diff.")
+            return ""
 
     def load_template(self):
         with open(self.template_file_path, "r", encoding="utf-8") as template_file:
