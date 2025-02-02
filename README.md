@@ -46,6 +46,10 @@ SourceSageは、AIを活用してソフトウェア開発を支援するツー�
 
 ## 更新内容
 
+- [【2025/02/02】 SourceSage 5.1.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v5.1.0)
+  - DocuSumモジュールをコア機能として統合
+  - リポジトリ解析機能の強化とAIフレンドリーなドキュメント生成を実現
+
 - [【2024/06/10】 SourceSage 5.0.2](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v5.0.2)
   - AIRA と Harmon.AI の設定を追加し、コード生成機能を追加(`DocuMind`、`CommitCraft`)
 - [【2024/05/12】 SourceSage 4.2.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v4.2.0)
@@ -71,13 +75,48 @@ SourceSageは、AIを活用してソフトウェア開発を支援するツー�
 - 【2024/03/29】 初期リリース
 
 
-## 主な機能
+## 🎯 主な機能：DocuSum
 
-- [IssueWize](docs/ISSUEWIZE.md)：AIを活用した効率的なIssue作成
-- [CommitCraft](docs/COMMITCRAFT.md)：AIを活用した効率的なコミットメッセージ生成
-- [DocuMind](docs/DOCUMIND.md)：AIを活用した効率的なリリースノート生成
+[DocuSum](sourcesage/modules/DocuSum/README.md)は、リポジトリ構造とファイル内容を包括的に分析し、AIフレンドリーなマークダウンドキュメントを生成するSourceSageのコア機能です。
 
-## クイックスタート
+### 使用方法
+
+```bash
+sourcesage --mode DocuSum --output "repository_summary.md"
+```
+
+生成されるマークダウンファイルには以下の情報が含まれます：
+
+```markdown
+    # Project: DocuSum
+
+    ```plaintext
+    OS: posix
+    Directory: /path/to/project
+
+    ├── .SourceSageignore
+    ├── __init__.py
+    └── src/
+        ├── main.py
+        └── utils/
+            └── helper.py
+    ```
+
+    ## 📊 プロジェクト統計
+
+    - 📅 作成日時: 2025-02-02 16:22:31
+    - 📁 総ディレクトリ数: 2
+    - 📄 総ファイル数: 4
+    - 📏 最大深度: 2
+```
+
+詳しくは[こちら`sourcesage/modules/DocuSum/README.md`](sourcesage/modules/DocuSum/README.md)
+
+## 🧪 実験的機能
+
+SourceSageには、AIを活用した開発支援のための実験的機能が含まれています。これらの機能の詳細については、[実験的機能のドキュメント](docs/EXPERIMENTAL_FEATURES.md)を参照してください。
+
+## 🚀 クイックスタート
 
 ### インストール
 
@@ -85,41 +124,13 @@ SourceSageは、AIを活用してソフトウェア開発を支援するツー�
 pip install sourcesage
 ```
 
-### 使用方法
-
-#### リポジトリ情報の収集と差分情報のレポート作成
+### 基本的な使用方法
 
 ```bash
 sourcesage
 ```
 
-#### IssueWizeを使って詳細なIssueの作成
-
-```bash
-sourcesage --mode IssueWize --issue-summary "IssueWize.pyをSourceSageのCLIコマンドから実行できるようにコマンドを追加する。SourceSageのCLIコマンドからパラメータを指定できるようにしたい（repo_overview_fileやモデル名などのパラメータ）" --project-name "TaskSphere" --milestone-name "Sprint01" --repo-overview-file ".SourceSageAssets/DOCUMIND/Repository_summary.md" --issuewize-model "gemini/gemini-1.5-flash"
-```
-
-詳しくは[こちら`docs/ISSUEWIZE.md`](docs/ISSUEWIZE.md)
-
-#### コミットメッセージの生成
-
-```bash
-sourcesage --mode CommitCraft --model-name "gemini/gemini-1.5-pro-latest" --stage-info-file ".SourceSageAssets/COMMIT_CRAFT/STAGE_INFO/STAGE_INFO_AND_PROMT_GAIAH_B.md" --commit-craft-output ".SourceSageAssets/COMMIT_CRAFT/" --llm-output "llm_output.md"
-```
-
-詳しくは[こちら`docs/COMMITCRAFT.md`](docs/COMMITCRAFT.md)
-
-#### リリースノートの生成
-
-```bash
-sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets/DOCUMIND/Repository_summary.md" --docuMind-release-report ".SourceSageAssets/RELEASE_REPORT/Report_v5.0.2.md"  --docuMind-changelog ".SourceSageAssets/Changelog/CHANGELOG_release_5.0.2.md"  --docuMind-output ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.2.md"  --docuMind-prompt-output ".SourceSageAssets/DOCUMIND/_PROMPT.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
-```
-
-```bash
-sourcesage --mode=DocuMind --yaml-file=docs\.sourcesage_releasenotes.yml
-```
-
-詳しくは[こちら`docs/DOCUMIND.md`](docs/DOCUMIND.md)
+**.SourceSageAssets/DOCUMIND/Repository_summary.md** にマークダウンファイルが生成されます。
 
 
 ## 貢献
