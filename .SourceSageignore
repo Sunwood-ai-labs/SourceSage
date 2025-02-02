@@ -36,3 +36,7 @@ issue_creator.log
 issue_response.txt
 
 .ipynb_checkpoints
+
+.venv
+venv
+.git
