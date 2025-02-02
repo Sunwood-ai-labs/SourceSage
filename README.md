@@ -82,10 +82,13 @@ SourceSageは、AIを活用してソフトウェア開発を支援するツー�
 ### 使用方法
 
 ```bash
-sourcesage --mode DocuSum --output "repository_summary.md"
+sourcesage
 ```
 
 生成されるマークダウンファイルには以下の情報が含まれます：
+
+> [!NOTE]
+>**.SourceSageAssets/DOCUMIND/Repository_summary.md** にマークダウンファイルが生成されます。
 
 ```markdown
     # Project: DocuSum
