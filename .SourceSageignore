@@ -19,6 +19,9 @@ output.md
 test_output/
 .SourceSageAssets/
 .SourceSageAssetsDemo/
+**/.SourceSageAssets/
+sourcesage/config/
+tests
 
 # アセット
 *.png
