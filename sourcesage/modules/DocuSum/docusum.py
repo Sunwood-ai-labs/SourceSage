@@ -73,8 +73,10 @@ class DocuSum:
                 for folder in self.folders:
                     project_name = os.path.basename(os.path.abspath(folder))
                     md_file.write(f"# Project: {project_name}\n\n")
+                    logger.info(f"プロジェクト: {project_name}") # 進捗表示
                                         
                     # ディレクトリツリーの生成と統計情報の取得
+                    logger.info("ディレクトリツリー生成...") # 進捗表示
                     tree = self.tree_generator.generate_tree(folder)
                     stats = self.tree_generator.get_tree_stats(folder)
                     
@@ -82,21 +84,26 @@ class DocuSum:
                     md_file.write(f"{tree}\n")
                     
                     # Gitリポジトリ情報の出力
+                    logger.info("Git情報収集...") # 進捗表示
                     git_info = self.git_info_collector.collect_info()
                     self.markdown_writer.write_git_info(md_file, git_info)
                     
                     # 統計情報の出力
+                    logger.info("統計情報生成...") # 進捗表示
                     self.markdown_writer.write_stats(md_file, stats)
                     
                     # ファイルサイズと行数の統計
+                    logger.info("ファイル統計収集...") # 進捗表示
                     file_stats = self.stats_collector.collect_file_stats(folder)
                     self.markdown_writer.write_file_stats_table(md_file, file_stats)
                     
                     # 言語別統計
+                    logger.info("言語統計生成...") # 進捗表示
                     language_stats = self.stats_collector.collect_language_stats(file_stats)
                     self.markdown_writer.write_language_stats(md_file, language_stats)
                     
                     # ファイル内容の処理
+                    logger.info("ファイル内容処理...") # 進捗表示
                     self.markdown_writer.write_file_contents(md_file, self.file_processor, folder)
             
             logger.success(f"マークダウンドキュメントが生成されました: {self.output_file}")
@@ -122,11 +129,7 @@ class DocuSum:
 if __name__ == '__main__':
     import argparse
     import sys
-    
-    # ロガーの設定
-    logger.remove()
-    logger.add(sys.stderr, format="<level>{level: <8}</level> | {message}")
-    
+        
     # コマンドライン引数のパース
     parser = argparse.ArgumentParser(description='リポジトリの構造とファイル内容をマークダウンドキュメントに変換します。')
     parser.add_argument('folders', nargs='*', default=['.'], help='処理対象のフォルダパス（指定しない場合は現在のディレクトリ）')
@@ -147,7 +150,7 @@ if __name__ == '__main__':
             git_path=args.git_path
         )
         output_file = docusum.generate_markdown()
-        print(f"\n生成されたファイル: {output_file}")
+
     except Exception as e:
         logger.error(f"エラーが発生しました: {e}")
         sys.exit(1)
