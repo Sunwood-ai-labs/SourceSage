@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from loguru import logger
+from art import *
 
 try:
     from .file_pattern_matcher import FilePatternMatcher
@@ -63,6 +64,9 @@ class DocuSum:
         )
 
     def generate_markdown(self):
+        
+        tprint("DocuSum")
+        
         """マークダウンドキュメントを生成する"""
         output_dir = os.path.dirname(self.output_file)
         if output_dir and not os.path.exists(output_dir):
