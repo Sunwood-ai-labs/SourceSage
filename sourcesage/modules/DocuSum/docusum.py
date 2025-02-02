@@ -73,17 +73,17 @@ class DocuSum:
                 for folder in self.folders:
                     project_name = os.path.basename(os.path.abspath(folder))
                     md_file.write(f"# Project: {project_name}\n\n")
-                    
-                    # Gitリポジトリ情報の出力
-                    git_info = self.git_info_collector.collect_info()
-                    self.markdown_writer.write_git_info(md_file, git_info)
-                    
+                                        
                     # ディレクトリツリーの生成と統計情報の取得
                     tree = self.tree_generator.generate_tree(folder)
                     stats = self.tree_generator.get_tree_stats(folder)
                     
                     # ツリー構造の出力
                     md_file.write(f"{tree}\n")
+                    
+                    # Gitリポジトリ情報の出力
+                    git_info = self.git_info_collector.collect_info()
+                    self.markdown_writer.write_git_info(md_file, git_info)
                     
                     # 統計情報の出力
                     self.markdown_writer.write_stats(md_file, stats)
