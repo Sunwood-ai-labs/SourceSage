@@ -1,4 +1,5 @@
 import os
+import datetime
 from loguru import logger
 
 class MarkdownWriter:
@@ -19,13 +20,47 @@ class MarkdownWriter:
         """Gitリポジトリ情報を書き込む"""
         if git_info:
             md_file.write("## 📂 Gitリポジトリ情報\n\n")
+            
+            # 基本情報
+            md_file.write("### 🌐 基本情報\n\n")
             md_file.write(f"- 🔗 リモートURL: {git_info.get('remote_url', 'Not available')}\n")
             md_file.write(f"- 🌿 デフォルトブランチ: {git_info.get('default_branch', 'Not available')}\n")
-            md_file.write(f"- 📅 作成日時: {git_info.get('creation_date', 'Not available')}\n\n")
+            md_file.write(f"- 🎯 現在のブランチ: {git_info.get('current_branch', 'Not available')}\n")
+            md_file.write(f"- 📅 作成日時: {git_info.get('creation_date', 'Not available')}\n")
+            md_file.write(f"- 📈 総コミット数: {git_info.get('total_commits', '0')}\n\n")
+            
+            # 最新コミット情報
+            last_commit = git_info.get('last_commit')
+            if last_commit:
+                md_file.write("### 🔄 最新のコミット\n\n")
+                md_file.write(f"- 📝 メッセージ: {last_commit['message']}\n")
+                md_file.write(f"- 🔍 ハッシュ: {last_commit['hash']}\n")
+                md_file.write(f"- 👤 作者: {last_commit['author']} ({last_commit['email']})\n")
+                md_file.write(f"- ⏰ 日時: {last_commit['date']}\n\n")
+            
+            # タグ情報
+            tags = git_info.get('tags')
+            if tags:
+                md_file.write("### 🏷️ 最新のタグ\n\n")
+                for tag in tags:
+                    md_file.write(f"- {tag}\n")
+                md_file.write("\n")
+            
+            # コントリビューター情報
+            contributors = git_info.get('contributors')
+            if contributors:
+                md_file.write("### 👥 主要コントリビューター\n\n")
+                md_file.write("| 👤 名前 | 📊 コミット数 |\n")
+                md_file.write("|---------|-------------|\n")
+                for contributor in contributors:
+                    md_file.write(f"| {contributor['name']} | {contributor['commits']} |\n")
+                md_file.write("\n")
 
     def write_stats(self, md_file, stats):
         """統計情報を出力する"""
+        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         md_file.write("## 📊 プロジェクト統計\n\n")
+        md_file.write(f"- 📅 作成日時: {current_time}\n")
         md_file.write(f"- 📁 総ディレクトリ数: {stats['total_dirs']}\n")
         md_file.write(f"- 📄 総ファイル数: {stats['total_files']}\n")
         md_file.write(f"- 📏 最大深度: {stats['max_depth']}\n")
