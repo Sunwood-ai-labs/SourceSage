@@ -86,9 +86,9 @@ def add_arguments(parser):
     #
     parser.add_argument('--llm-output', type=str, default="llm_output.md", help='LLMレスポンスの出力ファイル')
     parser.add_argument('--ss-model-name', type=str, default=None, help='LLMのモデル名（デフォルト: None）')
-    parser.add_argument('--stage-info-file', type=str, default=".SourceSageAssets\COMMIT_CRAFT/STAGE_INFO\STAGE_INFO_AND_PROMT_GAIAH_B.md", help='ステージファイルパス')
+    parser.add_argument('--stage-info-file', type=str, default=".SourceSageAssets/COMMIT_CRAFT/STAGE_INFO/STAGE_INFO_AND_PROMT_GAIAH_B.md", help='ステージファイルパス')
     parser.add_argument('--commit-craft-output', type=str, default=".SourceSageAssets/COMMIT_CRAFT/", help='CommitCraftの出力フォルダ')
-    
+
     # ==============================================
     # DocuMind用の引数を追加
     #
