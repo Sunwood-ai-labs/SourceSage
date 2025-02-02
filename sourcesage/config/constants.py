@@ -12,7 +12,7 @@ class Constants:
         self.DOCS_DIR = os.path.join(self.BASE_DIR, "config")
 
         self.LANGUAGE_MAP_FILE = os.path.join(self.CONFIG_DIR, 'language_map.json')
-        self.IGNORE_FILE = os.path.join(self.CONFIG_DIR, '.SourceSageignore')
+        self.IGNORE_FILE = os.path.join(os.getcwd(), '.SourceSageignore') 
 
         self.SOURCE_SAGE_MD = "Repository_summary.md"
         self.DOCUMIND_DIR = "DOCUMIND"
