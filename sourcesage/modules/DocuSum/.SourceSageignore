@@ -41,3 +41,14 @@ docs/drafts/
 !docs/important.md
 !.github/workflows/
 repository_summary.md
+
+# Terraform関連
+.terraform
+*.terraform.lock.hcl
+*.backup
+*.tfstate
+
+# Python仮想環境
+venv
+.venv
+

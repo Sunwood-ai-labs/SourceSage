@@ -20,6 +20,4 @@ aira:
       commit:
         process_commits: true
 
-# aira --mode sourcesage commit  --config=.aira\config.dev.commit.yml --ss-model-name="gemini/gemini-1.5-pro-latest" --llm-output="llm_output.md" --ignore-file=".iris.SourceSageignore"
-# aira --mode sourcesage commit  --config=.aira\config.dev.commit.yml --ss-model-name="gemini/gemini-1.5-pro-latest" --llm-output="llm_output.md" 
-# sourcesage --ignore-file=".iris.SourceSageignore"
+# aira --mode sourcesage commit --ss-model-name="gemini/gemini-1.5-flash-latest" 
