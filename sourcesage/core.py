@@ -41,10 +41,10 @@ class SourceSage:
         sourcesage_module.generate_markdown()
 
         # Generate changelog
-        changelog_generator = ChangelogGenerator(self.repo_path, os.path.join(self.constants.SOURCE_SAGE_ASSETS_DIR, self.constants.CHANGELOG_DIR),
-                                                 start_tag=self.changelog_start_tag, end_tag=self.changelog_end_tag)
-        changelog_generator.generate_changelog_for_all_branches()
-        changelog_generator.integrate_changelogs()
+        # changelog_generator = ChangelogGenerator(self.repo_path, os.path.join(self.constants.SOURCE_SAGE_ASSETS_DIR, self.constants.CHANGELOG_DIR),
+        #                                          start_tag=self.changelog_start_tag, end_tag=self.changelog_end_tag)
+        # changelog_generator.generate_changelog_for_all_branches()
+        # changelog_generator.integrate_changelogs()
 
         # Retrieve GitHub issues
         issue_retriever = GitHubIssueRetriever(self.constants.OWNER, self.constants.REPOSITORY, self.constants.ISSUE_LOG_DIR, self.constants.ISSUES_FILE_NAME)
@@ -86,12 +86,12 @@ class SourceSage:
         stage_info_generator.run()
 
         # Convert issues to markdown
-        issues_to_markdown = IssuesToMarkdown(issues_file=os.path.join(self.constants.ISSUE_LOG_DIR, self.constants.ISSUES_FILE_NAME),
-                                              sourcesage_file=os.path.join(self.constants.SOURCE_SAGE_ASSETS_DIR, self.constants.DOCUMIND_DIR, self.constants.SOURCE_SAGE_MD),
-                                              template_file=os.path.join(self.constants.DOCS_DIR, self.constants.TEMPLATE_ISSUES_RESOLVE_DIR, self.constants.ISSUES_RESOLVE_TEMPLATE_MD),
-                                              output_folder=self.constants.ISSUES_RESOLVE_DIR)
-        issues_to_markdown.load_data()
-        issues_to_markdown.create_markdown_files()
+        # issues_to_markdown = IssuesToMarkdown(issues_file=os.path.join(self.constants.ISSUE_LOG_DIR, self.constants.ISSUES_FILE_NAME),
+        #                                       sourcesage_file=os.path.join(self.constants.SOURCE_SAGE_ASSETS_DIR, self.constants.DOCUMIND_DIR, self.constants.SOURCE_SAGE_MD),
+        #                                       template_file=os.path.join(self.constants.DOCS_DIR, self.constants.TEMPLATE_ISSUES_RESOLVE_DIR, self.constants.ISSUES_RESOLVE_TEMPLATE_MD),
+        #                                       output_folder=self.constants.ISSUES_RESOLVE_DIR)
+        # issues_to_markdown.load_data()
+        # issues_to_markdown.create_markdown_files()
 
         # logger.info("SourceSage completed successfully.")
         # tprint("!! successfully !!", font="rnd-medium")
