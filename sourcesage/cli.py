@@ -127,14 +127,13 @@ def run(args=None):
     # -----------------------------------------------  
     # IssueWizeを使用してIssueを作成
     #
-    if 'all' in args.ss_mode or 'IssueWize' in args.ss_mode:
+    if 'IssueWize' in args.ss_mode:
         issuewize = IssueWize(model=args.issuewize_model)
         if args.issue_summary and args.project_name and args.repo_overview_file:
             logger.info("IssueWizeを使用してIssueを作成します...")
             issuewize.create_optimized_issue(args.issue_summary, args.project_name, args.milestone_name, args.repo_overview_file)
         else:
             logger.warning("IssueWizeの実行に必要なパラメータが指定されていません。--issue-summary, --project-name, --repo-overview-fileを指定してください。")
-        
 
     # -----------------------------------------------
     # レポートの生成
