@@ -2,3 +2,4 @@ loguru
 GitPython
 requests
 art
+rich
