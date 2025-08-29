@@ -1,13 +1,14 @@
 # sourcesage\cli.py
 import argparse
 from .core import SourceSage
-from .modules.ReleaseDiffReportGenerator import GitDiffGenerator, MarkdownReportGenerator
+from .modules.DiffReport import GitDiffGenerator, MarkdownReportGenerator
 import os
 from loguru import logger
 import sys
 from art import *
 from rich.console import Console
 from rich.panel import Panel
+from rich.align import Align
 from rich.theme import Theme
 from .logging_utils import setup_rich_logging
 
@@ -92,7 +93,7 @@ def run(args=None):
     # -----------------------------------------------
     # SourceSageの実行
     if 'all' in args.ss_mode or 'Sage' in args.ss_mode:
-        console.print(Panel.fit("Repository Summary", style="info"))
+        console.print(Panel(Align.center("Repository Summary"), style="info", expand=True))
         with console.status("[info]生成中...[/]", spinner="dots"):
             sourcesage = SourceSage(args.ss_output, args.repo, args.owner, args.repository, args.ignore_file, args.language_map)
             sourcesage.run()
@@ -102,7 +103,7 @@ def run(args=None):
     # レポートの生成
     #
     if 'all' in args.ss_mode or 'GenerateReport' in args.ss_mode:
-        console.print(Panel.fit("Release Report", style="info"))
+        console.print(Panel(Align.center("Release Report"), style="info", expand=True))
         with console.status("[info]git diff レポートを生成中...[/]", spinner="dots"):
             git_diff_generator = GitDiffGenerator(args.repo_path, args.git_fetch_tags, args.git_tag_sort, args.git_diff_command)
             diff, latest_tag, previous_tag = git_diff_generator.get_git_diff()
@@ -116,9 +117,9 @@ def run(args=None):
             markdown_report_generator = MarkdownReportGenerator(diff, latest_tag, previous_tag, args.report_title, args.report_sections, output_path)
             with console.status("[info]Markdown レポートを出力中...[/]", spinner="dots"):
                 markdown_report_generator.generate_markdown_report()
-            console.print(f"[success]出力: {output_path}[/]")
+            console.print(f"[success]出力: [/][red]{output_path}[/]")
 
-    console.print(Panel.fit("プロセスが完了しました。", style="success"))
+    console.print(Panel(Align.center("プロセスが完了しました。"), style="success", expand=True))
 
 def main():
     
