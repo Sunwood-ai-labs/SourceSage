@@ -1,49 +1,66 @@
-# バージョン管理システム関連
+# Version control system related
 .git/
 .gitignore
 
-# キャッシュファイル
+# Cache files
 __pycache__/
 .pytest_cache/
 **/__pycache__/**
 *.pyc
 
-# ビルド・配布関連
+# Build and distribution related
 build/
 dist/
 *.egg-info/
 
-# 一時ファイル・出力
+# Temporary files and output
 output/
 output.md
 test_output/
 .SourceSageAssets/
 .SourceSageAssetsDemo/
-**/.SourceSageAssets/
-sourcesage/config/
-tests
 
-# アセット
+# Assets
 *.png
-*.jpg
 *.svg
+*.jpg
+*.jepg
 assets/
 
-# その他
+# Others
 LICENSE
 example/
 package-lock.json
 .DS_Store
 
-# 特定のディレクトリを除外
+# Exclude specific directories
 tests/temp/
 docs/drafts/
 
-# パターンの例外（除外対象から除外）
+# Pattern exceptions (exclude from exclusions)
 !docs/important.md
 !.github/workflows/
 repository_summary.md
 
-venv/
-.venv/
+# Terraform-related
+.terraform
+*.terraform.lock.hcl
+*.backup
+*.tfstate
+
+# Python virtual environment
+venv
+.venv
+
+# Package manager lock files
+uv.lock
+
+# Web application lock files
+yarn.lock
+pnpm-lock.yaml
+
+# Log files
+*.log
+memo.md
+
 docs/
