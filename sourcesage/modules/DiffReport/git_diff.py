@@ -14,10 +14,10 @@ class GitDiffGenerator:
         現在のリリースと前のリリースの間の git diff を取得します。
         """
         logger.debug("最新の git タグを取得しています...")
-        run_command(self.git_fetch_tags)
+        run_command(self.git_fetch_tags, cwd=self.repo_path if self.repo_path else None)
 
         logger.debug("最新と前のタグを取得しています...")
-        tags_output = run_command(self.git_tag_sort)
+        tags_output = run_command(self.git_tag_sort, cwd=self.repo_path if self.repo_path else None)
         tags = tags_output.split()
 
         if len(tags) < 2:
@@ -29,7 +29,6 @@ class GitDiffGenerator:
 
         logger.debug("git diff を生成しています...")
         diff_command = self.git_diff_command + [previous_tag, latest_tag]
-        diff = run_command(diff_command)
+        diff = run_command(diff_command, cwd=self.repo_path if self.repo_path else None)
 
         return diff, latest_tag, previous_tag
-
