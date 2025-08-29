@@ -1,9 +1,6 @@
 # sourcesage\modules\ReleaseDiffReportGenerator.py
-import subprocess
-import os
 from loguru import logger
 import argparse
-from art import *
 from .GitCommander import run_command
 
 class GitDiffGenerator:
@@ -12,16 +9,16 @@ class GitDiffGenerator:
         self.git_fetch_tags = git_fetch_tags
         self.git_tag_sort = git_tag_sort
         self.git_diff_command = git_diff_command
-        tprint("GitDiffGenerator")
+        # Progress handled by CLI; keep logs minimal
 
     def get_git_diff(self):
         """
         現在のリリースと前のリリースの間の git diff を取得します。
         """
-        logger.info("最新の git タグを取得しています...")
+        logger.debug("最新の git タグを取得しています...")
         run_command(self.git_fetch_tags)
 
-        logger.info("最新と前のタグを取得しています...")
+        logger.debug("最新と前のタグを取得しています...")
         tags_output = run_command(self.git_tag_sort)
         tags = tags_output.split()
 
@@ -30,9 +27,9 @@ class GitDiffGenerator:
             return None, None, None
 
         latest_tag, previous_tag = tags[:2]
-        logger.success(f"最新タグ: {latest_tag}, 前のタグ: {previous_tag}")
+        logger.debug(f"最新タグ: {latest_tag}, 前のタグ: {previous_tag}")
 
-        logger.info("git diff を生成しています...")
+        logger.debug("git diff を生成しています...")
         diff_command = self.git_diff_command + [previous_tag, latest_tag]
         diff = run_command(diff_command)
 
@@ -46,13 +43,13 @@ class MarkdownReportGenerator:
         self.report_title = report_title
         self.report_sections = report_sections
         self.output_path = output_path
-        tprint("MarkdownReportGenerator")
+        # No title prints here; CLI handles main title
 
     def generate_markdown_report(self):
         """
         git diff からマークダウンレポートを生成します。
         """
-        logger.info("マークダウンレポートを生成しています...")
+        logger.debug("マークダウンレポートを生成しています...")
         report_content = f"# {self.report_title}\n\n"
 
         for section in self.report_sections:
@@ -64,7 +61,7 @@ class MarkdownReportGenerator:
         with open(self.output_path, "w", encoding='utf8') as file:
             file.write(report_content)
 
-        logger.success("マークダウンレポートが正常に生成されました！")
+        logger.debug("マークダウンレポートが正常に生成されました！")
 
     def _generate_version_comparison_section(self):
         """
@@ -133,7 +130,7 @@ def main():
     markdown_report_generator = MarkdownReportGenerator(diff, latest_tag, previous_tag, args.report_title, args.report_sections, args.output_path)
     markdown_report_generator.generate_markdown_report()
 
-    logger.success("プロセスが完了しました。")
+    logger.info("git diff レポート生成 完了")
 
 if __name__ == "__main__":
     main()

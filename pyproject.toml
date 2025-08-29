@@ -32,6 +32,7 @@ dependencies = [
     "loguru",
     "python-dotenv",
     "requests",
+    "rich",
 ]
 
 [project.urls]
