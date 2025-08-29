@@ -37,7 +37,8 @@ class StatsCollector:
                         })
                     except Exception as e:
                         logger.warning(f"ファイル統計収集エラー {relative_path}: {e}")
-        return sorted(file_stats, key=lambda x: x['size'], reverse=True)
+        # 行数の多い順にソートして返す
+        return sorted(file_stats, key=lambda x: x['lines'], reverse=True)
 
     def collect_language_stats(self, file_stats):
         """言語別の統計情報を収集する"""
