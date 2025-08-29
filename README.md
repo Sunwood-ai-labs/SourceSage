@@ -44,23 +44,11 @@ SourceSageは、リポジトリの構造と内容を包括的に分析し、AI�
 >[!IMPORTANT]
 >このリポジトリのリリースノートやREADME、コミットメッセージの9割近くは[claude.ai](https://claude.ai/)や[ChatGPT4](https://chatgpt.com/)を活用した[AIRA](https://github.com/Sunwood-ai-labs/AIRA), [SourceSage](https://github.com/Sunwood-ai-labs/SourceSage), [Gaiah](https://github.com/Sunwood-ai-labs/Gaiah), [HarmonAI_II](https://github.com/Sunwood-ai-labs/HarmonAI_II)で生成しています。
 
-## 更新内容
+## リリースノート
 
-- [【2025/02/02】 SourceSage 5.1.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v5.1.0)
-  - DocuSumモジュールをコア機能として統合
-- [【2024/06/18】 SourceSage 4.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v4.0.0)
-  - [ReleaseDiffReportGenerator](https://github.com/Sunwood-ai-labs/SourceSage/#2-releasediffreportgenerator-%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9%E3%83%AC%E3%83%9D%E3%83%BC%E3%83%88%E3%81%AE%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90)機能を追加し、2つのタグ間の差分をマークダウンレポート形式で生成
-- [【2024/06/16】 SourceSage 3.5.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v3.5.0)
-  - [IssueWise](https://github.com/Sunwood-ai-labs/SourceSage/#4-issuewisenew-llm%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9Fissue%E4%BD%9C%E6%88%90)機能を追加し、プロジェクトの概要からGitHub Issue作成を自動化
-- [【2024/05/17】 SourceSage 3.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v3.0.0)
-  - [CommitCraft](https://github.com/Sunwood-ai-labs/SourceSage/#2-commitcraft%E9%96%8B%E7%99%BA%E4%B8%AD%E3%81%AE%E3%82%B3%E3%83%9F%E3%83%83%E3%83%88%E7%AE%A1%E7%90%86)機能を追加し、ステージングエリアの変更を自動解析
-- [【2024/04/13】 SourceSage 2.5.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/v2.5.0)
-    - [DocuMind](https://github.com/Sunwood-ai-labs/SourceSage/#3-documindリリース後のドキュメント化)機能を追加し、プロジェクトの概要とGitの変更履歴を組み合わせてドキュメント化
-- [【2024/03/30】 SourceSage 2.0.0](https://github.com/Sunwood-ai-labs/SourceSage/releases/tag/tag2.0.0)
-  - ChangelogGenerator classを導入し、コードの可読性と保守性を向上
-  - 言語ごとのシンタックスハイライト機能を追加
-  - .SourceSageignoreファイルを導入し、不要なファイルやフォルダを自動的に除外
-- 【2024/03/29】 初期リリース
+最新の更新内容はGitHubのリリースページをご覧ください。
+
+https://github.com/Sunwood-ai-labs/SourceSage/releases
 
 
 ## 🎯 主な機能
@@ -89,106 +77,81 @@ Gitタグ間の差分を分析し、リリースレポートを自動生成し�
 - 🏷️ バージョン比較
 - 🔄 変更差分の詳細
 - 📋 コミット履歴
+  - 📂 リポジトリ基本情報（リモートURL、ブランチ、最新コミットなど）
+  - 📖 READMEの内容（オプション）
 
 
 ## 🚀 クイックスタート
 
-### 📦 インストール
-
-#### pipでのインストール
+### 📦 インストール（最短）
 
 ```bash
-pip install sourcesage
-```
-
-#### uvでの環境構築（推奨）
-
-```bash
-# プロジェクトをクローン
- git clone https://github.com/Sunwood-ai-labs/SourceSage.git
- cd SourceSage
-
-# 環境構築と依存関係のインストール
+git clone https://github.com/Sunwood-ai-labs/SourceSage.git
+cd SourceSage
 uv sync
-
-# 実行
-uv run sourcesage
-# または短縮コマンド
 uv run ss
 ```
 
-### 🗺️ 基本的な使用方法
+備考: パッケージとして利用する場合は `pip install sourcesage` 後に `ss`（または `sourcesage`）を実行できます。
 
-#### Repository Summaryの生成
-
-```bash
-# フルコマンド
-sourcesage
-
-# 短縮コマンド
-ss
-```
-
-**出力**: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
-
-#### Release Reportの生成
+### 🗺️ 基本的な使用方法（必要最小限）
 
 ```bash
-# Repository Summary + Release Reportを同時生成
-sourcesage --ss-mode GenerateReport
+# リポジトリサマリを生成
+uv run ss
 
-# 短縮コマンド
-ss --ss-mode GenerateReport
+# リリースレポートを生成（タグ間の差分）
+uv run ss --ss-mode GenerateReport
 ```
 
-**出力**: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`
+出力先:
+- Repository Summary: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
+- Release Report: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`
 
-#### 主なオプション
+よく使うオプション（抜粋）:
 
 ```bash
-# 特定のモードで実行
-ss --ss-mode Sage                 # Repository Summaryのみ
-ss --ss-mode GenerateReport       # Release Reportのみ  
-ss --ss-mode all                  # すべての機能（デフォルト）
-
-# 出力ディレクトリの指定
-ss --ss-output ./custom-output/
-
-# 無視ファイルの指定
-ss --ignore-file .gitignore
+uv run ss --ss-output ./out           # 出力先を変更
+uv run ss --ignore-file .gitignore    # 無視ルールを指定
+uv run ss --ss-mode Sage              # サマリのみ
+uv run ss --ss-mode GenerateReport    # レポートのみ
 ```
+
+メモ:
+- `--ignore-file`や`--language-map`を省略すると、同梱デフォルト（`sourcesage/config/`）を自動的に利用します。
+- Release Reportはタグが2つ以上ある場合に生成されます。
 
 ### 📊 生成される内容例
 
 #### Repository Summary
 
 ```markdown
-# Project: SourceSage
+    # Project: SourceSage
 
-```plaintext
-OS: posix
-Directory: /path/to/project
+    ```plaintext
+    OS: posix
+    Directory: /path/to/project
 
-├── .SourceSageignore
-├── pyproject.toml
-├── sourcesage/
-│   ├── __init__.py
-│   ├── cli.py
-│   └── modules/
-│       ├── DocuSum/
-│       └── DiffReport/
-│           ├── __init__.py
-│           ├── git_diff.py
-│           └── markdown_report.py
-└── README.md
-```
+    ├── .SourceSageignore
+    ├── pyproject.toml
+    ├── sourcesage/
+    │   ├── __init__.py
+    │   ├── cli.py
+    │   └── modules/
+    │       ├── DocuSum/
+    │       └── DiffReport/
+    │           ├── __init__.py
+    │           ├── git_diff.py
+    │           └── markdown_report.py
+    └── README.md
+    ```
 
-## 📊 プロジェクト統計
+    ## 📊 プロジェクト統計
 
-- 📅 作成日時: 2025-02-02 16:22:31
-- 📁 総ディレクトリ数: 5
-- 📄 総ファイル数: 15
-- 📏 最大深度: 3
+    - 📅 作成日時: 2025-02-02 16:22:31
+    - 📁 総ディレクトリ数: 5
+    - 📄 総ファイル数: 15
+    - 📏 最大深度: 3
 ```
 
 ## 🛠️ 開発環境
@@ -219,31 +182,18 @@ uv run isort sourcesage/
 uv build
 ```
 
+
 ## 💡 使用例
 
-### CI/CDでの活用
-
-```yaml
-- name: Generate Repository Summary
-  run: |
-    pip install sourcesage
-    ss
-    
-- name: Generate Release Report  
-  run: |
-    ss --ss-mode GenerateReport
-```
-
-### プロジェクト分析の自動化
-
 ```bash
-#!/bin/bash
-# 複数プロジェクトの一括分析
-for dir in */; do
-    cd "$dir"
-    ss --ss-output "../analysis/$dir"
-    cd ..
-done
+# 1) リポジトリサマリを出力
+uv run ss
+
+# 2) リリースレポートを出力（タグ差分）
+uv run ss --ss-mode GenerateReport
+
+# 3) 出力先を変更
+uv run ss --ss-output ./analysis
 ```
 
 ## 貢献
