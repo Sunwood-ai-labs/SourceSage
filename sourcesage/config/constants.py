@@ -9,7 +9,7 @@ class Constants:
 
     def __init__(self, output_dir):
         self.BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        self.CONFIG_DIR = os.path.join(self.BASE_DIR, 'config')
+        self.CONFIG_DIR = os.path.join(self.BASE_DIR, "config")
 
         # Output settings for Repository summary
         self.SOURCE_SAGE_MD = "Repository_summary.md"

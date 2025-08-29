@@ -1,11 +1,14 @@
 # sourcesage\core.py
 import os
-from rich.console import Console
-from .modules.source_sage import SourceSage as SourceSageModule
-from .config.constants import Constants
+
 from loguru import logger
+from rich.console import Console
+
+from .config.constants import Constants
+from .modules.source_sage import SourceSage as SourceSageModule
 
 console = Console()
+
 
 class SourceSage:
     def __init__(self, output_dir, repo_path, ignore_file, language_map_file):
@@ -33,4 +36,3 @@ class SourceSage:
         )
         sourcesage_module.generate_markdown()
         logger.debug("SourceSage core completed successfully.")
-    
