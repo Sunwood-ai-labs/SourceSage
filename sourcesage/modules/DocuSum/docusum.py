@@ -1,8 +1,7 @@
 import os
 from pathlib import Path
 from loguru import logger
-from art import *
-import requests
+from rich.console import Console
 
 try:
     from .file_pattern_matcher import FilePatternMatcher
@@ -46,10 +45,12 @@ class DocuSum:
         # .SourceSageIgnoreファイルの初期化
         self._init_ignore_file()
         
-        # language_map_fileが指定されていない場合、モジュールのディレクトリ内のファイルを使用
+        # language_map_file が存在しない場合、パッケージ同梱の設定を使用
         if not os.path.exists(language_map_file):
-            module_dir = os.path.dirname(os.path.abspath(__file__))
-            language_map_file = os.path.join(module_dir, 'language_map.json')
+            # this file: sourcesage/modules/DocuSum/docusum.py
+            # package config: sourcesage/config/language_map.json
+            pkg_sourcesage_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            language_map_file = os.path.join(pkg_sourcesage_dir, 'config', 'language_map.json')
         
         # 各種ユーティリティクラスの初期化
         self.pattern_matcher = FilePatternMatcher(ignore_file)
@@ -68,77 +69,76 @@ class DocuSum:
         )
 
     def generate_markdown(self):
-        
-        tprint("DocuSum")
-        
         """マークダウンドキュメントを生成する"""
         output_dir = os.path.dirname(self.output_file)
         if output_dir and not os.path.exists(output_dir):
             os.makedirs(output_dir, exist_ok=True)
-        
+        console = Console()
+
         try:
             with open(self.output_file, 'w', encoding='utf-8') as md_file:
                 for folder in self.folders:
                     project_name = os.path.basename(os.path.abspath(folder))
                     md_file.write(f"# Project: {project_name}\n\n")
-                    logger.info(f"プロジェクト: {project_name}") # 進捗表示
-                                        
-                    # ディレクトリツリーの生成と統計情報の取得
-                    logger.info("ディレクトリツリー生成...") # 進捗表示
-                    tree = self.tree_generator.generate_tree(folder)
-                    stats = self.tree_generator.get_tree_stats(folder)
-                    
-                    # ツリー構造の出力
-                    md_file.write(f"{tree}\n")
-                    
-                    # Gitリポジトリ情報の出力
-                    logger.info("Git情報収集...") # 進捗表示
-                    git_info = self.git_info_collector.collect_info()
-                    self.markdown_writer.write_git_info(md_file, git_info)
-                    
-                    # 統計情報の出力
-                    logger.info("統計情報生成...") # 進捗表示
-                    self.markdown_writer.write_stats(md_file, stats)
-                    
-                    # ファイルサイズと行数の統計
-                    logger.info("ファイル統計収集...") # 進捗表示
-                    file_stats = self.stats_collector.collect_file_stats(folder)
-                    self.markdown_writer.write_file_stats_table(md_file, file_stats)
-                    
-                    # 言語別統計
-                    logger.info("言語統計生成...") # 進捗表示
-                    language_stats = self.stats_collector.collect_language_stats(file_stats)
-                    self.markdown_writer.write_language_stats(md_file, language_stats)
-                    
-                    # ファイル内容の処理
-                    logger.info("ファイル内容処理...") # 進捗表示
-                    self.markdown_writer.write_file_contents(md_file, self.file_processor, folder)
-            
-            logger.success(f"マークダウンドキュメントが生成されました: {self.output_file}")
+                    console.log(f"[bold]プロジェクト:[/] {project_name}")
+
+                    with console.status("[cyan]ディレクトリツリー生成...[/]", spinner="dots") as status:
+                        tree = self.tree_generator.generate_tree(folder)
+                        stats = self.tree_generator.get_tree_stats(folder)
+                        md_file.write(f"{tree}\n")
+
+                    with console.status("[cyan]Git情報収集...[/]", spinner="dots"):
+                        git_info = self.git_info_collector.collect_info()
+                        self.markdown_writer.write_git_info(md_file, git_info)
+
+                    with console.status("[cyan]統計情報生成...[/]", spinner="dots"):
+                        self.markdown_writer.write_stats(md_file, stats)
+
+                    with console.status("[cyan]ファイル統計収集...[/]", spinner="dots"):
+                        file_stats = self.stats_collector.collect_file_stats(folder)
+                        self.markdown_writer.write_file_stats_table(md_file, file_stats)
+
+                    with console.status("[cyan]言語統計生成...[/]", spinner="dots"):
+                        language_stats = self.stats_collector.collect_language_stats(file_stats)
+                        self.markdown_writer.write_language_stats(md_file, language_stats)
+
+                    with console.status("[cyan]ファイル内容処理...[/]", spinner="dots"):
+                        self.markdown_writer.write_file_contents(md_file, self.file_processor, folder)
+
+            console.log(f"[green]マークダウンドキュメントが生成されました:[/] [red]{self.output_file}[/]")
             return self.output_file
-        
+
         except Exception as e:
             logger.error(f"マークダウン生成エラー: {e}")
             raise
 
     def _init_ignore_file(self):
         """
-        .SourceSageIgnoreファイルの初期化を行う。
-        ファイルが存在しない場合、GitHubからデフォルトの設定をダウンロードして作成する。
+        .SourceSageignore の初期化。
+        指定パスに存在しない場合は、パッケージ同梱のデフォルトをコピーする。
         """
-        if not os.path.exists(self.ignore_file):
-            try:
-                url = "https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/refs/heads/develop/sourcesage/modules/DocuSum/.SourceSageignore"
-                response = requests.get(url)
-                response.raise_for_status()  # エラーチェック
-                
-                with open(self.ignore_file, 'w', encoding='utf-8') as f:
-                    f.write(response.text)
-                    
-                logger.success(f"{self.ignore_file}を作成しました")
-            except Exception as e:
-                logger.error(f"{self.ignore_file}の作成に失敗しました: {e}")
-                raise
+        if os.path.exists(self.ignore_file):
+            return
+
+        try:
+            # locate packaged default at: sourcesage/config/.SourceSageignore
+            pkg_sourcesage_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            packaged_ignore = os.path.join(pkg_sourcesage_dir, 'config', '.SourceSageignore')
+
+            if os.path.exists(packaged_ignore):
+                with open(packaged_ignore, 'r', encoding='utf-8') as src, \
+                     open(self.ignore_file, 'w', encoding='utf-8') as dst:
+                    dst.write(src.read())
+                logger.success(f"{self.ignore_file} をデフォルトから作成しました")
+            else:
+                # Fallback minimal template
+                content = """__pycache__/\n*.pyc\n.git/\n.SourceSageAssets/\n"""
+                with open(self.ignore_file, 'w', encoding='utf-8') as dst:
+                    dst.write(content)
+                logger.warning(f"パッケージ内にデフォルトが見つかりませんでした。最小テンプレートで {self.ignore_file} を作成しました")
+        except Exception as e:
+            logger.error(f"{self.ignore_file} の作成に失敗しました: {e}")
+            raise
 
     def analyze_repository(self):
         """リポジトリの分析結果を生成する"""

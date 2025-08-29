@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sourcesage"
+version = "6.2.0"
+description = "Repository analysis tool that generates AI-friendly documentation"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Sunwood AI Labs", email = "sunwood.ai.labs@gmail.com"},
+]
+keywords = ["documentation", "repository", "analysis", "markdown", "ai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Utilities",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "art",
+    "GitPython",
+    "loguru",
+    "python-dotenv",
+    "requests",
+    "rich",
+]
+
+[project.urls]
+Homepage = "https://github.com/Sunwood-ai-labs/SourceSage"
+Repository = "https://github.com/Sunwood-ai-labs/SourceSage"
+Issues = "https://github.com/Sunwood-ai-labs/SourceSage/issues"
+
+[project.scripts]
+sourcesage = "sourcesage.cli:main"
+ss = "sourcesage.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["sourcesage"]
+
+[tool.hatch.build.targets.wheel.sources]
+"sourcesage" = "sourcesage"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/sourcesage",
+    "/README.md",
+    "/LICENSE",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "isort>=5.0.0",
+    "flake8>=4.0.0",
+]
