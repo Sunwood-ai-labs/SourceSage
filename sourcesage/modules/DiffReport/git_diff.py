@@ -1,4 +1,5 @@
 from loguru import logger
+
 from ..GitCommander import run_command
 
 
@@ -17,7 +18,9 @@ class GitDiffGenerator:
         run_command(self.git_fetch_tags, cwd=self.repo_path if self.repo_path else None)
 
         logger.debug("最新と前のタグを取得しています...")
-        tags_output = run_command(self.git_tag_sort, cwd=self.repo_path if self.repo_path else None)
+        tags_output = run_command(
+            self.git_tag_sort, cwd=self.repo_path if self.repo_path else None
+        )
         tags = tags_output.split()
 
         if len(tags) < 2:

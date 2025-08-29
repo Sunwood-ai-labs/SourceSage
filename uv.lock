@@ -957,7 +957,7 @@ wheels = [
 
 [[package]]
 name = "sourcesage"
-version = "6.2.0"
+version = "7.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "art" },
