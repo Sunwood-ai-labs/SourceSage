@@ -7,9 +7,6 @@ from loguru import logger
 import sys
 from art import *
 from .config.constants import Constants
-from .modules.CommitCraft import CommitCraft
-from .modules.DocuMind import DocuMind
-from .modules.IssueWize import IssueWize
 
 logger.configure(
     handlers=[
@@ -32,12 +29,7 @@ def add_arguments(parser):
     parser.add_argument('--repo', help='リポジトリへのパス', default='./')
     parser.add_argument('--owner', help='リポジトリのオーナー', default='Sunwood-ai-labs')  
     parser.add_argument('--repository', help='リポジトリの名前', default='SourceSage')  
-    parser.add_argument('--ss-mode', nargs='+', help='実行するモード: Sage, GenerateReport, CommitCraft, DocuMind, IssueWize, またはall', default='all')
-    # ==============================================
-    # 変更履歴の設定
-    #
-    parser.add_argument('--changelog-start-tag', type=str, default=None, help='変更履歴の開始タグ')
-    parser.add_argument('--changelog-end-tag', type=str, default=None, help='変更履歴の終了タグ')
+    parser.add_argument('--ss-mode', nargs='+', help='実行するモード: Sage, GenerateReport, またはall', default='all')
 
 
     package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -64,34 +56,8 @@ def add_arguments(parser):
     parser.add_argument('--ss-output-path', type=str, default=".SourceSageAssets/RELEASE_REPORT/", help='Markdownレポートの保存先フォルダ')
     parser.add_argument('--report-file-name', type=str, default="Report_{latest_tag}.md", help='Markdownレポートのファイル名。{latest_tag}は最新のタグに置換されます。')
     
-    # ==============================================
-    # IssueWize用の引数を追加
-    #
-    parser.add_argument('--issue-summary', type=str, default=None, help='Issueの概要')
-    parser.add_argument('--project-name', type=str, default=None, help='IssueWizeのプロジェクト名')
-    parser.add_argument('--milestone-name', type=str, default=None, help='IssueWizeのマイルストーン名')
-    parser.add_argument('--repo-overview-file', type=str, default=None, help='リポジトリ概要のマークダウンファイルパス')
-    parser.add_argument('--issuewize-model', type=str, default=None, help='IssueWizeで使用するモデル名')
     
-    # ==============================================
-    # CommitCraft用の引数を追加
-    #
-    parser.add_argument('--llm-output', type=str, default="llm_output.md", help='LLMレスポンスの出力ファイル')
-    parser.add_argument('--ss-model-name', type=str, default=None, help='LLMのモデル名（デフォルト: None）')
-    parser.add_argument('--stage-info-file', type=str, default=".SourceSageAssets/COMMIT_CRAFT/STAGE_INFO/STAGE_INFO_AND_PROMT_GAIAH_B.md", help='ステージファイルパス')
-    parser.add_argument('--commit-craft-output', type=str, default=".SourceSageAssets/COMMIT_CRAFT/", help='CommitCraftの出力フォルダ')
 
-    # ==============================================
-    # DocuMind用の引数を追加
-    #
-    parser.add_argument('--docuMind-model', type=str, default=None, help='DocuMindで使用するLLMのモデル名')
-    parser.add_argument('--docuMind-db', type=str, default=".SourceSageAssets/DOCUMIND/Repository_summary.md", help='DocuMindのデータベースファイルのパス')
-    parser.add_argument('--docuMind-release-report', type=str, default=".SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md", help='リリースレポートのパス。{latest_tag}は最新のタグに置換されます。')
-    parser.add_argument('--docuMind-changelog', type=str, default=".SourceSageAssets/Changelog/CHANGELOG_release_{version}.md", help='変更履歴のパス。{version}はバージョンに置換されます。')
-    parser.add_argument('--docuMind-output', type=str, default=".SourceSageAssets/DOCUMIND/RELEASE_NOTES.md", help='リリースノートの出力パス')
-    parser.add_argument('--docuMind-prompt-output', type=str, default=".SourceSageAssets/DOCUMIND/_PROMPT.md", help='リリースノート作成のプロンプト')
-    parser.add_argument('--repo-name', type=str, default="SourceSage", help='リポジトリの名前')
-    parser.add_argument('--repo-version', type=str, default="v0.2.0", help='リポジトリのバージョン')
     
     # ==============================================
     # Configファイル
@@ -120,20 +86,8 @@ def run(args=None):
     # SourceSageの実行
     if 'all' in args.ss_mode or 'Sage' in args.ss_mode:
         logger.info("SourceSageを起動します...")
-        sourcesage = SourceSage(args.ss_output, args.repo, args.owner, args.repository, args.ignore_file, args.language_map,
-                                args.changelog_start_tag, args.changelog_end_tag)
+        sourcesage = SourceSage(args.ss_output, args.repo, args.owner, args.repository, args.ignore_file, args.language_map)
         sourcesage.run()
-
-    # -----------------------------------------------  
-    # IssueWizeを使用してIssueを作成
-    #
-    if 'IssueWize' in args.ss_mode:
-        issuewize = IssueWize(model=args.issuewize_model)
-        if args.issue_summary and args.project_name and args.repo_overview_file:
-            logger.info("IssueWizeを使用してIssueを作成します...")
-            issuewize.create_optimized_issue(args.issue_summary, args.project_name, args.milestone_name, args.repo_overview_file)
-        else:
-            logger.warning("IssueWizeの実行に必要なパラメータが指定されていません。--issue-summary, --project-name, --repo-overview-fileを指定してください。")
 
     # -----------------------------------------------
     # レポートの生成
@@ -150,24 +104,6 @@ def run(args=None):
 
             markdown_report_generator = MarkdownReportGenerator(diff, latest_tag, previous_tag, args.report_title, args.report_sections, output_path)
             markdown_report_generator.generate_markdown_report()
-
-    # -----------------------------------------------
-    # CommitCraftを使用してLLMにステージ情報を送信し、コミットメッセージを生成
-    #
-    if 'all' in args.ss_mode or 'CommitCraft' in args.ss_mode:
-        stage_info_file = args.stage_info_file
-        llm_output_file = os.path.join(args.commit_craft_output, args.llm_output)
-        os.makedirs(args.commit_craft_output, exist_ok=True)
-        commit_craft = CommitCraft(args.ss_model_name, stage_info_file, llm_output_file)
-        commit_craft.generate_commit_messages()
-    
-    # -----------------------------------------------
-    # DocuMindを使用してリリースノートを生成
-    #
-    if 'all' in args.ss_mode or 'DocuMind' in args.ss_mode:
-        docuMind = DocuMind(args.docuMind_model, args.docuMind_db, args.docuMind_release_report, args.docuMind_changelog, args.repo_name, args.repo_version, args.docuMind_prompt_output)
-        release_notes = docuMind.generate_release_notes()
-        docuMind.save_release_notes(args.docuMind_output, release_notes)
 
     logger.success("プロセスが完了しました。")
     tprint("!! successfully !!", font="rnd-medium")
