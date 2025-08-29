@@ -1,9 +1,18 @@
 import os
-from .DocuSum.docusum import DocuSum
+
 from loguru import logger
 
+from .DocuSum.docusum import DocuSum
+
+
 class SourceSage:
-    def __init__(self, folders, ignore_file='.SourceSageignore', output_file='output.md', language_map_file='language_map.json'):
+    def __init__(
+        self,
+        folders,
+        ignore_file=".SourceSageignore",
+        output_file="output.md",
+        language_map_file="language_map.json",
+    ):
         """
         SourceSageの初期化
 
@@ -17,7 +26,7 @@ class SourceSage:
             folders=folders,
             ignore_file=ignore_file,
             language_map_file=language_map_file,
-            output_file=output_file
+            output_file=output_file,
         )
         logger.info(f"SourceSageを初期化: ignore_file={ignore_file}, folders={folders}")
 
