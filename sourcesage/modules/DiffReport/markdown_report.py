@@ -1,5 +1,7 @@
-from loguru import logger
 import os
+
+from loguru import logger
+
 try:
     from ..DocuSum.git_info_collector import GitInfoCollector
 except Exception:
@@ -7,7 +9,16 @@ except Exception:
 
 
 class MarkdownReportGenerator:
-    def __init__(self, diff, latest_tag, previous_tag, report_title, report_sections, output_path, repo_path=None):
+    def __init__(
+        self,
+        diff,
+        latest_tag,
+        previous_tag,
+        report_title,
+        report_sections,
+        output_path,
+        repo_path=None,
+    ):
         self.diff = diff
         self.latest_tag = latest_tag
         self.previous_tag = previous_tag
@@ -21,7 +32,9 @@ class MarkdownReportGenerator:
         git diff からマークダウンレポートを生成します。
         """
         logger.debug("マークダウンレポートを生成しています...")
-        repo_name = os.path.basename(os.path.abspath(self.repo_path)) if self.repo_path else ""
+        repo_name = (
+            os.path.basename(os.path.abspath(self.repo_path)) if self.repo_path else ""
+        )
         title = f"{repo_name} {self.report_title}".strip()
         report_content = f"# {title}\n\n"
 
@@ -35,7 +48,7 @@ class MarkdownReportGenerator:
             elif section == "readme":
                 report_content += self._generate_readme_section()
 
-        with open(self.output_path, "w", encoding='utf8') as file:
+        with open(self.output_path, "w", encoding="utf8") as file:
             file.write(report_content)
 
         logger.debug("マークダウンドキュメントが正常に生成されました！")
@@ -45,7 +58,9 @@ class MarkdownReportGenerator:
         バージョン比較セクションを生成します。
         """
         section_content = "## バージョン比較\n\n"
-        section_content += f"**{self.previous_tag}** と **{self.latest_tag}** の比較\n\n"
+        section_content += (
+            f"**{self.previous_tag}** と **{self.latest_tag}** の比較\n\n"
+        )
         return section_content
 
     def _generate_diff_details_section(self):
@@ -61,7 +76,7 @@ class MarkdownReportGenerator:
         """
         リポジトリ情報セクションを生成します。
         """
-        section_content = "## \U0001F4C2 Gitリポジトリ情報\n\n"
+        section_content = "## \U0001f4c2 Gitリポジトリ情報\n\n"
 
         if GitInfoCollector is None:
             section_content += "Git情報コレクターが利用できません。\n\n"
@@ -80,35 +95,43 @@ class MarkdownReportGenerator:
             return section_content
 
         # 基本情報
-        section_content += "### \U0001F310 基本情報\n\n"
-        section_content += f"- \U0001F517 リモートURL: {info.get('remote_url', 'Not available')}\n"
-        section_content += f"- \U0001F33F デフォルトブランチ: {info.get('default_branch', 'Not available')}\n"
-        section_content += f"- \U0001F3AF 現在のブランチ: {info.get('current_branch', 'Not available')}\n"
-        section_content += f"- \U0001F4C5 作成日時: {info.get('creation_date', 'Not available')}\n"
-        section_content += f"- \U0001F4C8 総コミット数: {info.get('total_commits', '0')}\n\n"
+        section_content += "### \U0001f310 基本情報\n\n"
+        section_content += (
+            f"- \U0001f517 リモートURL: {info.get('remote_url', 'Not available')}\n"
+        )
+        section_content += f"- \U0001f33f デフォルトブランチ: {info.get('default_branch', 'Not available')}\n"
+        section_content += f"- \U0001f3af 現在のブランチ: {info.get('current_branch', 'Not available')}\n"
+        section_content += (
+            f"- \U0001f4c5 作成日時: {info.get('creation_date', 'Not available')}\n"
+        )
+        section_content += (
+            f"- \U0001f4c8 総コミット数: {info.get('total_commits', '0')}\n\n"
+        )
 
         # 最新コミット
-        last = info.get('last_commit')
+        last = info.get("last_commit")
         if last:
-            section_content += "### \U0001F501 最新のコミット\n\n"
-            section_content += f"- \U0001F4DD メッセージ: {last.get('message','')}\n"
-            section_content += f"- \U0001F50D ハッシュ: {last.get('hash','')}\n"
-            section_content += f"- \U0001F464 作者: {last.get('author','')} ({last.get('email','')})\n"
-            section_content += f"- \u23F0 日時: {last.get('date','')}\n\n"
+            section_content += "### \U0001f501 最新のコミット\n\n"
+            section_content += f"- \U0001f4dd メッセージ: {last.get('message','')}\n"
+            section_content += f"- \U0001f50d ハッシュ: {last.get('hash','')}\n"
+            section_content += (
+                f"- \U0001f464 作者: {last.get('author','')} ({last.get('email','')})\n"
+            )
+            section_content += f"- \u23f0 日時: {last.get('date','')}\n\n"
 
         # タグ
-        tags = info.get('tags')
+        tags = info.get("tags")
         if tags:
-            section_content += "### \U0001F3F7\uFE0F 最新のタグ\n\n"
+            section_content += "### \U0001f3f7\ufe0f 最新のタグ\n\n"
             for t in tags:
                 section_content += f"- {t}\n"
             section_content += "\n"
 
         # コントリビューター
-        contributors = info.get('contributors')
+        contributors = info.get("contributors")
         if contributors:
-            section_content += "### \U0001F465 主要コントリビューター\n\n"
-            section_content += "| \U0001F464 名前 | \U0001F4CA コミット数 |\n"
+            section_content += "### \U0001f465 主要コントリビューター\n\n"
+            section_content += "| \U0001f464 名前 | \U0001f4ca コミット数 |\n"
             section_content += "|---------|-------------|\n"
             for c in contributors:
                 section_content += f"| {c.get('name','')} | {c.get('commits','')} |\n"
@@ -120,7 +143,7 @@ class MarkdownReportGenerator:
         """
         READMEの内容を末尾に追加します。
         """
-        section_content = "## \U0001F4D6 README\n\n"
+        section_content = "## \U0001f4d6 README\n\n"
         readme_path = os.path.join(self.repo_path, "README.md")
         try:
             if os.path.exists(readme_path):
