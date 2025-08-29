@@ -7,10 +7,7 @@ class Constants:
     Focused on DocuMind (Repository_summary.md) output paths only.
     """
 
-    def __init__(self, output_dir, owner, repository):
-        self.OWNER = owner
-        self.REPOSITORY = repository
-
+    def __init__(self, output_dir):
         self.BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         self.CONFIG_DIR = os.path.join(self.BASE_DIR, 'config')
 
