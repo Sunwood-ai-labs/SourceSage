@@ -176,7 +176,10 @@ Directory: /path/to/project
 │   ├── cli.py
 │   └── modules/
 │       ├── DocuSum/
-│       └── ReleaseDiffReportGenerator.py
+│       └── DiffReport/
+│           ├── __init__.py
+│           ├── git_diff.py
+│           └── markdown_report.py
 └── README.md
 ```
 
