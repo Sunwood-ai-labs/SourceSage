@@ -105,7 +105,7 @@ class DocuSum:
                     with console.status("[cyan]ファイル内容処理...[/]", spinner="dots"):
                         self.markdown_writer.write_file_contents(md_file, self.file_processor, folder)
 
-            console.log(f"[green]マークダウンドキュメントが生成されました:[/] {self.output_file}")
+            console.log(f"[green]マークダウンドキュメントが生成されました:[/] [red]{self.output_file}[/]")
             return self.output_file
 
         except Exception as e:
