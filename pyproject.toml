@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sourcesage"
-version = "7.0.1"
+version = "7.1.0"
 description = "Repository analysis tool that generates AI-friendly documentation"
 readme = "README.md"
 requires-python = ">=3.8"
