@@ -14,17 +14,24 @@ class GitDiffGenerator:
         """
         現在のリリースと前のリリースの間の git diff を取得します。
         """
-        logger.debug("最新の git タグを取得しています...")
-        run_command(self.git_fetch_tags, cwd=self.repo_path if self.repo_path else None)
+        try:
+            logger.debug("最新の git タグを取得しています...")
+            run_command(
+                self.git_fetch_tags, cwd=self.repo_path if self.repo_path else None
+            )
 
-        logger.debug("最新と前のタグを取得しています...")
-        tags_output = run_command(
-            self.git_tag_sort, cwd=self.repo_path if self.repo_path else None
-        )
-        tags = tags_output.split()
+            logger.debug("最新と前のタグを取得しています...")
+            tags_output = run_command(
+                self.git_tag_sort, cwd=self.repo_path if self.repo_path else None
+            )
+        except Exception as e:
+            logger.warning(f"タグ情報の取得に失敗しました: {e}. レポート生成をスキップします。")
+            return None, None, None
+
+        tags = tags_output.split() if tags_output else []
 
         if len(tags) < 2:
-            logger.error("比較するタグが十分にありません。タグを2以上追加してください")
+            logger.warning("比較するタグが不足しています（最低2つ必要）。レポート生成をスキップします。")
             return None, None, None
 
         latest_tag, previous_tag = tags[:2]
@@ -32,6 +39,12 @@ class GitDiffGenerator:
 
         logger.debug("git diff を生成しています...")
         diff_command = self.git_diff_command + [previous_tag, latest_tag]
-        diff = run_command(diff_command, cwd=self.repo_path if self.repo_path else None)
+        try:
+            diff = run_command(
+                diff_command, cwd=self.repo_path if self.repo_path else None
+            )
+        except Exception as e:
+            logger.warning(f"git diff の生成に失敗しました: {e}. レポート生成をスキップします。")
+            return None, None, None
 
         return diff, latest_tag, previous_tag
