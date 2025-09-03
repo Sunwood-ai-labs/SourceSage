@@ -55,14 +55,10 @@ def add_arguments(parser):
     # ==============================================
     # 無視ファイルと言語マップ設定
     #
-    # Prefer project-local .SourceSageignore; fallback to packaged default
+    # Create/use .SourceSageignore in the current working directory by default
     ignore_file_cwd = os.path.join(os.getcwd(), ".SourceSageignore")
-    ignore_default = (
-        ignore_file_cwd if os.path.exists(ignore_file_cwd) else default_ignore_file_pkg
-    )
-
     parser.add_argument(
-        "--ignore-file", help="無視ファイルへのパス", default=ignore_default
+        "--ignore-file", help="無視ファイルへのパス", default=ignore_file_cwd
     )
     parser.add_argument(
         "--language-map",
@@ -300,6 +296,10 @@ def run(args=None):
             ):
                 markdown_report_generator.generate_markdown_report()
             console.print(f"[success]出力: [/][red]{output_path}[/]")
+        else:
+            console.print(
+                "[warn]タグが見つからないため、Release Report をスキップしました[/]"
+            )
 
     console.print(
         Panel(Align.center("プロセスが完了しました。"), style="success", expand=True)

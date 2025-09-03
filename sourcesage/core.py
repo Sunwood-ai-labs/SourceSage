@@ -14,6 +14,7 @@ class SourceSage:
     def __init__(self, output_dir, repo_path, ignore_file, language_map_file):
         self.output_dir = output_dir
         self.repo_path = repo_path
+        # Honor the path provided by CLI (typically CWD/.SourceSageignore)
         self.ignore_file = ignore_file
         self.language_map_file = language_map_file
 
