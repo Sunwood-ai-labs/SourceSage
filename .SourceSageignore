@@ -1,6 +1,7 @@
 # Version control system related
 .git/
 .gitignore
+.github/
 
 # Cache files
 __pycache__/
