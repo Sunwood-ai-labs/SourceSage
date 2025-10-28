@@ -43,30 +43,35 @@ class FilePatternMatcher:
     def should_exclude(self, path):
         """パスが除外パターンにマッチするかチェックする"""
         path = str(Path(path)).replace("\\", "/")
+        is_dir = os.path.isdir(path)
+        excluded = False
 
-        # ディレクトリの場合、そのディレクトリ全体を除外するかチェック
-        if os.path.isdir(path):
+        if is_dir:
             dir_path = path if path.endswith("/") else f"{path}/"
             for pattern in self.patterns["exclude"]:
-                # パターンが.git/のような形式の場合、配下全て除外
-                if pattern.endswith("/"):
-                    if self._match_directory_pattern(dir_path, pattern):
-                        return True
+                if pattern.endswith("/") and self._match_directory_pattern(
+                    dir_path, pattern
+                ):
+                    excluded = True
+                    break
 
-        # 通常のパターンマッチング
-        excluded = any(
-            self._match_pattern(path, pattern) for pattern in self.patterns["exclude"]
-        )
+        if not excluded:
+            excluded = any(
+                self._match_pattern(path, pattern)
+                for pattern in self.patterns["exclude"]
+            )
+
         if not excluded:
             return False
 
         if self.patterns["include"]:
-            return not any(
+            if any(
                 self._match_pattern(path, pattern)
                 for pattern in self.patterns["include"]
-            )
+            ):
+                return False
 
-        return excluded
+        return True
 
     def _match_pattern(self, path, pattern):
         """パターンとパスのマッチングを行う"""
