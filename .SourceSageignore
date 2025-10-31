@@ -40,7 +40,6 @@ docs/drafts/
 
 # Pattern exceptions (exclude from exclusions)
 !docs/important.md
-!.github/workflows/
 repository_summary.md
 
 # Terraform-related
