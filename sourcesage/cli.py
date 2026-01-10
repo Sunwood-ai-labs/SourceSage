@@ -37,12 +37,6 @@ def add_arguments(parser):
         "--ss-output", help="生成されたファイルの出力ディレクトリ", default="./"
     )
     parser.add_argument("--repo", help="リポジトリへのパス", default="./")
-    parser.add_argument(
-        "--ss-mode",
-        nargs="+",
-        help="実行するモード: Sage, GenerateReport, またはall",
-        default=["all"],
-    )
 
     package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     default_ignore_file_pkg = os.path.join(
@@ -150,18 +144,12 @@ def render_rich_help(parser: argparse.ArgumentParser):
     usage = Text()
     usage.append("Usage:\n", style="bold")
     usage.append("  ss [options]\n")
-    usage.append("  sourcesage [options]\n")
+    usage.append("  sourcesage [options]\n\n")
+    usage.append("デフォルトでRepository Summaryを生成します。\n", style="dim")
+    usage.append("差分レポート生成は ", style="dim")
+    usage.append("--generate-diff-report", style="yellow")
+    usage.append(" フラグで有効化（非推奨）\n", style="dim")
     console.print(Panel(usage, title="Usage", border_style="cyan", expand=True))
-
-    # Modes
-    modes = Text()
-    modes.append("--ss-mode all ", style="green")
-    modes.append("(デフォルト: Repository Summaryのみ)\n")
-    modes.append("--ss-mode Sage ", style="green")
-    modes.append("(Repository Summaryのみ)\n")
-    modes.append("--generate-diff-report ", style="yellow")
-    modes.append("(差分レポート生成 - 非推奨)\n")
-    console.print(Panel(modes, title="Modes", border_style="green", expand=True))
 
     # Core options
     core_tbl = Table(title="Core Options", show_header=True, header_style="bold cyan")
@@ -188,7 +176,6 @@ def render_rich_help(parser: argparse.ArgumentParser):
     core_tbl.add_row(
         "--language-map", str(_get_default("language_map")), "言語マップJSONのパス"
     )
-    core_tbl.add_row("--ss-mode", "[all|Sage|GenerateReport]", "実行モード")
     console.print(core_tbl)
 
     # Release report options (deprecated)
@@ -235,7 +222,6 @@ def render_rich_help(parser: argparse.ArgumentParser):
     examples = Text()
     examples.append("Examples:\n", style="bold")
     examples.append("  ss\n")
-    examples.append("  ss --ss-mode Sage\n")
     examples.append("  ss --use-sourcesage-ignore\n")
     examples.append("  ss --generate-diff-report --report-title 'My Report'\n")
     console.print(Panel(examples, title="Examples", border_style="yellow", expand=True))
@@ -284,17 +270,16 @@ def run(args=None):
         args.ignore_file = sourcesageignore_path
 
     # -----------------------------------------------
-    # SourceSageの実行
-    if "all" in args.ss_mode or "Sage" in args.ss_mode:
-        console.print(
-            Panel(Align.center("Repository Summary"), style="info", expand=True)
+    # SourceSageの実行（常に実行）
+    console.print(
+        Panel(Align.center("Repository Summary"), style="info", expand=True)
+    )
+    with console.status("[info]生成中...[/]", spinner="dots"):
+        sourcesage = SourceSage(
+            args.ss_output, args.repo, args.ignore_file, args.language_map
         )
-        with console.status("[info]生成中...[/]", spinner="dots"):
-            sourcesage = SourceSage(
-                args.ss_output, args.repo, args.ignore_file, args.language_map
-            )
-            sourcesage.run()
-        console.print("[success]Repository Summary 生成 完了[/]")
+        sourcesage.run()
+    console.print("[success]Repository Summary 生成 完了[/]")
 
     # -----------------------------------------------
     # レポートの生成（オプション機能、非推奨）

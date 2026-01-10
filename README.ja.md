@@ -124,7 +124,6 @@ uv run ss --generate-diff-report
 uv run ss --ss-output ./out              # 出力先を変更
 uv run ss --ignore-file .gitignore       # 無視ルールを指定（デフォルト）
 uv run ss --use-sourcesage-ignore        # .SourceSageignoreを使用/生成
-uv run ss --ss-mode Sage                 # サマリのみ（デフォルト動作）
 uv run ss --generate-diff-report         # 差分レポート生成（非推奨）
 ```
 

@@ -123,7 +123,6 @@ Frequently used options (excerpt):
 uv run ss --ss-output ./out              # Change output destination
 uv run ss --ignore-file .gitignore       # Specify ignore rules (default)
 uv run ss --use-sourcesage-ignore        # Use/generate .SourceSageignore
-uv run ss --ss-mode Sage                 # Summary only (default behavior)
 uv run ss --generate-diff-report         # Generate diff report (deprecated)
 ```
 
