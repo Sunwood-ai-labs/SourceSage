@@ -1,66 +1,115 @@
-# Version control system related
+# =============================================
+# .SourceSageignore
+# SourceSageが解析から除外するファイル/ディレクトリのパターン
+# =============================================
+
+# ---------------------------------------------
+# バージョン管理システム
+# ---------------------------------------------
 .git/
 .gitignore
+.SourceSageignore
 
-# Cache files
+# ---------------------------------------------
+# Python関連
+# ---------------------------------------------
+# キャッシュ
 __pycache__/
-.pytest_cache/
 **/__pycache__/**
 *.pyc
+*.pyo
+*.pyd
+.Python
 
-# Build and distribution related
-build/
-dist/
-*.egg-info/
-
-# Temporary files and output
-output/
-output.md
-test_output/
-.SourceSageAssets/
-.SourceSageAssetsDemo/
-
-# Assets
-*.png
-*.svg
-*.jpg
-*.jepg
-assets/
-
-# Others
-LICENSE
-example/
-package-lock.json
-.DS_Store
-
-# Exclude specific directories
+# テスト・カバレッジ
+.pytest_cache/
+.coverage
+.tox/
+htmlcov/
+*.cover
 tests/temp/
-docs/drafts/
 
-# Pattern exceptions (exclude from exclusions)
-!docs/important.md
-!.github/workflows/
-repository_summary.md
+# 仮想環境
+.venv/
+venv/
+env/
+ENV/
+.python-version
 
-# Terraform-related
-.terraform
-*.terraform.lock.hcl
-*.backup
-*.tfstate
+# パッケージ・ビルド
+*.egg-info/
+dist/
+build/
+*.egg
 
-# Python virtual environment
-venv
-.venv
-
-# Package manager lock files
+# ---------------------------------------------
+# パッケージマネージャーのロックファイル
+# ---------------------------------------------
+poetry.lock
+Pipfile.lock
 uv.lock
-
-# Web application lock files
+package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
-# Log files
+# ---------------------------------------------
+# IDE・エディタ
+# ---------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ---------------------------------------------
+# Terraform関連
+# ---------------------------------------------
+.terraform/
+*.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+
+# ---------------------------------------------
+# SourceSage固有
+# ---------------------------------------------
+.SourceSageAssets/
+.SourceSageAssetsDemo/
+repository_summary.md
+
+# ---------------------------------------------
+# 一時ファイル・出力
+# ---------------------------------------------
+output/
+output.md
+test_output/
 *.log
 memo.md
 
+# ---------------------------------------------
+# ドキュメント・例
+# ---------------------------------------------
 docs/
+docs/drafts/
+example/
+LICENSE
+
+# ---------------------------------------------
+# 画像・メディアファイル
+# ---------------------------------------------
+*.png
+*.jpg
+*.jpeg
+*.jepg
+*.gif
+*.svg
+*.ico
+*.mp4
+*.mp3
+assets/
+
+# ---------------------------------------------
+# パターン例外（除外から除外する）
+# ---------------------------------------------
+!docs/important.md
+!.github/workflows/
