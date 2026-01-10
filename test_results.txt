@@ -1,0 +1,26 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.14, pytest-8.4.1, pluggy-1.6.0 -- /home/user/SourceSage/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/user/SourceSage
+configfile: pyproject.toml
+plugins: cov-6.2.1
+collecting ... collected 16 items
+
+tests/test_cli.py::TestCLIArguments::test_short_output_option PASSED     [  6%]
+tests/test_cli.py::TestCLIArguments::test_long_output_option PASSED      [ 12%]
+tests/test_cli.py::TestCLIArguments::test_diff_option PASSED             [ 18%]
+tests/test_cli.py::TestCLIArguments::test_use_ignore_option PASSED       [ 25%]
+tests/test_cli.py::TestCLIArguments::test_default_values PASSED          [ 31%]
+tests/test_cli.py::TestCLIArguments::test_diff_output_option PASSED      [ 37%]
+tests/test_cli.py::TestCLIArguments::test_combined_options PASSED        [ 43%]
+tests/test_cli.py::TestSourceSageignoreGeneration::test_sourcesageignore_template_exists PASSED [ 50%]
+tests/test_cli.py::TestSourceSageignoreGeneration::test_sourcesageignore_has_sections PASSED [ 56%]
+tests/test_cli.py::TestSourceSageignoreGeneration::test_sourcesageignore_has_venv_patterns PASSED [ 62%]
+tests/test_cli.py::TestSourceSageignoreGeneration::test_sourcesageignore_has_lock_files PASSED [ 68%]
+tests/test_cli.py::TestCLIOptions::test_repo_path_option PASSED          [ 75%]
+tests/test_cli.py::TestCLIOptions::test_report_title_option PASSED       [ 81%]
+tests/test_cli.py::TestCLIOptions::test_ignore_file_option PASSED        [ 87%]
+tests/test_cli.py::TestBackwardCompatibility::test_sourcesage_command_name_in_pyproject PASSED [ 93%]
+tests/test_cli.py::TestBackwardCompatibility::test_old_options_removed PASSED [100%]
+
+============================== 16 passed in 0.22s ==============================
