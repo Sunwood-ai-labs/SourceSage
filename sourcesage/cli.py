@@ -34,7 +34,7 @@ def add_arguments(parser):
     # 基本設定
     #
     parser.add_argument(
-        "--ss-output", help="生成されたファイルの出力ディレクトリ", default="./"
+        "-o", "--output", help="生成されたファイルの出力ディレクトリ", default="./"
     )
     parser.add_argument("--repo", help="リポジトリへのパス", default="./")
 
@@ -57,7 +57,7 @@ def add_arguments(parser):
         default=gitignore_file
     )
     parser.add_argument(
-        "--use-sourcesage-ignore",
+        "--use-ignore",
         action="store_true",
         help=".gitignoreの代わりに.SourceSageignoreを使用する",
     )
@@ -71,7 +71,7 @@ def add_arguments(parser):
     # レポート生成用の引数を追加
     #
     parser.add_argument(
-        "--generate-diff-report",
+        "--diff",
         action="store_true",
         help="リリースノート用の差分レポートを生成する（非推奨: LLMのコマンド実行能力の向上により、この機能は将来削除される予定です）",
     )
@@ -116,10 +116,10 @@ def add_arguments(parser):
         help="レポートに含めるセクション (repo_info, version_comparison, diff_details, readme)",
     )
     parser.add_argument(
-        "--ss-output-path",
+        "--diff-output",
         type=str,
         default=".SourceSageAssets/RELEASE_REPORT/",
-        help="Markdownレポートの保存先フォルダ",
+        help="差分レポートの保存先フォルダ",
     )
     parser.add_argument(
         "--report-file-name",
@@ -143,11 +143,11 @@ def render_rich_help(parser: argparse.ArgumentParser):
     # Usage
     usage = Text()
     usage.append("Usage:\n", style="bold")
-    usage.append("  ss [options]\n")
+    usage.append("  sage [options]\n")
     usage.append("  sourcesage [options]\n\n")
     usage.append("デフォルトでRepository Summaryを生成します。\n", style="dim")
     usage.append("差分レポート生成は ", style="dim")
-    usage.append("--generate-diff-report", style="yellow")
+    usage.append("--diff", style="yellow")
     usage.append(" フラグで有効化（非推奨）\n", style="dim")
     console.print(Panel(usage, title="Usage", border_style="cyan", expand=True))
 
@@ -164,14 +164,14 @@ def render_rich_help(parser: argparse.ArgumentParser):
         return fallback
 
     core_tbl.add_row(
-        "--ss-output", str(_get_default("ss_output")), "生成ファイルの出力ディレクトリ"
+        "-o, --output", str(_get_default("output")), "生成ファイルの出力ディレクトリ"
     )
     core_tbl.add_row("--repo", str(_get_default("repo")), "解析対象のリポジトリパス")
     core_tbl.add_row(
         "--ignore-file", str(_get_default("ignore_file")), "無視パターンファイルのパス（デフォルト: .gitignore）"
     )
     core_tbl.add_row(
-        "--use-sourcesage-ignore", "False", ".SourceSageignoreを使用/生成する"
+        "--use-ignore", "False", ".SourceSageignoreを使用/生成する"
     )
     core_tbl.add_row(
         "--language-map", str(_get_default("language_map")), "言語マップJSONのパス"
@@ -186,7 +186,7 @@ def render_rich_help(parser: argparse.ArgumentParser):
     rel_tbl.add_column("Default", style="dim")
     rel_tbl.add_column("Description")
     rel_tbl.add_row(
-        "--generate-diff-report", "False", "差分レポート生成を有効化（非推奨）"
+        "--diff", "False", "差分レポート生成を有効化（非推奨）"
     )
     rel_tbl.add_row(
         "--repo-path", str(_get_default("repo_path")), "gitリポジトリのルートパス"
@@ -207,9 +207,9 @@ def render_rich_help(parser: argparse.ArgumentParser):
         "--report-sections", str(_get_default("report_sections")), "含めるセクション"
     )
     rel_tbl.add_row(
-        "--ss-output-path",
-        str(_get_default("ss_output_path")),
-        "レポート出力先フォルダ",
+        "--diff-output",
+        str(_get_default("diff_output")),
+        "差分レポート出力先フォルダ",
     )
     rel_tbl.add_row(
         "--report-file-name",
@@ -221,9 +221,10 @@ def render_rich_help(parser: argparse.ArgumentParser):
     # Examples
     examples = Text()
     examples.append("Examples:\n", style="bold")
-    examples.append("  ss\n")
-    examples.append("  ss --use-sourcesage-ignore\n")
-    examples.append("  ss --generate-diff-report --report-title 'My Report'\n")
+    examples.append("  sage\n")
+    examples.append("  sage --use-ignore\n")
+    examples.append("  sage --diff --report-title 'My Report'\n")
+    examples.append("  sage -o ./output --repo ./myproject\n")
     console.print(Panel(examples, title="Examples", border_style="yellow", expand=True))
 
 
@@ -253,7 +254,7 @@ def run(args=None):
 
     # -----------------------------------------------
     # .SourceSageignore ファイルの生成
-    if args.use_sourcesage_ignore:
+    if args.use_ignore:
         sourcesageignore_path = os.path.join(os.getcwd(), ".SourceSageignore")
         if not os.path.exists(sourcesageignore_path):
             # パッケージのデフォルト.SourceSageignoreをコピー
@@ -276,7 +277,7 @@ def run(args=None):
     )
     with console.status("[info]生成中...[/]", spinner="dots"):
         sourcesage = SourceSage(
-            args.ss_output, args.repo, args.ignore_file, args.language_map
+            args.output, args.repo, args.ignore_file, args.language_map
         )
         sourcesage.run()
     console.print("[success]Repository Summary 生成 完了[/]")
@@ -284,7 +285,7 @@ def run(args=None):
     # -----------------------------------------------
     # レポートの生成（オプション機能、非推奨）
     #
-    if args.generate_diff_report:
+    if args.diff:
         console.print(Panel(Align.center("Release Report"), style="info", expand=True))
 
         # 非推奨警告の表示
@@ -306,8 +307,8 @@ def run(args=None):
                 f"[info]最新タグ: [bold]{latest_tag}[/], 前のタグ: [bold]{previous_tag}[/]"
             )
             report_file_name = args.report_file_name.format(latest_tag=latest_tag)
-            os.makedirs(args.ss_output_path, exist_ok=True)
-            output_path = os.path.join(args.ss_output_path, report_file_name)
+            os.makedirs(args.diff_output, exist_ok=True)
+            output_path = os.path.join(args.diff_output, report_file_name)
 
             repo_root = args.repo_path if args.repo_path else os.getcwd()
             markdown_report_generator = MarkdownReportGenerator(

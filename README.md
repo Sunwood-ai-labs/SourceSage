@@ -75,7 +75,7 @@ Comprehensively analyzes repository structure, commit information, and file stat
 
 > ⚠️ **Deprecated Feature**: This feature will be removed in a future release. With improvements in LLM command execution capabilities, automatic diff report generation is becoming unnecessary.
 
-Analyzes differences between Git tags to automatically generate release reports (enabled with `--generate-diff-report` flag).
+Analyzes differences between Git tags to automatically generate release reports (enabled with `--diff` flag).
 
 **Output File**: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`
 
@@ -95,41 +95,41 @@ Analyzes differences between Git tags to automatically generate release reports 
 git clone https://github.com/Sunwood-ai-labs/SourceSage.git
 cd SourceSage
 uv sync
-uv run ss
+uv run sage
 ```
 
-Note: When using as a package, run `pip install sourcesage` then execute `ss` (or `sourcesage`).
+Note: When using as a package, run `pip install sourcesage` then execute `sage` (or `sourcesage`).
 
 ### 🗺️ Basic Usage (Minimum Required)
 
 ```bash
 # Generate repository summary (default: uses .gitignore)
-uv run ss
+uv run sage
 
 # Use/generate .SourceSageignore file
-uv run ss --use-sourcesage-ignore
+uv run sage --use-ignore
 
 # Generate release report (optional - deprecated)
-uv run ss --generate-diff-report
+uv run sage --diff
 ```
 
 Output locations:
 - Repository Summary: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
-- Release Report: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md` (only with `--generate-diff-report`)
+- Release Report: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md` (only with `--diff`)
 
 Frequently used options (excerpt):
 
 ```bash
-uv run ss --ss-output ./out              # Change output destination
-uv run ss --ignore-file .gitignore       # Specify ignore rules (default)
-uv run ss --use-sourcesage-ignore        # Use/generate .SourceSageignore
-uv run ss --generate-diff-report         # Generate diff report (deprecated)
+uv run sage -o ./out                     # Change output destination
+uv run sage --ignore-file .gitignore     # Specify ignore rules (default)
+uv run sage --use-ignore                 # Use/generate .SourceSageignore
+uv run sage --diff                       # Generate diff report (deprecated)
 ```
 
 Notes:
-- From v7.2.0, `.gitignore` is used by default. Use `--use-sourcesage-ignore` if you need a custom ignore file.
+- From v7.2.0, `.gitignore` is used by default. Use `--use-ignore` if you need a custom ignore file.
 - When `--language-map` is omitted, the included defaults (`sourcesage/config/`) are automatically used.
-- Release Report is generated when there are 2 or more tags (only with `--generate-diff-report`).
+- Release Report is generated when there are 2 or more tags (only with `--diff`).
 
 ### 📊 Example Generated Content
 
@@ -197,16 +197,16 @@ uv build
 
 ```bash
 # 1) Output repository summary (default: uses .gitignore)
-uv run ss
+uv run sage
 
 # 2) Output summary using .SourceSageignore
-uv run ss --use-sourcesage-ignore
+uv run sage --use-ignore
 
 # 3) Generate diff report (deprecated feature)
-uv run ss --generate-diff-report
+uv run sage --diff
 
 # 4) Change output destination
-uv run ss --ss-output ./analysis
+uv run sage -o ./analysis
 ```
 
 ## Contributing

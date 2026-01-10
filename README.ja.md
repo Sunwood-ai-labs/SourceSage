@@ -76,7 +76,7 @@ SourceSageはシンプルで軽量なリポジトリ分析ツールで、以下�
 
 > ⚠️ **非推奨機能**: この機能は将来削除される予定です。LLMのコマンド実行能力の向上により、差分レポートの自動生成は不要になりつつあります。
 
-Gitタグ間の差分を分析し、リリースレポートを自動生成します（`--generate-diff-report`フラグで有効化）。
+Gitタグ間の差分を分析し、リリースレポートを自動生成します（`--diff`フラグで有効化）。
 
 **出力ファイル**: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`
 
@@ -96,41 +96,41 @@ Gitタグ間の差分を分析し、リリースレポートを自動生成し�
 git clone https://github.com/Sunwood-ai-labs/SourceSage.git
 cd SourceSage
 uv sync
-uv run ss
+uv run sage
 ```
 
-備考: パッケージとして利用する場合は `pip install sourcesage` 後に `ss`（または `sourcesage`）を実行できます。
+備考: パッケージとして利用する場合は `pip install sourcesage` 後に `sage`（または `sourcesage`）を実行できます。
 
 ### 🗺️ 基本的な使用方法（必要最小限）
 
 ```bash
 # リポジトリサマリを生成（デフォルトは.gitignoreを使用）
-uv run ss
+uv run sage
 
 # .SourceSageignoreファイルを使用/生成する場合
-uv run ss --use-sourcesage-ignore
+uv run sage --use-ignore
 
 # リリースレポートを生成（オプション - 非推奨）
-uv run ss --generate-diff-report
+uv run sage --diff
 ```
 
 出力先:
 - Repository Summary: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
-- Release Report: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`（`--generate-diff-report`使用時のみ）
+- Release Report: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`（`--diff`使用時のみ）
 
 よく使うオプション（抜粋）:
 
 ```bash
-uv run ss --ss-output ./out              # 出力先を変更
-uv run ss --ignore-file .gitignore       # 無視ルールを指定（デフォルト）
-uv run ss --use-sourcesage-ignore        # .SourceSageignoreを使用/生成
-uv run ss --generate-diff-report         # 差分レポート生成（非推奨）
+uv run sage -o ./out                     # 出力先を変更
+uv run sage --ignore-file .gitignore     # 無視ルールを指定（デフォルト）
+uv run sage --use-ignore                 # .SourceSageignoreを使用/生成
+uv run sage --diff                       # 差分レポート生成（非推奨）
 ```
 
 メモ:
-- v7.2.0以降、デフォルトでは`.gitignore`を使用します。カスタムignoreファイルが必要な場合は`--use-sourcesage-ignore`を使用してください。
+- v7.2.0以降、デフォルトでは`.gitignore`を使用します。カスタムignoreファイルが必要な場合は`--use-ignore`を使用してください。
 - `--language-map`を省略すると、同梱デフォルト（`sourcesage/config/`）を自動的に利用します。
-- Release Reportはタグが2つ以上ある場合に生成されます（`--generate-diff-report`使用時のみ）。
+- Release Reportはタグが2つ以上ある場合に生成されます（`--diff`使用時のみ）。
 
 ### 📊 生成される内容例
 
@@ -198,16 +198,16 @@ uv build
 
 ```bash
 # 1) リポジトリサマリを出力（デフォルト: .gitignore使用）
-uv run ss
+uv run sage
 
 # 2) .SourceSageignoreを使用してサマリを出力
-uv run ss --use-sourcesage-ignore
+uv run sage --use-ignore
 
 # 3) 差分レポートを生成（非推奨機能）
-uv run ss --generate-diff-report
+uv run sage --diff
 
 # 4) 出力先を変更
-uv run ss --ss-output ./analysis
+uv run sage -o ./analysis
 ```
 
 ## 貢献
