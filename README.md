@@ -36,54 +36,58 @@
 
 </p>
 
+[日本語](README.ja.md) | English
 
-
-SourceSageは、リポジトリの構造と内容を包括的に分析し、AIフレンドリーなドキュメントを生成するツールです。主にRepository_summary.mdの生成とRELEASE_REPORTの作成機能を提供します。
-
+SourceSage is a tool that comprehensively analyzes repository structure and content to generate AI-friendly documentation. It primarily provides Repository_summary.md generation and RELEASE_REPORT creation features.
 
 >[!IMPORTANT]
->このリポジトリのリリースノートやREADME、コミットメッセージの9割近くは[claude.ai](https://claude.ai/)や[ChatGPT4](https://chatgpt.com/)を活用した[AIRA](https://github.com/Sunwood-ai-labs/AIRA), [SourceSage](https://github.com/Sunwood-ai-labs/SourceSage), [Gaiah](https://github.com/Sunwood-ai-labs/Gaiah), [HarmonAI_II](https://github.com/Sunwood-ai-labs/HarmonAI_II)で生成しています。
+>Nearly 90% of the release notes, README, and commit messages in this repository are generated using [AIRA](https://github.com/Sunwood-ai-labs/AIRA), [SourceSage](https://github.com/Sunwood-ai-labs/SourceSage), [Gaiah](https://github.com/Sunwood-ai-labs/Gaiah), and [HarmonAI_II](https://github.com/Sunwood-ai-labs/HarmonAI_II) with [claude.ai](https://claude.ai/) and [ChatGPT4](https://chatgpt.com/).
 
-## リリースノート
+## 🌟 Related Projects
 
-最新の更新内容はGitHubのリリースページをご覧ください。
+### SourceSage MCP Server
+[SourceSage MCP Server](https://github.com/Sunwood-ai-labs/source-sage-mcp-server) is a derived version of SourceSage that integrates with the Model Context Protocol (MCP). It enables AI assistants like Claude Desktop to directly access repository analysis capabilities.
+
+## Release Notes
+
+For the latest updates, please visit our GitHub releases page.
 
 https://github.com/Sunwood-ai-labs/SourceSage/releases
 
 
-## 🎯 主な機能
+## 🎯 Key Features
 
-SourceSageはシンプルで軽量なリポジトリ分析ツールで、以下の2つの主要機能を提供します：
+SourceSage is a simple and lightweight repository analysis tool that provides two main features:
 
 ### 1. 📋 Repository Summary Generation
 
-リポジトリの構造、コミット情報、ファイル統計を包括的に分析し、AIフレンドリーなマークダウンドキュメントを生成します。
+Comprehensively analyzes repository structure, commit information, and file statistics to generate AI-friendly markdown documentation.
 
-**出力ファイル**: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
+**Output File**: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
 
-**含まれる情報**:
-- 🌳 プロジェクトツリー構造
-- 📋 Gitリポジトリ情報
-- 📈 ファイルサイズと行数統計
-- 📝 ファイル内容の詳細
+**Included Information**:
+- 🌳 Project tree structure
+- 📋 Git repository information
+- 📈 File size and line count statistics
+- 📝 Detailed file contents
 
-### 2. 📄 Release Report Generation  
+### 2. 📄 Release Report Generation
 
-Gitタグ間の差分を分析し、リリースレポートを自動生成します。
+Analyzes differences between Git tags to automatically generate release reports.
 
-**出力ファイル**: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`
+**Output File**: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`
 
-**含まれる情報**:
-- 🏷️ バージョン比較
-- 🔄 変更差分の詳細
-- 📋 コミット履歴
-  - 📂 リポジトリ基本情報（リモートURL、ブランチ、最新コミットなど）
-  - 📖 READMEの内容（オプション）
+**Included Information**:
+- 🏷️ Version comparison
+- 🔄 Detailed change differences
+- 📋 Commit history
+  - 📂 Repository basic information (remote URL, branch, latest commit, etc.)
+  - 📖 README content (optional)
 
 
-## 🚀 クイックスタート
+## 🚀 Quick Start
 
-### 📦 インストール（最短）
+### 📦 Installation (Fastest)
 
 ```bash
 git clone https://github.com/Sunwood-ai-labs/SourceSage.git
@@ -92,36 +96,36 @@ uv sync
 uv run ss
 ```
 
-備考: パッケージとして利用する場合は `pip install sourcesage` 後に `ss`（または `sourcesage`）を実行できます。
+Note: When using as a package, run `pip install sourcesage` then execute `ss` (or `sourcesage`).
 
-### 🗺️ 基本的な使用方法（必要最小限）
+### 🗺️ Basic Usage (Minimum Required)
 
 ```bash
-# リポジトリサマリを生成
+# Generate repository summary
 uv run ss
 
-# リリースレポートを生成（タグ間の差分）
+# Generate release report (differences between tags)
 uv run ss --ss-mode GenerateReport
 ```
 
-出力先:
+Output locations:
 - Repository Summary: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
 - Release Report: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`
 
-よく使うオプション（抜粋）:
+Frequently used options (excerpt):
 
 ```bash
-uv run ss --ss-output ./out           # 出力先を変更
-uv run ss --ignore-file .gitignore    # 無視ルールを指定
-uv run ss --ss-mode Sage              # サマリのみ
-uv run ss --ss-mode GenerateReport    # レポートのみ
+uv run ss --ss-output ./out           # Change output destination
+uv run ss --ignore-file .gitignore    # Specify ignore rules
+uv run ss --ss-mode Sage              # Summary only
+uv run ss --ss-mode GenerateReport    # Report only
 ```
 
-メモ:
-- `--ignore-file`や`--language-map`を省略すると、同梱デフォルト（`sourcesage/config/`）を自動的に利用します。
-- Release Reportはタグが2つ以上ある場合に生成されます。
+Notes:
+- When `--ignore-file` or `--language-map` are omitted, the included defaults (`sourcesage/config/`) are automatically used.
+- Release Report is generated when there are 2 or more tags.
 
-### 📊 生成される内容例
+### 📊 Example Generated Content
 
 #### Repository Summary
 
@@ -146,60 +150,60 @@ uv run ss --ss-mode GenerateReport    # レポートのみ
     └── README.md
     ```
 
-    ## 📊 プロジェクト統計
+    ## 📊 Project Statistics
 
-    - 📅 作成日時: 2025-02-02 16:22:31
-    - 📁 総ディレクトリ数: 5
-    - 📄 総ファイル数: 15
-    - 📏 最大深度: 3
+    - 📅 Created: 2025-02-02 16:22:31
+    - 📁 Total Directories: 5
+    - 📄 Total Files: 15
+    - 📏 Maximum Depth: 3
 ```
 
-## 🛠️ 開発環境
+## 🛠️ Development Environment
 
-SourceSageは現代的なPython開発環境をサポートしています：
+SourceSage supports modern Python development environments:
 
-- **Python**: 3.8以降
-- **パッケージ管理**: uv / pip
-- **ビルドシステム**: hatchling
-- **設定ファイル**: pyproject.toml
+- **Python**: 3.8 or later
+- **Package Management**: uv / pip
+- **Build System**: hatchling
+- **Configuration File**: pyproject.toml
 
-### 開発用セットアップ
+### Development Setup
 
 ```bash
-# uvを使った開発環境構築
+# Development environment setup using uv
 git clone https://github.com/Sunwood-ai-labs/SourceSage.git
 cd SourceSage
 uv sync
 
-# テスト実行
+# Run tests
 uv run pytest
 
-# コードフォーマット
+# Code formatting
 uv run black sourcesage/
 uv run isort sourcesage/
 
-# パッケージビルド
+# Build package
 uv build
 ```
 
 
-## 💡 使用例
+## 💡 Usage Examples
 
 ```bash
-# 1) リポジトリサマリを出力
+# 1) Output repository summary
 uv run ss
 
-# 2) リリースレポートを出力（タグ差分）
+# 2) Output release report (tag differences)
 uv run ss --ss-mode GenerateReport
 
-# 3) 出力先を変更
+# 3) Change output destination
 uv run ss --ss-output ./analysis
 ```
 
-## 貢献
+## Contributing
 
-SourceSageの改善にご協力ください！バグの報告や機能追加の提案がある場合は、[GitHubリポジトリ](https://github.com/Sunwood-ai-labs/SourceSage)でIssueを開くかプルリクエストを送信してください。
+Help us improve SourceSage! If you have bug reports or feature suggestions, please open an issue or submit a pull request at our [GitHub repository](https://github.com/Sunwood-ai-labs/SourceSage).
 
-## ライセンス
+## License
 
-このプロジェクトは[MITライセンス](LICENSE)の下で公開されています。
+This project is released under the [MIT License](LICENSE).
