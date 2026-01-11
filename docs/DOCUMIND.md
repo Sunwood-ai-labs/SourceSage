@@ -35,17 +35,17 @@ sourcesage --mode DocuMind --docuMind-model "使用するAIモデル名" --docuM
 以下は、SourceSageのCLIコマンドを使用してDocuMindを実行するサンプルです。
 
 ```bash
-sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets\DOCUMIND\Repository_summary.md" --docuMind-release-report ".SourceSageAssets\RELEASE_REPORT\Report_v5.0.2.md"  --docuMind-changelog ".SourceSageAssets\Changelog\CHANGELOG_release_5.0.2.md"  --docuMind-output ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.2.md"  --docuMind-prompt-output ".SourceSageAssets/DOCUMIND/_PROMPT_v5.0.2.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
+sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets\Repository_summary.md" --docuMind-release-report ".SourceSageAssets\RELEASE_REPORT\Report_v5.0.2.md"  --docuMind-changelog ".SourceSageAssets\Changelog\CHANGELOG_release_5.0.2.md"  --docuMind-output ".SourceSageAssets/RELEASE_NOTES_v5.0.2.md"  --docuMind-prompt-output ".SourceSageAssets/_PROMPT_v5.0.2.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
 ```
 
 このコマンドでは、以下のパラメータを指定しています。
 
 - `--docuMind-model "gemini/gemini-1.5-pro-latest"`: 使用するAIモデル名を"gemini/gemini-1.5-pro-latest"に指定します。
-- `--docuMind-db ".SourceSageAssets\DOCUMIND\Repository_summary.md"`: DocuMindのデータベースファイルのパスを指定します。
+- `--docuMind-db ".SourceSageAssets\Repository_summary.md"`: DocuMindのデータベースファイルのパスを指定します。
 - `--docuMind-release-report ".SourceSageAssets\RELEASE_REPORT\Report_v5.0.2.md"`: リリースレポートのパスを指定します。
 - `--docuMind-changelog ".SourceSageAssets\Changelog\CHANGELOG_release_5.0.2.md"`: 変更履歴のパスを指定します。
-- `--docuMind-output ".SourceSageAssets/DOCUMIND/RELEASE_NOTES_v5.0.2.md"`: リリースノートの出力パスを指定します。
-- `--docuMind-prompt-output ".SourceSageAssets/DOCUMIND/_PROMPT_v5.0.2.md"`: リリースノート作成のプロンプトの出力パスを指定します。
+- `--docuMind-output ".SourceSageAssets/RELEASE_NOTES_v5.0.2.md"`: リリースノートの出力パスを指定します。
+- `--docuMind-prompt-output ".SourceSageAssets/_PROMPT_v5.0.2.md"`: リリースノート作成のプロンプトの出力パスを指定します。
 - `--repo-name "SourceSage"`: リポジトリの名前を"SourceSage"に指定します。
 - `--repo-version "v0.5.0"`: リポジトリのバージョンを"v0.5.0"に指定します。
 

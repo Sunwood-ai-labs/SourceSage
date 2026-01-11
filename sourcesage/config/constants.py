@@ -13,7 +13,6 @@ class Constants:
 
         # Output settings for Repository summary
         self.SOURCE_SAGE_MD = "Repository_summary.md"
-        self.DOCUMIND_DIR = "DOCUMIND"
 
         self.set_output_dir(output_dir)
 

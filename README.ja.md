@@ -64,7 +64,7 @@ SourceSageはシンプルで軽量なリポジトリ分析ツールで、以下�
 
 リポジトリの構造、コミット情報、ファイル統計を包括的に分析し、AIフレンドリーなマークダウンドキュメントを生成します。
 
-**出力ファイル**: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
+**出力ファイル**: `.SourceSageAssets/Repository_summary.md`
 
 **含まれる情報**:
 - 🌳 プロジェクトツリー構造
@@ -115,7 +115,7 @@ uv run sage --diff
 ```
 
 出力先:
-- Repository Summary: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
+- Repository Summary: `.SourceSageAssets/Repository_summary.md`
 - Release Report: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`（`--diff`使用時のみ）
 
 よく使うオプション（抜粋）:

@@ -63,7 +63,7 @@ SourceSage is a simple and lightweight repository analysis tool that provides tw
 
 Comprehensively analyzes repository structure, commit information, and file statistics to generate AI-friendly markdown documentation.
 
-**Output File**: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
+**Output File**: `.SourceSageAssets/Repository_summary.md`
 
 **Included Information**:
 - 🌳 Project tree structure
@@ -114,7 +114,7 @@ uv run sage --diff
 ```
 
 Output locations:
-- Repository Summary: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
+- Repository Summary: `.SourceSageAssets/Repository_summary.md`
 - Release Report: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md` (only with `--diff`)
 
 Frequently used options (excerpt):
