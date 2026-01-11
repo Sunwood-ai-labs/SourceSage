@@ -42,7 +42,7 @@ Issues = "https://github.com/Sunwood-ai-labs/SourceSage/issues"
 
 [project.scripts]
 sourcesage = "sourcesage.cli:main"
-ss = "sourcesage.cli:main"
+sage = "sourcesage.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["sourcesage"]
