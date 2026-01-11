@@ -33,7 +33,7 @@ sourcesage --mode IssueWize --issue-summary "Issueの概要" --project-name "プ
 以下はSourceSageのCLIコマンドを使用してIssueWizeを実行するサンプルです。
 
 ```bash
-sourcesage --mode IssueWize --issue-summary "IssueWize.pyをSourceSageのCLIコマンドから実行できるようにコマンドを追加する。SourceSageのCLIコマンドからパラメータを指定できるようにしたい（repo_overview_fileやモデル名などのパラメータ）" --project-name "TaskSphere" --milestone-name "Sprint01" --repo-overview-file ".SourceSageAssets\Repository_summary.md" --issuewize-model "gemini/gemini-1.5-flash"
+sourcesage --mode IssueWize --issue-summary "IssueWize.pyをSourceSageのCLIコマンドから実行できるようにコマンドを追加する。SourceSageのCLIコマンドからパラメータを指定できるようにしたい（repo_overview_fileやモデル名などのパラメータ）" --project-name "TaskSphere" --milestone-name "Sprint01" --repo-overview-file ".SourceSageAssets/Repository_summary.md" --issuewize-model "gemini/gemini-1.5-flash"
 ```
 
 このコマンドでは、以下のパラメータを指定しています。
