@@ -64,7 +64,7 @@ SourceSageはシンプルで軽量なリポジトリ分析ツールで、以下�
 
 リポジトリの構造、コミット情報、ファイル統計を包括的に分析し、AIフレンドリーなマークダウンドキュメントを生成します。
 
-**出力ファイル**: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
+**出力ファイル**: `.SourceSageAssets/Repository_summary.md`
 
 **含まれる情報**:
 - 🌳 プロジェクトツリー構造
@@ -115,7 +115,7 @@ uv run sage --diff
 ```
 
 出力先:
-- Repository Summary: `.SourceSageAssets/DOCUMIND/Repository_summary.md`
+- Repository Summary: `.SourceSageAssets/Repository_summary.md`
 - Release Report: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`（`--diff`使用時のみ）
 
 よく使うオプション（抜粋）:
@@ -219,3 +219,27 @@ SourceSageの改善にご協力ください！バグの報告や機能追加の�
 ## ライセンス
 
 このプロジェクトは[MITライセンス](LICENSE)の下で公開されています。
+
+---
+
+<p align="center">
+<a href="https://orynth.dev/projects/sourcesage" target="_blank" rel="noopener">
+  <img src="https://orynth.dev/api/badge/sourcesage?theme=light&style=default" alt="Featured on Orynth" width="260" height="80" />
+</a>
+</p>
+
+## 公式リンクと検証 (SSAGE)
+
+- **Orynth プロジェクト**: https://www.orynth.dev/projects/sourcesage
+- **GitHub リポジトリ**: https://github.com/Sunwood-ai-labs/SourceSage
+
+**SSAGE** (Solana mint):
+`1QaAfN81sYjenLGeiPa9NW1s6FND4A36R3ASKKxVory`
+
+**プライマリプール** (SSAGE/USDC, Meteora):
+https://www.geckoterminal.com/solana/pools/A4oHVtJxGRRYvqfRuUGPwfxFVdBmPJnYZtcqew5Y8HoH
+
+**Dexscreener**:
+https://dexscreener.com/solana/a4ohvtjxgrryvqfruugpwfxfvdbmpjnyztcqew5y8hoh
+
+> **注意**: SSAGEは、Orynth上のSourceSageプロジェクトのコミュニティマーケットトークン/識別子です。株式、所有権、またはプロジェクトに対する請求権ではありません。投資助言ではありません。

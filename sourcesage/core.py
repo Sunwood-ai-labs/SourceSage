@@ -30,7 +30,6 @@ class SourceSage:
             ignore_file=self.ignore_file,
             output_file=os.path.join(
                 self.constants.SOURCE_SAGE_ASSETS_DIR,
-                self.constants.DOCUMIND_DIR,
                 self.constants.SOURCE_SAGE_MD,
             ),
             language_map_file=self.language_map_file,
