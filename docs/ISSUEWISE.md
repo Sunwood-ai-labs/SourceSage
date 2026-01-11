@@ -42,7 +42,7 @@ sourcesage --mode IssueWize --issue-summary "IssueWize.pyをSourceSageのCLIコ�
 - `--issue-summary "..."`: Issueの概要を指定します。ここでは、IssueWize.pyをSourceSageのCLIコマンドから実行できるようにするための要件が記載されています。
 - `--project-name "TaskSphere"`: プロジェクト名を"TaskSphere"に指定します。
 - `--milestone-name "Sprint01"`: マイルストーン名を"Sprint01"に指定します。
-- `--repo-overview-file ".SourceSageAssets\Repository_summary.md"`: リポジトリ概要のマークダウンファイルのパスを指定します。
+- `--repo-overview-file ".SourceSageAssets/Repository_summary.md"`: リポジトリ概要のマークダウンファイルのパスを指定します。
 - `--issuewize-model "gemini/gemini-1.5-flash"`: 使用するAIモデル名を"gemini/gemini-1.5-flash"に指定します。
 
 このコマンドを実行すると、IssueWizeは指定されたパラメータを使用して、AIによる詳細なIssueの自動生成を行います。生成されたIssueには、タイトル、本文、ラベル、プロジェクト、マイルストーンが設定されます。
