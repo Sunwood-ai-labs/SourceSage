@@ -219,3 +219,27 @@ SourceSageの改善にご協力ください！バグの報告や機能追加の�
 ## ライセンス
 
 このプロジェクトは[MITライセンス](LICENSE)の下で公開されています。
+
+---
+
+<p align="center">
+<a href="https://orynth.dev/projects/sourcesage" target="_blank" rel="noopener">
+  <img src="https://orynth.dev/api/badge/sourcesage?theme=light&style=default" alt="Featured on Orynth" width="260" height="80" />
+</a>
+</p>
+
+## 公式リンクと検証 (SSAGE)
+
+- **Orynth プロジェクト**: https://www.orynth.dev/projects/sourcesage
+- **GitHub リポジトリ**: https://github.com/Sunwood-ai-labs/SourceSage
+
+**SSAGE** (Solana mint):
+`1QaAfN81sYjenLGeiPa9NW1s6FND4A36R3ASKKxVory`
+
+**プライマリプール** (SSAGE/USDC, Meteora):
+https://www.geckoterminal.com/solana/pools/A4oHVtJxGRRYvqfRuUGPwfxFVdBmPJnYZtcqew5Y8HoH
+
+**Dexscreener**:
+https://dexscreener.com/solana/a4ohvtjxgrryvqfruugpwfxfvdbmpjnyztcqew5y8hoh
+
+> **注意**: SSAGEは、Orynth上のSourceSageプロジェクトのコミュニティマーケットトークン/識別子です。株式、所有権、またはプロジェクトに対する請求権ではありません。投資助言ではありません。
