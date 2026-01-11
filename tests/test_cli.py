@@ -2,10 +2,7 @@
 Tests for SourceSage CLI functionality
 """
 import argparse
-import os
 import sys
-import tempfile
-import shutil
 from pathlib import Path
 
 import pytest
@@ -13,7 +10,7 @@ import pytest
 # Add parent directory to path to import sourcesage
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from sourcesage.cli import add_arguments, parse_arguments
+from sourcesage.cli import add_arguments
 
 
 class TestCLIArguments:

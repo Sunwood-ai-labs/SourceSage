@@ -127,9 +127,11 @@ uv run sage --diff                       # Generate diff report (deprecated)
 ```
 
 Notes:
+
 - From v7.2.0, `.gitignore` is used by default. Use `--use-ignore` if you need a custom ignore file.
 - When `--language-map` is omitted, the included defaults (`sourcesage/config/`) are automatically used.
 - Release Report is generated when there are 2 or more tags (only with `--diff`).
+
 
 ### 📊 Example Generated Content
 

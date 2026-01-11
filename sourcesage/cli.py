@@ -267,7 +267,7 @@ def run(args=None):
                 shutil.copy(default_ignore_file, sourcesageignore_path)
                 console.print(f"[success].SourceSageignoreファイルを生成しました: {sourcesageignore_path}[/]")
             else:
-                console.print(f"[warn]デフォルトの.SourceSageignoreが見つかりません[/]")
+                console.print("[warn]デフォルトの.SourceSageignoreが見つかりません[/]")
         args.ignore_file = sourcesageignore_path
 
     # -----------------------------------------------

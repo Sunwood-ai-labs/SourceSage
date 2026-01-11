@@ -128,9 +128,11 @@ uv run sage --diff                       # 差分レポート生成（非推奨�
 ```
 
 メモ:
+
 - v7.2.0以降、デフォルトでは`.gitignore`を使用します。カスタムignoreファイルが必要な場合は`--use-ignore`を使用してください。
 - `--language-map`を省略すると、同梱デフォルト（`sourcesage/config/`）を自動的に利用します。
 - Release Reportはタグが2つ以上ある場合に生成されます（`--diff`使用時のみ）。
+
 
 ### 📊 生成される内容例
 
