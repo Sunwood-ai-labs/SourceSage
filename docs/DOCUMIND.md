@@ -35,7 +35,7 @@ sourcesage --mode DocuMind --docuMind-model "使用するAIモデル名" --docuM
 以下は、SourceSageのCLIコマンドを使用してDocuMindを実行するサンプルです。
 
 ```bash
-sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets\Repository_summary.md" --docuMind-release-report ".SourceSageAssets\RELEASE_REPORT\Report_v5.0.2.md"  --docuMind-changelog ".SourceSageAssets\Changelog\CHANGELOG_release_5.0.2.md"  --docuMind-output ".SourceSageAssets/RELEASE_NOTES_v5.0.2.md"  --docuMind-prompt-output ".SourceSageAssets/_PROMPT_v5.0.2.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
+sourcesage --mode DocuMind --docuMind-model "gemini/gemini-1.5-pro-latest" --docuMind-db ".SourceSageAssets/Repository_summary.md" --docuMind-release-report ".SourceSageAssets/RELEASE_REPORT/Report_v5.0.2.md"  --docuMind-changelog ".SourceSageAssets/Changelog/CHANGELOG_release_5.0.2.md"  --docuMind-output ".SourceSageAssets/RELEASE_NOTES_v5.0.2.md"  --docuMind-prompt-output ".SourceSageAssets/_PROMPT_v5.0.2.md"  --repo-name "SourceSage" --repo-version "v0.5.0"
 ```
 
 このコマンドでは、以下のパラメータを指定しています。
