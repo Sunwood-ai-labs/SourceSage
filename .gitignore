@@ -164,6 +164,7 @@ SourceSageAssets
 
 .pypirc
 temp/
+tmp/
 .SourceSageAssets
 .Gaiah.md
 issue_response.txt
