@@ -1,0 +1,213 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <!-- エレガントなフォント定義 -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@1,400&display=swap');
+      .elegant-font {
+        font-family: 'Playfair Display', 'Didot', 'Times New Roman', serif;
+        font-style: italic;
+      }
+      .tech-font {
+        font-family: 'Cinzel', serif;
+        letter-spacing: 4px;
+      }
+    </style>
+
+    <!-- グロー(発光)フィルター -->
+    <filter id="strong-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+      <feColorMatrix in="blur" type="matrix" values="
+        0 0 0 0 0.6
+        0 0 0 0 0.2
+        0 0 0 0 1
+        0 0 0 1.2 0" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="soft-glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- グラデーション定義 - 紫系統に変更 -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="90%">
+      <stop offset="0%" style="stop-color:#2d1b4e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f0a1e;stop-opacity:1" />
+    </radialGradient>
+
+    <!-- パーティクル用グラデーション(紫→ピンク) -->
+    <radialGradient id="particle-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9" />
+      <stop offset="40%" style="stop-color:#e879f9;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#9333ea;stop-opacity:0" />
+    </radialGradient>
+
+    <linearGradient id="poly-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d8b4fe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:0.9" />
+    </linearGradient>
+
+    <linearGradient id="poly-grad-2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e879f9;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#c026d3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="100%" height="100%" fill="url(#bg-grad)" />
+
+  <!-- パーティクルエフェクト -->
+  <g filter="url(#soft-glow)">
+    <!-- レイヤー1:大きな光のボケ -->
+    <g opacity="0.7">
+        <circle cx="250" cy="200" r="70" fill="url(#particle-glow)">
+            <animate attributeName="r" values="70;80;70" dur="7s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="7s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="1650" cy="850" r="90" fill="url(#particle-glow)">
+            <animate attributeName="r" values="90;100;90" dur="10s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="10s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="950" cy="80" r="60" fill="url(#particle-glow)">
+            <animate attributeName="cy" values="80;100;80" dur="12s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="12s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="150" cy="950" r="75" fill="url(#particle-glow)" opacity="0.4">
+             <animate attributeName="opacity" values="0.4;0.7;0.4" dur="9s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="1750" cy="150" r="50" fill="url(#particle-glow)" opacity="0.5">
+             <animate attributeName="r" values="50;60;50" dur="5s" repeatCount="indefinite" />
+        </circle>
+    </g>
+
+    <!-- レイヤー2:中サイズの明るい粒子 -->
+    <g opacity="0.9">
+        <circle cx="400" cy="500" r="7" fill="#ffffff">
+             <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
+             <animate attributeName="cy" values="500;480;500" dur="5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="1450" cy="320" r="9" fill="#e879f9">
+             <animate attributeName="opacity" values="0.7;0.2;0.7" dur="3.5s" repeatCount="indefinite"/>
+             <animate attributeName="cy" values="320;300;320" dur="4.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="720" cy="920" r="6" fill="#ffffff">
+             <animate attributeName="opacity" values="0.4;1;0.4" dur="4s" begin="1s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="1220" cy="180" r="8" fill="#e879f9">
+             <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="180" cy="780" r="7" fill="#ffffff">
+             <animate attributeName="opacity" values="0.5;0.9;0.5" dur="4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="1620" cy="620" r="10" fill="#e879f9">
+             <animate attributeName="opacity" values="0.3;0.8;0.3" dur="5.5s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- 動く光の軌跡 -->
+        <circle cx="1050" cy="540" r="5" fill="#e879f9">
+            <animate attributeName="cx" values="1050;1150;1050" dur="9s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0;1;0" dur="9s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="850" cy="340" r="4" fill="#ffffff">
+            <animate attributeName="cx" values="850;750;850" dur="11s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0;1;0" dur="11s" repeatCount="indefinite" />
+        </circle>
+    </g>
+
+    <!-- レイヤー3:小さな星屑 -->
+    <g fill="#fae8ff" opacity="0.6">
+        <circle cx="520" cy="220" r="2"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="1.8s" repeatCount="indefinite"/></circle>
+        <circle cx="1120" cy="820" r="2.5"><animate attributeName="opacity" values="0.3;0.7;0.3" dur="2.5s" repeatCount="indefinite"/></circle>
+        <circle cx="80" cy="420" r="2"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="3.5s" repeatCount="indefinite"/></circle>
+        <circle cx="1870" cy="680" r="3"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle>
+        <circle cx="820" cy="70" r="2"><animate attributeName="opacity" values="0.5;1;0.5" dur="4.5s" repeatCount="indefinite"/></circle>
+        <circle cx="1320" cy="970" r="2"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="620" cy="620" r="2.5"><animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.8s" repeatCount="indefinite"/></circle>
+        <circle cx="1520" cy="420" r="2"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="3.2s" repeatCount="indefinite"/></circle>
+    </g>
+  </g>
+
+  <!-- 中央コンテンツ -->
+  <g transform="translate(960, 540)">
+    <!-- 背後の光の輪 -->
+    <circle r="280" fill="none" stroke="#d8b4fe" stroke-width="1.5" opacity="0.2" stroke-dasharray="8 12">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="50s" repeatCount="indefinite" />
+    </circle>
+    <circle r="320" fill="none" stroke="#e879f9" stroke-width="1" opacity="0.15" stroke-dasharray="5 15">
+      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="70s" repeatCount="indefinite" />
+    </circle>
+    <circle r="360" fill="none" stroke="#a855f7" stroke-width="0.5" opacity="0.1">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="90s" repeatCount="indefinite" />
+    </circle>
+
+    <!-- メイン:回転する多面体 -->
+    <g filter="url(#strong-glow)">
+      <animateTransform attributeName="transform" type="rotate" from="-15" to="345" dur="35s" repeatCount="indefinite" additive="sum"/>
+
+      <g transform="scale(2.7)">
+        <!-- 3D多面体(紫系統) -->
+        <path d="M-60 0 L0 -90 L60 0 Z" fill="#4c1d95" />
+        <path d="M-60 0 L-45 75 L0 90 Z" fill="#5b21b6" />
+        <path d="M60 0 L45 75 L0 90 Z" fill="#6d28d9" />
+
+        <!-- 前面(明るいグラデーション) -->
+        <path d="M0 -90 L0 90 L-45 75 Z" fill="url(#poly-grad-1)" stroke="#fae8ff" stroke-width="0.8" stroke-opacity="0.5">
+           <animate attributeName="opacity" values="0.85;1;0.85" dur="3.5s" repeatCount="indefinite"/>
+        </path>
+        <path d="M0 -90 L60 0 L0 90 Z" fill="url(#poly-grad-2)" stroke="#fae8ff" stroke-width="0.8" stroke-opacity="0.5">
+           <animate attributeName="opacity" values="0.95;0.75;0.95" dur="3.5s" repeatCount="indefinite"/>
+        </path>
+
+        <!-- 浮遊フラグメント -->
+        <g opacity="0.8">
+            <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="18s" repeatCount="indefinite"/>
+            <rect x="-105" y="-6" width="14" height="2.5" fill="#e879f9" rx="1.2" />
+            <rect x="105" y="-6" width="14" height="2.5" fill="#e879f9" rx="1.2" />
+            <rect x="-6" y="-105" width="2.5" height="14" fill="#e879f9" rx="1.2" />
+            <rect x="-6" y="105" width="2.5" height="14" fill="#e879f9" rx="1.2" />
+        </g>
+
+        <!-- 追加の装飾エレメント -->
+        <g opacity="0.6">
+            <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="25s" repeatCount="indefinite"/>
+            <circle cx="80" cy="0" r="3" fill="#d8b4fe">
+                <animate attributeName="opacity" values="0.4;0.8;0.4" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="-80" cy="0" r="3" fill="#d8b4fe">
+                <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" begin="1.5s" repeatCount="indefinite"/>
+            </circle>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- 右下のバージョン表示 -->
+  <g transform="translate(1800, 980)" text-anchor="end">
+    <!-- エレガントなライン -->
+    <line x1="-380" y1="-50" x2="0" y2="-50" stroke="#d8b4fe" stroke-width="1.5" opacity="0.6">
+        <animate attributeName="opacity" values="0.6;0.8;0.6" dur="4s" repeatCount="indefinite"/>
+    </line>
+
+    <!-- メインタイトル -->
+    <text x="0" y="0" class="elegant-font" font-size="120" fill="#fae8ff" opacity="0.95" filter="url(#soft-glow)">
+      v7.2.0
+    </text>
+    <!-- サブテキスト -->
+    <text x="0" y="40" class="tech-font" font-size="16" fill="#e879f9" letter-spacing="10" text-transform="uppercase" opacity="0.85">
+      MULTILINGUAL HORIZON
+    </text>
+  </g>
+
+  <!-- 左上のロゴマーク風 -->
+  <g transform="translate(100, 100)" opacity="0.7">
+    <path d="M0 0 L40 0 L20 40 Z" fill="none" stroke="#d8b4fe" stroke-width="2.5" />
+    <text x="50" y="30" class="tech-font" font-size="20" fill="#fae8ff">ART.TECH</text>
+  </g>
+
+</svg>
