@@ -1,8 +1,8 @@
-<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/main/assets/release-header-v7.1.0.svg" alt="v7.1.0 Release"/>
+<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/main/assets/release-header-v7.2.0.svg" alt="v7.2.0 Release"/>
 
-# v7.1.0 - 洗練された進化 / Refined Evolution
+# v7.2.0 - 多言語対応とリリース通知自動化 / Multilingual Support & Release Notification Automation
 
-**リリース日 / Release Date:** 2026-01-13
+**リリース日 / Release Date:** 2025-01-15
 
 ---
 
@@ -10,35 +10,60 @@
 
 ### 概要
 
-v7.1.0では、CLIの大幅な簡素化と使いやすさの向上、ドキュメント構造の整理、そして国際化対応を実現しました。コマンド名を`sage`に変更し、デフォルト動作を改善することで、より直感的で堅牢なツールへと進化しています。
+SourceSage v7.2.0 は、**多言語対応**と**リリース通知自動化**に焦点を当てたメジャーアップデートです。
+
+CLI で英語と日本語の出力を選択可能になり、.gitignore と .SourceSageignore を統合した高度な無視ファイル処理が実装されました。さらに、GitHub Actions で Discord と X (Twitter) へのリリース通知を自動化するワークフローが追加されました。
 
 ### 新機能
 
-- **✨ バイリンガルREADMEサポート**: 英語版と日本語版のREADMEを提供し、国際的なユーザーベースに対応
-- **✨ Orynthバッジの追加**: READMEにOrynthバッジとSSAGEトークン情報を追加
-- **✨ オプショナルな差分レポート生成**: 差分レポートの生成をオプション化し、デフォルトで.gitignoreを使用
-- **✨ 改善された無視ファイル処理**: .SourceSageignoreをカレントワーキングディレクトリ(CWD)デフォルトに変更し、指定パスを尊重
+- **🌐 多言語CLI対応**
+  - `-l/--lang/--language` オプションで英語 (`en`) または日本語 (`ja`) を選択可能
+  - デフォルト言語は `en` に変更
+  - CLI のヘルプメッセージを英語に統一
 
-### 改善・変更
+- **🤖 リリース通知自動化**
+  - GitHub Actions ワークフローで Discord へのリリース通知を自動送信
+  - GitHub Actions ワークフローで X (Twitter) へのリリース通知を自動送信
+  - AI 要約機能対応（OpenAI/OpenRouter API）
+  - 手動実行（workflow_dispatch）に対応
 
-- **🔧 DiffReportの堅牢性向上**: タグ取得や差分生成が失敗した場合に警告を出力してスキップするように改善
-- **🔄 CLIの簡素化**: コマンド名を`ss`から`sage`に変更し、`--ss-mode`引数を削除してシンプルに
-- **🔄 .SourceSageignoreファイルの整理**: 無視ファイルの構成を整理し、より管理しやすく改善
-- **🔄 ドキュメントフォルダのクリーンアップ**: docsフォルダを整理し、アイコンディレクトリのみを保持
-- **🔄 サンプルディレクトリの整理**: 不要なサンプルを削除し、Repository_summary.mdを追加
+- **📝 無視ファイルの改善**
+  - .gitignore と .SourceSageignore を統合してパターンマッチング
+  - デフォルトの無視ファイルを .gitignore から .SourceSageignore に変更
+  - パッケージ同梱のデフォルト .SourceSageignore を使用可能
 
-### テスト
+### バグ修正
 
-- **🧪 包括的なCLIテスト**: 最近の変更に対応した包括的なCLIテストを追加
+- **🔧 依存関係の更新**
+  - uv.lock の更新
 
-### スタイル・チェック
+### 変更
 
-- **🎨 Codacy静的解析の警告修正**: コード品質向上のためCodacy警告を修正
+- **♻️ リファクタリング**
+  - File Pattern Matcher のロジックを簡素化
+  - 無視ファイルの初期化処理を改善
 
-### その他
+- **🧪 テスト強化**
+  - 言語オプションのテストを追加
+  - .SourceSageignore ハンドリングのテストを追加
+  - テストドキュメント（英語・日本語）を追加
 
-- **📦 依存関係の更新**: テスト実行後にuv.lockを更新
-- **🔀 複数のマージ**: 機能ブランチの統合とリリース準備
+### アップグレード方法
+
+```bash
+# Git タグからアップグレード
+git fetch --tags
+git checkout v7.2.0
+
+# または最新の main ブランチから
+git pull origin main
+```
+
+### Breaking Changes
+
+- デフォルトの無視ファイルが `.gitignore` から `.SourceSageignore` に変更されました
+  - 既存の `.gitignore` を引き続き使用する場合は、`--ignore-file .gitignore` オプションを使用してください
+  - またはプロジェクトルートに `.SourceSageignore` を作成してください
 
 ---
 
@@ -46,56 +71,89 @@ v7.1.0では、CLIの大幅な簡素化と使いやすさの向上、ドキュ�
 
 ### Overview
 
-v7.1.0 brings significant CLI simplification and improved usability, documentation structure reorganization, and internationalization support. By changing the command name to `sage` and improving default behaviors, the tool has evolved into a more intuitive and robust solution.
+SourceSage v7.2.0 is a major update focused on **multilingual support** and **release notification automation**.
+
+The CLI now supports English and Japanese output selection, advanced ignore file handling that integrates .gitignore and .SourceSageignore, and GitHub Actions workflows for automated release notifications to Discord and X (Twitter).
 
 ### What's New
 
-- **✨ Bilingual README Support**: Provides both English and Japanese README files to serve an international user base
-- **✨ Orynth Badge Addition**: Added Orynth badge and SSAGE token information to README
-- **✨ Optional Diff Report Generation**: Made diff report generation optional and use .gitignore by default
-- **✨ Improved Ignore File Handling**: Changed .SourceSageignore to use current working directory (CWD) as default and respect specified paths
+- **🌐 Multilingual CLI Support**
+  - Select English (`en`) or Japanese (`ja`) with `-l/--lang/--language` option
+  - Default language changed to `en`
+  - Unified all CLI help messages to English
 
-### Improvements & Changes
+- **🤖 Release Notification Automation**
+  - Automated Discord release notifications via GitHub Actions
+  - Automated X (Twitter) release notifications via GitHub Actions
+  - AI summarization support (OpenAI/OpenRouter APIs)
+  - Manual workflow dispatch support
 
-- **🔧 Enhanced DiffReport Robustness**: Improved to output warnings and skip when tag retrieval or diff generation fails
-- **🔄 CLI Simplification**: Changed command name from `ss` to `sage` and removed `--ss-mode` argument for simplicity
-- **🔄 .SourceSageignore Organization**: Cleaned up and organized ignore file structure for better maintainability
-- **🔄 Documentation Folder Cleanup**: Reorganized docs folder, keeping only the icon directory
-- **🔄 Example Directory Cleanup**: Removed unnecessary samples and added Repository_summary.md
+- **📝 Improved Ignore File Handling**
+  - Merges .gitignore and .SourceSageignore for pattern matching
+  - Changed default ignore file from .gitignore to .SourceSageignore
+  - Package-bundled default .SourceSageignore now available
 
-### Testing
+### Bug Fixes
 
-- **🧪 Comprehensive CLI Tests**: Added comprehensive CLI tests covering recent changes
+- **🔧 Dependency Updates**
+  - Updated uv.lock
 
-### Style & Quality
+### Changes
 
-- **🎨 Codacy Static Analysis Fixes**: Fixed Codacy warnings to improve code quality
+- **♻️ Refactoring**
+  - Simplified File Pattern Matcher logic
+  - Improved ignore file initialization
 
-### Others
+- **🧪 Enhanced Testing**
+  - Added language option tests
+  - Added .SourceSageignore handling tests
+  - Added test documentation (English & Japanese)
 
-- **📦 Dependency Updates**: Updated uv.lock after running tests
-- **🔀 Multiple Merges**: Integrated feature branches and prepared for release
+### Upgrade
+
+```bash
+# Upgrade from Git tag
+git fetch --tags
+git checkout v7.2.0
+
+# Or from latest main branch
+git pull origin main
+```
+
+### Breaking Changes
+
+- Default ignore file changed from `.gitignore` to `.SourceSageignore`
+  - To continue using `.gitignore`, use the `--ignore-file .gitignore` option
+  - Or create a `.SourceSageignore` file in your project root
 
 ---
 
 ## Detailed Changes
 
 ### Files Changed
-- **40 files changed**: 2,124 insertions(+), 6,298 deletions(-)
-- Major documentation cleanup with removal of obsolete samples and reorganization
-- CLI interface modernization with simplified command structure
-- Enhanced internationalization support
+- **13 files changed**: 889 insertions(+), 98 deletions(-)
+- New GitHub Actions workflows for release notifications
+- Enhanced multilingual support across CLI and documentation
 
 ### Key Files
-- `sourcesage/cli.py`: Major CLI refactoring (133 lines changed)
-- `README.md` & `README.ja.md`: Bilingual documentation support
-- `sourcesage/modules/DiffReport/git_diff.py`: Improved error handling
-- `tests/test_cli.py`: New comprehensive test suite (184 lines)
+- `sourcesage/cli.py`: Multi-language support (212 lines changed)
+- `sourcesage/modules/DocuSum/docusum.py`: Language parameter and ignore handling (98 lines changed)
+- `.github/workflows/release-to-discord.yml`: Discord notification workflow (new)
+- `.github/workflows/release-to-x.yml`: X (Twitter) notification workflow (new)
+- `tests/test_language_and_ignore.py`: New test suite (241 lines)
 
-### Contributors
-- maki
-- Claude
+### コントリビューター / Contributors
+
+@Claude (Anthropic)
 
 ---
 
-**Full Changelog**: https://github.com/Sunwood-ai-labs/SourceSage/compare/v7.0.2...v7.1.0
+## 次のリリース予定 / Upcoming
+
+- AI テスト生成機能の強化
+- 追加の言語サポート
+- パフォーマンス最適化
+
+---
+
+**[Full Changelog](https://github.com/Sunwood-ai-labs/SourceSage/compare/v7.1.1...v7.2.0)**
