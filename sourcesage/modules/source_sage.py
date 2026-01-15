@@ -12,6 +12,7 @@ class SourceSage:
         ignore_file=".SourceSageignore",
         output_file="output.md",
         language_map_file="language_map.json",
+        language="en",
     ):
         """
         SourceSageの初期化
@@ -21,23 +22,25 @@ class SourceSage:
             ignore_file (str): 除外パターンを記述したファイルのパス
             output_file (str): 出力マークダウンファイルのパス
             language_map_file (str): 言語マッピング定義ファイルのパス
+            language (str): 出力言語 (en または ja、デフォルト: en)
         """
         self.docusum = DocuSum(
             folders=folders,
             ignore_file=ignore_file,
             language_map_file=language_map_file,
             output_file=output_file,
+            language=language,
         )
-        logger.info(f"SourceSageを初期化: ignore_file={ignore_file}, folders={folders}")
+        logger.info(f"SourceSage initialized: ignore_file={ignore_file}, folders={folders}, language={language}")
 
     def generate_markdown(self):
         """
         リポジトリのマークダウンドキュメントを生成する
         """
         try:
-            logger.info("マークダウンドキュメントの生成を開始")
+            logger.info("Starting markdown document generation")
             self.docusum.generate_markdown()
-            logger.success("マークダウンドキュメントの生成が完了しました")
+            logger.success("Markdown document generation completed")
         except Exception as e:
-            logger.error(f"マークダウンドキュメントの生成中にエラーが発生: {e}")
+            logger.error(f"Error during markdown document generation: {e}")
             raise
