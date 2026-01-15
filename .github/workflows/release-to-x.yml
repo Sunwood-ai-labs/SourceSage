@@ -1,0 +1,55 @@
+name: Release to X
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      release_name:
+        description: 'リリース名（例: v0.1.0 - Initial Release）'
+        required: true
+        type: string
+      release_url:
+        description: 'リリースURL'
+        required: true
+        type: string
+      release_notes:
+        description: 'リリースノート（AI要約を使用する場合）'
+        required: false
+        type: string
+      enable_summarization:
+        description: 'AI要約を有効化'
+        type: boolean
+        default: false
+
+jobs:
+  post-to-x:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Post release to X
+        run: |
+          RELEASE_NAME="${{ inputs.release_name || github.event.release.name }}"
+          RELEASE_URL="${{ inputs.release_url || github.event.release.html_url }}"
+          ENABLE_SUMMARY="${{ inputs.enable_summarization == 'true' || (secrets.OPENAI_API_KEY != '' || secrets.OPENROUTER_API_KEY != '') && 'true' || 'false' }}"
+          node scripts/post-x.js --with-ai "$RELEASE_NAME" "$RELEASE_URL" "$ENABLE_SUMMARY" "$RELEASE_NOTES"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || secrets.OPENROUTER_API_KEY }}
+          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL || secrets.OPENROUTER_BASE_URL }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL || secrets.OPENROUTER_MODEL || 'z-ai/glm-4.5-air:free' }}
+          RELEASE_NOTES: ${{ inputs.release_notes != '' && inputs.release_notes || github.event.release.body }}

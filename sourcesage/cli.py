@@ -34,9 +34,16 @@ def add_arguments(parser):
     # 基本設定
     #
     parser.add_argument(
-        "-o", "--output", help="生成されたファイルの出力ディレクトリ", default="./"
+        "-o", "--output", help="Output directory for generated files", default="./"
     )
-    parser.add_argument("--repo", help="リポジトリへのパス", default="./")
+    parser.add_argument("--repo", help="Path to the repository", default="./")
+    parser.add_argument(
+        "-l", "--lang", "--language",
+        choices=["en", "ja"],
+        default="en",
+        dest="language",
+        help="Output language (default: en)",
+    )
 
     package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     default_ignore_file_pkg = os.path.join(
@@ -49,21 +56,21 @@ def add_arguments(parser):
     # ==============================================
     # 無視ファイルと言語マップ設定
     #
-    # Use .gitignore by default, or create/use .SourceSageignore with the flag
-    gitignore_file = os.path.join(os.getcwd(), ".gitignore")
+    # Use .SourceSageignore by default
+    sourcesageignore_file = os.path.join(os.getcwd(), ".SourceSageignore")
     parser.add_argument(
         "--ignore-file",
-        help="無視ファイルへのパス（デフォルト: .gitignore）",
-        default=gitignore_file
+        help="Path to ignore file (default: .SourceSageignore)",
+        default=sourcesageignore_file
     )
     parser.add_argument(
         "--use-ignore",
         action="store_true",
-        help=".gitignoreの代わりに.SourceSageignoreを使用する",
+        help="Enable ignore flag (use/generate .SourceSageignore)",
     )
     parser.add_argument(
         "--language-map",
-        help="言語マップファイルへのパス",
+        help="Path to language map file",
         default=default_language_map,
     )
 
@@ -73,86 +80,137 @@ def add_arguments(parser):
     parser.add_argument(
         "--diff",
         action="store_true",
-        help="リリースノート用の差分レポートを生成する（非推奨: LLMのコマンド実行能力の向上により、この機能は将来削除される予定です）",
+        help="Generate diff report for release notes (deprecated: This feature will be removed in the future due to improved LLM command execution capabilities)",
     )
     parser.add_argument(
         "--repo-path",
         type=str,
         default="",
-        help="gitリポジトリへのパス（省略時はカレントディレクトリ）",
+        help="Path to git repository (default: current directory)",
     )
     parser.add_argument(
         "--git-fetch-tags",
         type=str,
         nargs="+",
         default=["git", "fetch", "--tags"],
-        help="gitタグを取得するコマンド",
+        help="Command to fetch git tags",
     )
     parser.add_argument(
         "--git-tag-sort",
         type=str,
         nargs="+",
         default=["git", "tag", "--sort=-creatordate"],
-        help="gitタグをソートするコマンド",
+        help="Command to sort git tags",
     )
     parser.add_argument(
         "--git-diff-command",
         type=str,
         nargs="+",
         default=["git", "diff"],
-        help="git diffを生成するコマンド",
+        help="Command to generate git diff",
     )
     parser.add_argument(
         "--report-title",
         type=str,
-        default="Git Diff レポート",
-        help="Markdownレポートのタイトル",
+        default="Git Diff Report",
+        help="Markdown report title",
     )
     parser.add_argument(
         "--report-sections",
         type=str,
         nargs="+",
         default=["repo_info", "version_comparison", "diff_details", "readme"],
-        help="レポートに含めるセクション (repo_info, version_comparison, diff_details, readme)",
+        help="Sections to include in report (repo_info, version_comparison, diff_details, readme)",
     )
     parser.add_argument(
         "--diff-output",
         type=str,
         default=".SourceSageAssets/RELEASE_REPORT/",
-        help="差分レポートの保存先フォルダ",
+        help="Directory to save diff report",
     )
     parser.add_argument(
         "--report-file-name",
         type=str,
         default="Report_{latest_tag}.md",
-        help="Markdownレポートのファイル名。{latest_tag}は最新のタグに置換されます。",
+        help="Markdown report filename. {latest_tag} will be replaced with the latest tag.",
     )
 
     # ==============================================
     # Help (custom Rich renderer)
     #
     parser.add_argument(
-        "-h", "--help", action="store_true", help="このヘルプを表示して終了"
+        "-h", "--help", action="store_true", help="Show this help and exit"
     )
 
 
-def render_rich_help(parser: argparse.ArgumentParser):
+def render_rich_help(parser: argparse.ArgumentParser, language="en"):
     """Render a Rich-styled help screen."""
     console.print(Panel(Align.center("SourceSage CLI"), style="info", expand=True))
 
+    # Messages dictionary
+    messages = {
+        "en": {
+            "usage_title": "Usage",
+            "usage_text": "Generates Repository Summary by default.",
+            "diff_text": " flag to enable (deprecated)",
+            "core_options": "Core Options",
+            "output_desc": "Output directory for generated files",
+            "repo_desc": "Path to repository to analyze",
+            "ignore_file_desc": "Path to ignore patterns file (default: .gitignore)",
+            "use_ignore_desc": "Use/generate .SourceSageignore",
+            "language_map_desc": "Path to language map JSON",
+            "language_desc": "Output language (default: en)",
+            "release_options": "Release Report Options (deprecated)",
+            "diff_desc": "Enable diff report generation (deprecated)",
+            "repo_path_desc": "Root path of git repository",
+            "git_fetch_tags_desc": "Command to fetch git tags",
+            "git_tag_sort_desc": "Command to sort git tags",
+            "git_diff_command_desc": "Git diff command",
+            "report_title_desc": "Report title",
+            "report_sections_desc": "Sections to include",
+            "diff_output_desc": "Diff report output folder",
+            "report_file_name_desc": "Report filename",
+            "examples_title": "Examples",
+        },
+        "ja": {
+            "usage_title": "使用方法",
+            "usage_text": "デフォルトでRepository Summaryを生成します。",
+            "diff_text": " フラグで有効化（非推奨）",
+            "core_options": "基本オプション",
+            "output_desc": "生成ファイルの出力ディレクトリ",
+            "repo_desc": "解析対象のリポジトリパス",
+            "ignore_file_desc": "無視パターンファイルのパス（デフォルト: .gitignore）",
+            "use_ignore_desc": ".SourceSageignoreを使用/生成する",
+            "language_map_desc": "言語マップJSONのパス",
+            "language_desc": "出力言語（デフォルト: en）",
+            "release_options": "リリースレポートオプション（非推奨）",
+            "diff_desc": "差分レポート生成を有効化（非推奨）",
+            "repo_path_desc": "gitリポジトリのルートパス",
+            "git_fetch_tags_desc": "gitタグ取得コマンド",
+            "git_tag_sort_desc": "gitタグソートコマンド",
+            "git_diff_command_desc": "git diff コマンド",
+            "report_title_desc": "レポートタイトル",
+            "report_sections_desc": "含めるセクション",
+            "diff_output_desc": "差分レポート出力先フォルダ",
+            "report_file_name_desc": "レポートファイル名",
+            "examples_title": "例",
+        },
+    }
+
+    msg = messages.get(language, messages["en"])
+
     # Usage
     usage = Text()
-    usage.append("Usage:\n", style="bold")
+    usage.append(f"{msg['usage_title']}:\n", style="bold")
     usage.append("  sage [options]\n")
     usage.append("  sourcesage [options]\n\n")
-    usage.append("デフォルトでRepository Summaryを生成します。\n", style="dim")
-    usage.append("差分レポート生成は ", style="dim")
+    usage.append(f"{msg['usage_text']}\n", style="dim")
     usage.append("--diff", style="yellow")
-    usage.append(" フラグで有効化（非推奨）\n", style="dim")
-    console.print(Panel(usage, title="Usage", border_style="cyan", expand=True))
+    usage.append(f"{msg['diff_text']}\n", style="dim")
+    console.print(Panel(usage, title=msg["usage_title"], border_style="cyan", expand=True))
 
     # Core options
-    core_tbl = Table(title="Core Options", show_header=True, header_style="bold cyan")
+    core_tbl = Table(title=msg["core_options"], show_header=True, header_style="bold cyan")
     core_tbl.add_column("Option")
     core_tbl.add_column("Default", style="dim")
     core_tbl.add_column("Description")
@@ -164,68 +222,71 @@ def render_rich_help(parser: argparse.ArgumentParser):
         return fallback
 
     core_tbl.add_row(
-        "-o, --output", str(_get_default("output")), "生成ファイルの出力ディレクトリ"
+        "-o, --output", str(_get_default("output")), msg["output_desc"]
     )
-    core_tbl.add_row("--repo", str(_get_default("repo")), "解析対象のリポジトリパス")
+    core_tbl.add_row("--repo", str(_get_default("repo")), msg["repo_desc"])
     core_tbl.add_row(
-        "--ignore-file", str(_get_default("ignore_file")), "無視パターンファイルのパス（デフォルト: .gitignore）"
-    )
-    core_tbl.add_row(
-        "--use-ignore", "False", ".SourceSageignoreを使用/生成する"
+        "--ignore-file", str(_get_default("ignore_file")), msg["ignore_file_desc"]
     )
     core_tbl.add_row(
-        "--language-map", str(_get_default("language_map")), "言語マップJSONのパス"
+        "--use-ignore", "False", msg["use_ignore_desc"]
+    )
+    core_tbl.add_row(
+        "-l, --lang", "en", msg["language_desc"]
+    )
+    core_tbl.add_row(
+        "--language-map", str(_get_default("language_map")), msg["language_map_desc"]
     )
     console.print(core_tbl)
 
     # Release report options (deprecated)
     rel_tbl = Table(
-        title="Release Report Options (非推奨)", show_header=True, header_style="bold yellow"
+        title=msg["release_options"], show_header=True, header_style="bold yellow"
     )
     rel_tbl.add_column("Option")
     rel_tbl.add_column("Default", style="dim")
     rel_tbl.add_column("Description")
     rel_tbl.add_row(
-        "--diff", "False", "差分レポート生成を有効化（非推奨）"
+        "--diff", "False", msg["diff_desc"]
     )
     rel_tbl.add_row(
-        "--repo-path", str(_get_default("repo_path")), "gitリポジトリのルートパス"
+        "--repo-path", str(_get_default("repo_path")), msg["repo_path_desc"]
     )
     rel_tbl.add_row(
-        "--git-fetch-tags", str(_get_default("git_fetch_tags")), "gitタグ取得コマンド"
+        "--git-fetch-tags", str(_get_default("git_fetch_tags")), msg["git_fetch_tags_desc"]
     )
     rel_tbl.add_row(
-        "--git-tag-sort", str(_get_default("git_tag_sort")), "gitタグソートコマンド"
+        "--git-tag-sort", str(_get_default("git_tag_sort")), msg["git_tag_sort_desc"]
     )
     rel_tbl.add_row(
-        "--git-diff-command", str(_get_default("git_diff_command")), "git diff コマンド"
+        "--git-diff-command", str(_get_default("git_diff_command")), msg["git_diff_command_desc"]
     )
     rel_tbl.add_row(
-        "--report-title", str(_get_default("report_title")), "レポートタイトル"
+        "--report-title", str(_get_default("report_title")), msg["report_title_desc"]
     )
     rel_tbl.add_row(
-        "--report-sections", str(_get_default("report_sections")), "含めるセクション"
+        "--report-sections", str(_get_default("report_sections")), msg["report_sections_desc"]
     )
     rel_tbl.add_row(
         "--diff-output",
         str(_get_default("diff_output")),
-        "差分レポート出力先フォルダ",
+        msg["diff_output_desc"],
     )
     rel_tbl.add_row(
         "--report-file-name",
         str(_get_default("report_file_name")),
-        "レポートファイル名",
+        msg["report_file_name_desc"],
     )
     console.print(rel_tbl)
 
     # Examples
     examples = Text()
-    examples.append("Examples:\n", style="bold")
+    examples.append(f"{msg['examples_title']}:\n", style="bold")
     examples.append("  sage\n")
     examples.append("  sage --use-ignore\n")
     examples.append("  sage --diff --report-title 'My Report'\n")
     examples.append("  sage -o ./output --repo ./myproject\n")
-    console.print(Panel(examples, title="Examples", border_style="yellow", expand=True))
+    console.print(Panel(examples, title=msg["examples_title"], border_style="yellow", expand=True))
 
 
 def parse_arguments():
@@ -236,7 +297,7 @@ def parse_arguments():
     add_arguments(parser)
     args = parser.parse_args()
     if getattr(args, "help", False):
-        render_rich_help(parser)
+        render_rich_help(parser, args.language)
         sys.exit(0)
     return args
 
@@ -251,6 +312,41 @@ def log_arguments(args):
 
 
 def run(args=None):
+    # Messages dictionary
+    messages = {
+        "en": {
+            "ignore_generated": "Generated .SourceSageignore file:",
+            "ignore_not_found": "Default .SourceSageignore not found",
+            "repository_summary": "Repository Summary",
+            "generating": "Generating...",
+            "generation_complete": "Repository Summary generation completed",
+            "release_report": "Release Report",
+            "deprecated_warning": "⚠️  Diff report generation is deprecated. This feature will be removed in the future due to improved LLM command execution capabilities.",
+            "generating_diff": "Generating git diff report...",
+            "latest_tag": "Latest tag:",
+            "previous_tag": "Previous tag:",
+            "output": "Output:",
+            "skipping_no_tags": "No tags found, skipping Release Report",
+            "process_complete": "Process completed successfully.",
+        },
+        "ja": {
+            "ignore_generated": ".SourceSageignoreファイルを生成しました:",
+            "ignore_not_found": "デフォルトの.SourceSageignoreが見つかりません",
+            "repository_summary": "リポジトリサマリー",
+            "generating": "生成中...",
+            "generation_complete": "リポジトリサマリーの生成が完了しました",
+            "release_report": "リリースレポート",
+            "deprecated_warning": "⚠️  差分レポート生成機能は非推奨です。LLMのコマンド実行能力の向上により、この機能は将来削除される予定です。",
+            "generating_diff": "git diff レポートを生成中...",
+            "latest_tag": "最新タグ:",
+            "previous_tag": "前のタグ:",
+            "output": "出力:",
+            "skipping_no_tags": "タグが見つからないため、Release Report をスキップしました",
+            "process_complete": "プロセスが完了しました。",
+        },
+    }
+
+    msg = messages.get(args.language, messages["en"])
 
     # -----------------------------------------------
     # .SourceSageignore ファイルの生成
@@ -265,35 +361,35 @@ def run(args=None):
             if os.path.exists(default_ignore_file):
                 import shutil
                 shutil.copy(default_ignore_file, sourcesageignore_path)
-                console.print(f"[success].SourceSageignoreファイルを生成しました: {sourcesageignore_path}[/]")
+                console.print(f"[success]{msg['ignore_generated']} {sourcesageignore_path}[/]")
             else:
-                console.print("[warn]デフォルトの.SourceSageignoreが見つかりません[/]")
+                console.print(f"[warn]{msg['ignore_not_found']}[/]")
         args.ignore_file = sourcesageignore_path
 
     # -----------------------------------------------
     # SourceSageの実行（常に実行）
     console.print(
-        Panel(Align.center("Repository Summary"), style="info", expand=True)
+        Panel(Align.center(msg["repository_summary"]), style="info", expand=True)
     )
-    with console.status("[info]生成中...[/]", spinner="dots"):
+    with console.status(f"[info]{msg['generating']}[/]", spinner="dots"):
         sourcesage = SourceSage(
-            args.output, args.repo, args.ignore_file, args.language_map
+            args.output, args.repo, args.ignore_file, args.language_map, args.language
         )
         sourcesage.run()
-    console.print("[success]Repository Summary 生成 完了[/]")
+    console.print(f"[success]{msg['generation_complete']}[/]")
 
     # -----------------------------------------------
     # レポートの生成（オプション機能、非推奨）
     #
     if args.diff:
-        console.print(Panel(Align.center("Release Report"), style="info", expand=True))
+        console.print(Panel(Align.center(msg["release_report"]), style="info", expand=True))
 
         # 非推奨警告の表示
         console.print(
-            "[warn]⚠️  差分レポート生成機能は非推奨です。LLMのコマンド実行能力の向上により、この機能は将来削除される予定です。[/]"
+            f"[warn]{msg['deprecated_warning']}[/]"
         )
 
-        with console.status("[info]git diff レポートを生成中...[/]", spinner="dots"):
+        with console.status(f"[info]{msg['generating_diff']}[/]", spinner="dots"):
             git_diff_generator = GitDiffGenerator(
                 args.repo_path,
                 args.git_fetch_tags,
@@ -304,7 +400,7 @@ def run(args=None):
 
         if diff != None:
             console.print(
-                f"[info]最新タグ: [bold]{latest_tag}[/], 前のタグ: [bold]{previous_tag}[/]"
+                f"[info]{msg['latest_tag']} [bold]{latest_tag}[/], {msg['previous_tag']} [bold]{previous_tag}[/]"
             )
             report_file_name = args.report_file_name.format(latest_tag=latest_tag)
             os.makedirs(args.diff_output, exist_ok=True)
@@ -321,17 +417,17 @@ def run(args=None):
                 repo_path=repo_root,
             )
             with console.status(
-                "[info]Markdown レポートを出力中...[/]", spinner="dots"
+                f"[info]{msg['generating']}[/]", spinner="dots"
             ):
                 markdown_report_generator.generate_markdown_report()
-            console.print(f"[success]出力: [/][red]{output_path}[/]")
+            console.print(f"[success]{msg['output']} [/][red]{output_path}[/]")
         else:
             console.print(
-                "[warn]タグが見つからないため、Release Report をスキップしました[/]"
+                f"[warn]{msg['skipping_no_tags']}[/]"
             )
 
     console.print(
-        Panel(Align.center("プロセスが完了しました。"), style="success", expand=True)
+        Panel(Align.center(msg["process_complete"]), style="success", expand=True)
     )
 
 

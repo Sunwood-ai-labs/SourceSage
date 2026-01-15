@@ -54,7 +54,8 @@ class TestCLIArguments:
         assert args.repo == "./"
         assert args.diff is False
         assert args.use_ignore is False
-        assert ".gitignore" in args.ignore_file
+        assert args.language == "en"
+        assert ".SourceSageignore" in args.ignore_file
 
     def test_diff_output_option(self):
         """Test --diff-output option"""
