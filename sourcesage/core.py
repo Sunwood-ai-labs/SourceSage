@@ -11,12 +11,13 @@ console = Console()
 
 
 class SourceSage:
-    def __init__(self, output_dir, repo_path, ignore_file, language_map_file):
+    def __init__(self, output_dir, repo_path, ignore_file, language_map_file, language="en"):
         self.output_dir = output_dir
         self.repo_path = repo_path
         # Honor the path provided by CLI (typically CWD/.SourceSageignore)
         self.ignore_file = ignore_file
         self.language_map_file = language_map_file
+        self.language = language
 
         self.constants = Constants(output_dir)
 
@@ -33,6 +34,7 @@ class SourceSage:
                 self.constants.SOURCE_SAGE_MD,
             ),
             language_map_file=self.language_map_file,
+            language=self.language,
         )
         sourcesage_module.generate_markdown()
         logger.debug("SourceSage core completed successfully.")
