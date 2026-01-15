@@ -35,6 +35,7 @@ class DocuSum:
         language_map_file="language_map.json",
         output_file="repository_summary.md",
         git_path=None,
+        language="en",
     ):
         """
         DocuSumの初期化。
@@ -45,14 +46,16 @@ class DocuSum:
             language_map_file (str): 言語マッピング定義ファイルのパス
             output_file (str): 出力マークダウンファイルのパス
             git_path (str): .gitディレクトリのパス（デフォルトはfolders[0]/.git）
+            language (str): 出力言語 (en または ja、デフォルト: en)
         """
         self.folders = folders if folders is not None else [os.getcwd()]
+        self.git_path = git_path if git_path else os.path.join(self.folders[0], ".git")
+        self.language = language
+
+        # .SourceSageIgnoreファイルの初期化（ignore_file存在チェック後）
+        self._init_ignore_file(ignore_file)
         self.ignore_file = ignore_file
         self.output_file = output_file
-        self.git_path = git_path if git_path else os.path.join(self.folders[0], ".git")
-
-        # .SourceSageIgnoreファイルの初期化
-        self._init_ignore_file()
 
         # language_map_file が存在しない場合、パッケージ同梱の設定を使用
         if not os.path.exists(language_map_file):
@@ -65,8 +68,33 @@ class DocuSum:
                 pkg_sourcesage_dir, "config", "language_map.json"
             )
 
+        # ignore_file が存在しない場合、パッケージ同梱の設定を使用
+        if not os.path.exists(self.ignore_file):
+            pkg_sourcesage_dir = os.path.dirname(
+                os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            )
+            self.ignore_file = os.path.join(
+                pkg_sourcesage_dir, "config", ".SourceSageignore"
+            )
+
         # 各種ユーティリティクラスの初期化
-        self.pattern_matcher = FilePatternMatcher(ignore_file)
+        # .gitignore と .SourceSageignore の両方をマージして使用
+        ignore_files = []
+        # 実行時のフォルダ（カレントディレクトリまたは指定フォルダ）を基準にする
+        base_dir = self.folders[0] if self.folders else os.getcwd()
+        gitignore_path = os.path.join(base_dir, ".gitignore")
+        sourcesageignore_path = os.path.join(base_dir, ".SourceSageignore")
+
+        if os.path.exists(gitignore_path):
+            ignore_files.append(gitignore_path)
+        if os.path.exists(sourcesageignore_path):
+            ignore_files.append(sourcesageignore_path)
+
+        # 両方存在しない場合は self.ignore_file（パッケージのデフォルト）を使用
+        if not ignore_files:
+            ignore_files = [self.ignore_file]
+
+        self.pattern_matcher = FilePatternMatcher(ignore_files)
         self.language_detector = LanguageDetector(language_map_file)
         self.tree_generator = TreeGenerator(self.pattern_matcher)
         self.file_processor = FileProcessor(self.language_detector)
@@ -85,32 +113,60 @@ class DocuSum:
             os.makedirs(output_dir, exist_ok=True)
         console = Console()
 
+        # Messages dictionary
+        messages = {
+            "en": {
+                "project": "Project",
+                "generating_tree": "Generating directory tree...",
+                "collecting_git": "Collecting Git information...",
+                "generating_stats": "Generating statistics...",
+                "collecting_file_stats": "Collecting file statistics...",
+                "generating_language_stats": "Generating language statistics...",
+                "processing_file_contents": "Processing file contents...",
+                "markdown_generated": "Markdown document generated:",
+                "error": "Markdown generation error:",
+            },
+            "ja": {
+                "project": "プロジェクト",
+                "generating_tree": "ディレクトリツリー生成...",
+                "collecting_git": "Git情報収集...",
+                "generating_stats": "統計情報生成...",
+                "collecting_file_stats": "ファイル統計収集...",
+                "generating_language_stats": "言語統計生成...",
+                "processing_file_contents": "ファイル内容処理...",
+                "markdown_generated": "マークダウンドキュメントが生成されました:",
+                "error": "マークダウン生成エラー:",
+            },
+        }
+
+        msg = messages.get(self.language, messages["en"])
+
         try:
             with open(self.output_file, "w", encoding="utf-8") as md_file:
                 for folder in self.folders:
                     project_name = os.path.basename(os.path.abspath(folder))
                     md_file.write(f"# Project: {project_name}\n\n")
-                    console.log(f"[bold]プロジェクト:[/] {project_name}")
+                    console.log(f"[bold]{msg['project']}:[/] {project_name}")
 
                     with console.status(
-                        "[cyan]ディレクトリツリー生成...[/]", spinner="dots"
+                        f"[cyan]{msg['generating_tree']}[/]", spinner="dots"
                     ) as status:
                         tree = self.tree_generator.generate_tree(folder)
                         stats = self.tree_generator.get_tree_stats(folder)
                         md_file.write(f"{tree}\n")
 
-                    with console.status("[cyan]Git情報収集...[/]", spinner="dots"):
+                    with console.status(f"[cyan]{msg['collecting_git']}[/]", spinner="dots"):
                         git_info = self.git_info_collector.collect_info()
                         self.markdown_writer.write_git_info(md_file, git_info)
 
-                    with console.status("[cyan]統計情報生成...[/]", spinner="dots"):
+                    with console.status(f"[cyan]{msg['generating_stats']}[/]", spinner="dots"):
                         self.markdown_writer.write_stats(md_file, stats)
 
-                    with console.status("[cyan]ファイル統計収集...[/]", spinner="dots"):
+                    with console.status(f"[cyan]{msg['collecting_file_stats']}[/]", spinner="dots"):
                         file_stats = self.stats_collector.collect_file_stats(folder)
                         self.markdown_writer.write_file_stats_table(md_file, file_stats)
 
-                    with console.status("[cyan]言語統計生成...[/]", spinner="dots"):
+                    with console.status(f"[cyan]{msg['generating_language_stats']}[/]", spinner="dots"):
                         language_stats = self.stats_collector.collect_language_stats(
                             file_stats
                         )
@@ -118,26 +174,26 @@ class DocuSum:
                             md_file, language_stats
                         )
 
-                    with console.status("[cyan]ファイル内容処理...[/]", spinner="dots"):
+                    with console.status(f"[cyan]{msg['processing_file_contents']}[/]", spinner="dots"):
                         self.markdown_writer.write_file_contents(
                             md_file, self.file_processor, folder
                         )
 
             console.log(
-                f"[green]マークダウンドキュメントが生成されました:[/] [red]{self.output_file}[/]"
+                f"[green]{msg['markdown_generated']}[/] [red]{self.output_file}[/]"
             )
             return self.output_file
 
         except Exception as e:
-            logger.error(f"マークダウン生成エラー: {e}")
+            logger.error(f"{msg['error']} {e}")
             raise
 
-    def _init_ignore_file(self):
+    def _init_ignore_file(self, ignore_file):
         """
         .SourceSageignore の初期化。
         指定パスに存在しない場合は、パッケージ同梱のデフォルトをコピーする。
         """
-        if os.path.exists(self.ignore_file):
+        if os.path.exists(ignore_file):
             return
 
         try:
@@ -151,20 +207,20 @@ class DocuSum:
 
             if os.path.exists(packaged_ignore):
                 with open(packaged_ignore, "r", encoding="utf-8") as src, open(
-                    self.ignore_file, "w", encoding="utf-8"
+                    ignore_file, "w", encoding="utf-8"
                 ) as dst:
                     dst.write(src.read())
-                logger.success(f"{self.ignore_file} をデフォルトから作成しました")
+                logger.success(f"{ignore_file} をデフォルトから作成しました")
             else:
                 # Fallback minimal template
                 content = """__pycache__/\n*.pyc\n.git/\n.SourceSageAssets/\n"""
-                with open(self.ignore_file, "w", encoding="utf-8") as dst:
+                with open(ignore_file, "w", encoding="utf-8") as dst:
                     dst.write(content)
                 logger.warning(
-                    f"パッケージ内にデフォルトが見つかりませんでした。最小テンプレートで {self.ignore_file} を作成しました"
+                    f"パッケージ内にデフォルトが見つかりませんでした。最小テンプレートで {ignore_file} を作成しました"
                 )
         except Exception as e:
-            logger.error(f"{self.ignore_file} の作成に失敗しました: {e}")
+            logger.error(f"{ignore_file} の作成に失敗しました: {e}")
             raise
 
     def analyze_repository(self):

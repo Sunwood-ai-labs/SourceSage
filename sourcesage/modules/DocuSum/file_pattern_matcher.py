@@ -8,8 +8,13 @@ from loguru import logger
 class FilePatternMatcher:
     """ファイルパターンマッチングを処理するクラス"""
 
-    def __init__(self, ignore_file):
-        self.ignore_file = ignore_file
+    def __init__(self, ignore_file_or_files):
+        # 単一のファイルパスまたはファイルパスのリストを受け取る
+        if isinstance(ignore_file_or_files, str):
+            self.ignore_files = [ignore_file_or_files]
+        else:
+            self.ignore_files = ignore_file_or_files
+
         # デフォルトの除外パターン
         self.default_patterns = [
             ".git",
@@ -24,19 +29,20 @@ class FilePatternMatcher:
         self.patterns = self._load_patterns()
 
     def _load_patterns(self):
-        """gitignoreスタイルのパターンをロードする"""
+        """gitignoreスタイルのパターンをロードする（複数ファイル対応）"""
         include_patterns = []
         exclude_patterns = self.default_patterns.copy()
 
-        if os.path.exists(self.ignore_file):
-            with open(self.ignore_file, "r", encoding="utf-8") as f:
-                for line in f:
-                    line = line.strip()
-                    if line and not line.startswith("#"):
-                        if line.startswith("!"):
-                            include_patterns.append(line[1:])
-                        else:
-                            exclude_patterns.append(line)
+        for ignore_file in self.ignore_files:
+            if os.path.exists(ignore_file):
+                with open(ignore_file, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith("#"):
+                            if line.startswith("!"):
+                                include_patterns.append(line[1:])
+                            else:
+                                exclude_patterns.append(line)
 
         return {"include": include_patterns, "exclude": exclude_patterns}
 
