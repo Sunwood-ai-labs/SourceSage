@@ -79,6 +79,8 @@ assets/
 data/
 streamlit/
 Style-Bert-VITS2/
+tmp/
+temp/
 
 # ---------------------------------------------
 # ライセンス・ドキュメント

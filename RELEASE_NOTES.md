@@ -148,12 +148,4 @@ git pull origin main
 
 ---
 
-## 次のリリース予定 / Upcoming
-
-- AI テスト生成機能の強化
-- 追加の言語サポート
-- パフォーマンス最適化
-
----
-
 **[Full Changelog](https://github.com/Sunwood-ai-labs/SourceSage/compare/v7.1.1...v7.2.0)**
