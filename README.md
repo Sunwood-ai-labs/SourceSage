@@ -132,6 +132,51 @@ Notes:
 - When `--language-map` is omitted, the included defaults (`sourcesage/config/`) are automatically used.
 - Release Report is generated when there are 2 or more tags (only with `--diff`).
 
+### 🔄 Upgrade
+
+```bash
+# If installed via PyPI
+pip install --upgrade sourcesage
+
+# If installed via git clone
+git pull origin main
+
+# If using uv with local clone
+uv sync
+```
+
+### 🔍 Troubleshooting
+
+#### uvx cache issues
+
+If `uvx sourcesage` is using an outdated version, clear the cache:
+
+```bash
+# Force refresh (recommended)
+uvx --refresh sourcesage --repo tmp
+
+# Clear all uv cache
+uv cache clean
+
+# Clear specific package cache
+uv cache clean sourcesage
+
+# Run without cache
+uvx --no-cache sourcesage --repo tmp
+```
+
+#### Cache management
+
+```bash
+# Check cache size
+uv cache size
+
+# Show cache directory
+uv cache dir
+
+# Prune unused cache
+uv cache prune
+```
 
 ### 📊 Example Generated Content
 
@@ -161,9 +206,23 @@ Notes:
     ## 📊 Project Statistics
 
     - 📅 Created: 2025-02-02 16:22:31
-    - 📁 Total Directories: 5
-    - 📄 Total Files: 15
-    - 📏 Maximum Depth: 3
+    - 📁 Total directories: 5
+    - 📄 Total files: 15
+    - 📏 Max depth: 3
+
+    ### 📊 File Size and Line Count
+
+    | File | Size | Lines | Language |
+    |------|------|-------|----------|
+    | pyproject.toml | 1.2 KB | 30 | TOML |
+    | **Total** |  | **1234** |  |
+
+    ### 📈 Language Statistics
+
+    | Language | Files | Total Lines | Total Size |
+    |----------|-------|-------------|-----------|
+    | Python | 15 | 1234 | 45.6 KB |
+    | Markdown | 3 | 150 | 5.2 KB |
 ```
 
 ## 🛠️ Development Environment

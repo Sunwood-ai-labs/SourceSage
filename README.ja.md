@@ -133,6 +133,51 @@ uv run sage --diff                       # 差分レポート生成（非推奨�
 - `--language-map`を省略すると、同梱デフォルト（`sourcesage/config/`）を自動的に利用します。
 - Release Reportはタグが2つ以上ある場合に生成されます（`--diff`使用時のみ）。
 
+### 🔄 アップグレード
+
+```bash
+# PyPIからインストールしている場合
+pip install --upgrade sourcesage
+
+# git cloneしている場合
+git pull origin main
+
+# uvをローカルクローンで使用している場合
+uv sync
+```
+
+### 🔍 トラブルシューティング
+
+#### uvxのキャッシュ問題
+
+`uvx sourcesage`で古いバージョンが使われる場合、キャッシュをクリアしてください：
+
+```bash
+# 強制リフレッシュ（推奨）
+uvx --refresh sourcesage --repo tmp
+
+# uvのキャッシュをすべてクリア
+uv cache clean
+
+# 特定のパッケージのキャッシュのみクリア
+uv cache clean sourcesage
+
+# キャッシュを使わずに実行
+uvx --no-cache sourcesage --repo tmp
+```
+
+#### キャッシュ管理
+
+```bash
+# キャッシュサイズを確認
+uv cache size
+
+# キャッシュディレクトリの場所を確認
+uv cache dir
+
+# 使われていないキャッシュを削除
+uv cache prune
+```
 
 ### 📊 生成される内容例
 
@@ -159,12 +204,26 @@ uv run sage --diff                       # 差分レポート生成（非推奨�
     └── README.md
     ```
 
-    ## 📊 プロジェクト統計
+    ## 📊 Project Statistics
 
-    - 📅 作成日時: 2025-02-02 16:22:31
-    - 📁 総ディレクトリ数: 5
-    - 📄 総ファイル数: 15
-    - 📏 最大深度: 3
+    - 📅 Created: 2025-02-02 16:22:31
+    - 📁 Total directories: 5
+    - 📄 Total files: 15
+    - 📏 Max depth: 3
+
+    ### 📊 File Size and Line Count
+
+    | File | Size | Lines | Language |
+    |------|------|-------|----------|
+    | pyproject.toml | 1.2 KB | 30 | TOML |
+    | **Total** |  | **1234** |  |
+
+    ### 📈 Language Statistics
+
+    | Language | Files | Total Lines | Total Size |
+    |----------|-------|-------------|-----------|
+    | Python | 15 | 1234 | 45.6 KB |
+    | Markdown | 3 | 150 | 5.2 KB |
 ```
 
 ## 🛠️ 開発環境
