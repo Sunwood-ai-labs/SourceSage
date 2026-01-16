@@ -114,3 +114,5 @@ assets/
 !docs/important.md
 !.github/workflows/
 tmp/
+
+*.svg
