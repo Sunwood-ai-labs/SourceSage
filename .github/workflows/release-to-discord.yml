@@ -29,24 +29,49 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Clone release-note-x repository
+        run: |
+          git clone https://github.com/Sunwood-ai-labs/release-note-x.git /tmp/release-note-x
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Install dependencies
+        working-directory: /tmp/release-note-x
         run: npm install
 
       - name: Post release to Discord
         run: |
-          RELEASE_NAME="${{ inputs.release_name || github.event.release.name }}"
-          RELEASE_URL="${{ inputs.release_url || github.event.release.html_url }}"
-          ENABLE_SUMMARY="${{ inputs.enable_summarization == 'true' || (secrets.OPENAI_API_KEY != '' || secrets.OPENROUTER_API_KEY != '') && 'true' || 'false' }}"
-          node scripts/post-discord.js --with-ai "$RELEASE_NAME" "$RELEASE_URL" "$ENABLE_SUMMARY" "$RELEASE_NOTES"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            RELEASE_NAME="${{ inputs.release_name }}"
+            RELEASE_URL="${{ inputs.release_url }}"
+            RELEASE_NOTES="${{ inputs.release_notes }}"
+          else
+            RELEASE_NAME="${{ github.event.release.name }}"
+            RELEASE_URL="${{ github.event.release.html_url }}"
+            RELEASE_NOTES="${{ github.event.release.body }}"
+          fi
+
+          # Export release notes to temp file for safe handling
+          echo "$RELEASE_NOTES" > /tmp/release_notes.txt
+
+          # Check if summarization is enabled (only for workflow_dispatch)
+          ENABLE_SUMMARY="${{ inputs.enable_summarization == 'true' && 'true' || 'false' }}"
+          if [ "$ENABLE_SUMMARY" = "true" ] && [ -s /tmp/release_notes.txt ]; then
+            SUMMARY=$(node /tmp/release-note-x/scripts/ai-summarize.js --quiet --file /tmp/release_notes.txt 2>/dev/null)
+            if [ -z "$SUMMARY" ]; then
+              SUMMARY="新しいリリースが利用可能です！"
+            fi
+            node /tmp/release-note-x/scripts/post-discord.js "$RELEASE_NAME" "$RELEASE_URL" "$SUMMARY"
+          else
+            node /tmp/release-note-x/scripts/post-discord.js "$RELEASE_NAME" "$RELEASE_URL"
+          fi
+
+          # Cleanup
+          rm -f /tmp/release_notes.txt
         env:
-          GH_TOKEN: ${{ github.token }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || secrets.OPENROUTER_API_KEY }}
-          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL || secrets.OPENROUTER_BASE_URL }}
-          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL || secrets.OPENROUTER_MODEL || 'z-ai/glm-4.5-air:free' }}
-          RELEASE_NOTES: ${{ inputs.release_notes != '' && inputs.release_notes || github.event.release.body }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL != '' && secrets.OPENAI_MODEL || 'gpt-3.5-turbo' }}
