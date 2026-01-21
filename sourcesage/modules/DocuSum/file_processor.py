@@ -6,8 +6,9 @@ from loguru import logger
 class FileProcessor:
     """ファイル処理を行うクラス"""
 
-    def __init__(self, language_detector):
+    def __init__(self, language_detector, language="en"):
         self.language_detector = language_detector
+        self.language = language
         self.binary_extensions = {
             ".pyc",
             ".pyo",
@@ -102,9 +103,17 @@ class FileProcessor:
             size = self._format_size(stats.st_size)
             lines = self._count_lines(file_path)
 
+            # Language-specific labels
+            if self.language == "ja":
+                size_label = "**サイズ**"
+                lines_label = f"**行数**: {lines if lines is not None else 'N/A'} 行"
+            else:
+                size_label = "**Size**"
+                lines_label = f"**Lines**: {lines if lines is not None else 'N/A'}"
+
             info = [
-                f"**サイズ**: {size}",
-                f"**行数**: {lines if lines is not None else 'N/A'} 行",
+                f"{size_label}: {size}",
+                lines_label,
             ]
 
             return " | ".join(info)

@@ -90,14 +90,19 @@ class DocuSum:
         if os.path.exists(sourcesageignore_path):
             ignore_files.append(sourcesageignore_path)
 
-        # 両方存在しない場合は self.ignore_file（パッケージのデフォルト）を使用
+        # .SourceSageignore が存在しない場合は、パッケージのデフォルトを追加
+        # （デフォルトパターンが適用されるように）
+        if not os.path.exists(sourcesageignore_path):
+            ignore_files.append(self.ignore_file)
+
+        # 両方存在しない場合もパッケージのデフォルトを使用
         if not ignore_files:
             ignore_files = [self.ignore_file]
 
-        self.pattern_matcher = FilePatternMatcher(ignore_files)
+        self.pattern_matcher = FilePatternMatcher(ignore_files, base_dir=base_dir)
         self.language_detector = LanguageDetector(language_map_file)
         self.tree_generator = TreeGenerator(self.pattern_matcher)
-        self.file_processor = FileProcessor(self.language_detector)
+        self.file_processor = FileProcessor(self.language_detector, language=self.language)
         self.git_info_collector = GitInfoCollector(self.git_path)
         self.stats_collector = StatsCollector(
             self.pattern_matcher, self.language_detector, self.file_processor
