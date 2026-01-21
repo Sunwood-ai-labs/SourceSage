@@ -44,6 +44,11 @@ def add_arguments(parser):
         dest="language",
         help="Output language (default: en)",
     )
+    parser.add_argument(
+        "-v", "--version",
+        action="store_true",
+        help="Show version and exit"
+    )
 
     package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     default_ignore_file_pkg = os.path.join(
@@ -56,17 +61,13 @@ def add_arguments(parser):
     # ==============================================
     # 無視ファイルと言語マップ設定
     #
-    # Use .SourceSageignore by default
+    # By default, use both .gitignore and .SourceSageignore
+    # If .SourceSageignore doesn't exist, it will be auto-generated
     sourcesageignore_file = os.path.join(os.getcwd(), ".SourceSageignore")
     parser.add_argument(
         "--ignore-file",
-        help="Path to ignore file (default: .SourceSageignore)",
+        help="Path to ignore file (default: .SourceSageignore, also uses .gitignore if present)",
         default=sourcesageignore_file
-    )
-    parser.add_argument(
-        "--use-ignore",
-        action="store_true",
-        help="Enable ignore flag (use/generate .SourceSageignore)",
     )
     parser.add_argument(
         "--language-map",
@@ -156,8 +157,7 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
             "core_options": "Core Options",
             "output_desc": "Output directory for generated files",
             "repo_desc": "Path to repository to analyze",
-            "ignore_file_desc": "Path to ignore patterns file (default: .gitignore)",
-            "use_ignore_desc": "Use/generate .SourceSageignore",
+            "ignore_file_desc": "Path to ignore patterns file (default: .SourceSageignore, also uses .gitignore if present)",
             "language_map_desc": "Path to language map JSON",
             "language_desc": "Output language (default: en)",
             "release_options": "Release Report Options (deprecated)",
@@ -179,8 +179,7 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
             "core_options": "基本オプション",
             "output_desc": "生成ファイルの出力ディレクトリ",
             "repo_desc": "解析対象のリポジトリパス",
-            "ignore_file_desc": "無視パターンファイルのパス（デフォルト: .gitignore）",
-            "use_ignore_desc": ".SourceSageignoreを使用/生成する",
+            "ignore_file_desc": "無視パターンファイルのパス（デフォルト: .SourceSageignore、.gitignoreも使用）",
             "language_map_desc": "言語マップJSONのパス",
             "language_desc": "出力言語（デフォルト: en）",
             "release_options": "リリースレポートオプション（非推奨）",
@@ -227,9 +226,6 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
     core_tbl.add_row("--repo", str(_get_default("repo")), msg["repo_desc"])
     core_tbl.add_row(
         "--ignore-file", str(_get_default("ignore_file")), msg["ignore_file_desc"]
-    )
-    core_tbl.add_row(
-        "--use-ignore", "False", msg["use_ignore_desc"]
     )
     core_tbl.add_row(
         "-l, --lang", "en", msg["language_desc"]
@@ -283,7 +279,6 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
     examples = Text()
     examples.append(f"{msg['examples_title']}:\n", style="bold")
     examples.append("  sage\n")
-    examples.append("  sage --use-ignore\n")
     examples.append("  sage --diff --report-title 'My Report'\n")
     examples.append("  sage -o ./output --repo ./myproject\n")
     console.print(Panel(examples, title=msg["examples_title"], border_style="yellow", expand=True))
@@ -350,21 +345,37 @@ def run(args=None):
 
     # -----------------------------------------------
     # .SourceSageignore ファイルの生成
-    if args.use_ignore:
-        sourcesageignore_path = os.path.join(os.getcwd(), ".SourceSageignore")
-        if not os.path.exists(sourcesageignore_path):
-            # パッケージのデフォルト.SourceSageignoreをコピー
-            package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            default_ignore_file = os.path.join(
-                package_root, "sourcesage", "config", ".SourceSageignore"
-            )
-            if os.path.exists(default_ignore_file):
-                import shutil
-                shutil.copy(default_ignore_file, sourcesageignore_path)
-                console.print(f"[success]{msg['ignore_generated']} {sourcesageignore_path}[/]")
-            else:
-                console.print(f"[warn]{msg['ignore_not_found']}[/]")
-        args.ignore_file = sourcesageignore_path
+    # デフォルトで .SourceSageignore と .gitignore を使う
+    # Use the repo path if specified, otherwise use current directory
+    base_dir = args.repo if args.repo else os.getcwd()
+    sourcesageignore_path = os.path.join(base_dir, ".SourceSageignore")
+    if not os.path.exists(sourcesageignore_path):
+        # パッケージのデフォルト.SourceSageignoreをコピー
+        package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        default_ignore_file = os.path.join(
+            package_root, "sourcesage", "config", ".SourceSageignore"
+        )
+        if os.path.exists(default_ignore_file):
+            import shutil
+            shutil.copy(default_ignore_file, sourcesageignore_path)
+            console.print(f"[success]{msg['ignore_generated']} {sourcesageignore_path}[/]")
+        else:
+            console.print(f"[warn]{msg['ignore_not_found']}[/]")
+    args.ignore_file = sourcesageignore_path
+
+    # -----------------------------------------------
+    # 出力ディレクトリの設定
+    # --repo が指定されている場合は、出力先もそこにする
+    # デフォルト値（"./"）の場合、--repo の値を使う
+    if args.repo and args.output == "./":
+        # シェルのPWD環境変数を使って、現在のシェルのカレントディレクトリを取得
+        shell_cwd = os.environ.get('PWD', os.getcwd())
+        # args.repo が相対パスの場合、シェルのカレントディレクトリからの相対パスとして解釈
+        if not os.path.isabs(args.repo):
+            args.repo = os.path.abspath(os.path.join(shell_cwd, args.repo))
+            args.output = args.repo
+        else:
+            args.output = args.repo
 
     # -----------------------------------------------
     # SourceSageの実行（常に実行）
@@ -435,12 +446,38 @@ def main():
 
     from dotenv import load_dotenv
 
+    # Load version from pyproject.toml
+    package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    pyproject_path = os.path.join(package_root, "pyproject.toml")
+    version = "unknown"
+    try:
+        import tomli
+        with open(pyproject_path, "rb") as f:
+            pyproject = tomli.load(f)
+            version = pyproject.get("project", {}).get("version", "unknown")
+    except Exception:
+        # Fallback to reading the file manually
+        try:
+            with open(pyproject_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.startswith("version ="):
+                        version = line.split("=")[1].strip().strip('"').strip("'")
+                        break
+        except Exception:
+            version = "7.1.1"  # Fallback version
+
     dotenv_path = os.path.join(os.getcwd(), ".env")
     logger.debug(f"dotenv_path : {dotenv_path}")
     load_dotenv(dotenv_path=dotenv_path, verbose=True, override=True)
 
     args = parse_arguments()
     log_arguments(args)
+
+    # Show version and exit if -v or --version is specified
+    if args.version:
+        console.print(f"SourceSage v{version}", style="bold green")
+        sys.exit(0)
+
     run(args)
 
 
