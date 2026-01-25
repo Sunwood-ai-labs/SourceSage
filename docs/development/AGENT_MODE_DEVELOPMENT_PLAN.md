@@ -65,68 +65,156 @@ sage --agent-mode tree \
   --show-lines \               # 行数を表示
   --show-size \                # ファイルサイズを表示
   --sort-by lines \            # ソート基準: lines|size|name|modified
-  --format markdown            # 出力形式: markdown|json|compact
+  --format tree                # 出力形式: tree|json（デフォルト: tree）
 ```
 
-### 1.3 出力例（Markdown形式）
+### 1.3 出力形式
 
-```markdown
-# Repository Tree: SourceSage
+**2種類の出力形式を提供：**
 
-📊 **Summary**: 45 files, 12 directories, 3,842 total lines
+| 形式 | 用途 | 特徴 |
+|------|------|------|
+| `tree` | 人間＆LLM向け | 従来のASCIIツリー表示、視覚的に構造を把握しやすい |
+| `json` | プログラマブル | 構造化データ、後続処理やフィルタリングに最適 |
+
+---
+
+### 1.4 出力例：ツリー形式（`--format tree`）
+
+従来の SourceSage と同様のASCIIツリー表示に、行数・サイズ情報を追加。
 
 ```
-sourcesage/                          [dir]  8 items
-├── __init__.py                      [py]   12 lines
-├── cli.py                           [py]   449 lines
-├── core.py                          [py]   41 lines
-├── config/                          [dir]  3 items
-│   ├── constants.py                 [py]   15 lines
-│   └── language_map.json            [json] 45 lines
-└── modules/                         [dir]  10 items
-    ├── source_sage.py               [py]   89 lines
-    └── DocuSum/                     [dir]  8 items
-        ├── docusum.py               [py]   286 lines  ⚠️ large
-        ├── tree_generator.py        [py]   101 lines
+================================================================================
+Repository: SourceSage
+================================================================================
+
+Summary: 45 files | 12 directories | 3,842 total lines
+
+--------------------------------------------------------------------------------
+Directory Tree
+--------------------------------------------------------------------------------
+
+sourcesage/                                    [dir]     8 items
+├── __init__.py                                [py]     12 lines |    245 B
+├── cli.py                                     [py]    449 lines | 15.2 KB  * large
+├── core.py                                    [py]     41 lines |  1.1 KB
+├── config/                                    [dir]     3 items
+│   ├── constants.py                           [py]     15 lines |    389 B
+│   └── language_map.json                      [json]   45 lines |  1.2 KB
+└── modules/                                   [dir]    10 items
+    ├── source_sage.py                         [py]     89 lines |  2.8 KB
+    └── DocuSum/                               [dir]     8 items
+        ├── docusum.py                         [py]    286 lines |  9.4 KB  * large
+        ├── tree_generator.py                  [py]    101 lines |  3.2 KB
+        ├── file_processor.py                  [py]    131 lines |  4.1 KB
         └── ...
-```
+
+--------------------------------------------------------------------------------
+Legend: * large = 200+ lines (configurable via --large-threshold)
+--------------------------------------------------------------------------------
 ```
 
-### 1.4 出力例（JSON形式）
+---
+
+### 1.5 出力例：JSON形式（`--format json`）
+
+プログラマブルな構造化データ。エージェントが後続処理で使いやすい。
 
 ```json
 {
   "repository": "SourceSage",
+  "generated_at": "2026-01-25T10:30:00Z",
   "summary": {
     "total_files": 45,
     "total_directories": 12,
-    "total_lines": 3842
+    "total_lines": 3842,
+    "total_size_bytes": 125840
+  },
+  "config": {
+    "max_depth": null,
+    "large_threshold": 200,
+    "show_lines": true,
+    "show_size": true
   },
   "tree": [
+    {
+      "path": "sourcesage",
+      "type": "directory",
+      "children_count": 8
+    },
     {
       "path": "sourcesage/__init__.py",
       "type": "file",
       "language": "python",
+      "extension": ".py",
       "lines": 12,
-      "size": 245
+      "size_bytes": 245,
+      "is_large": false
     },
     {
       "path": "sourcesage/cli.py",
       "type": "file",
       "language": "python",
+      "extension": ".py",
       "lines": 449,
-      "size": 15234
+      "size_bytes": 15234,
+      "is_large": true
+    },
+    {
+      "path": "sourcesage/modules/DocuSum/docusum.py",
+      "type": "file",
+      "language": "python",
+      "extension": ".py",
+      "lines": 286,
+      "size_bytes": 9400,
+      "is_large": true
     }
-  ]
+  ],
+  "statistics": {
+    "by_language": {
+      "python": {"files": 15, "lines": 2100, "size_bytes": 68000},
+      "json": {"files": 3, "lines": 120, "size_bytes": 4500},
+      "markdown": {"files": 8, "lines": 450, "size_bytes": 18000}
+    },
+    "by_directory": {
+      "sourcesage/modules/DocuSum": {"files": 8, "lines": 1200}
+    },
+    "large_files": [
+      {"path": "sourcesage/cli.py", "lines": 449},
+      {"path": "sourcesage/modules/DocuSum/docusum.py", "lines": 286}
+    ]
+  }
 }
 ```
 
-### 1.5 実装タスク
+---
+
+### 1.6 JSON出力の活用例
+
+エージェントがJSON出力を活用するシナリオ：
+
+```python
+# 例: 200行以上のPythonファイルを抽出
+import json
+
+data = json.loads(sage_output)
+large_py_files = [
+    f["path"] for f in data["tree"]
+    if f["type"] == "file"
+    and f["language"] == "python"
+    and f["lines"] >= 200
+]
+# → ['sourcesage/cli.py', 'sourcesage/modules/DocuSum/docusum.py']
+```
+
+### 1.7 実装タスク
 
 - [ ] `AgentMode/tree_with_stats.py` - ツリー＋統計生成クラス
-- [ ] `AgentMode/formats/markdown.py` - Markdown形式出力
-- [ ] `AgentMode/formats/json.py` - JSON形式出力
+- [ ] `AgentMode/formats/tree_format.py` - 従来ツリー形式出力（ASCII art）
+- [ ] `AgentMode/formats/json_format.py` - JSON形式出力
 - [ ] `cli.py` に `--agent-mode` 引数追加
+- [ ] `--format {tree|json}` オプション実装
+- [ ] `--large-threshold` オプション実装
 - [ ] テスト作成
 
 ---
@@ -238,69 +326,160 @@ Step 3: 追加で必要なファイルを取得
 
 ## Phase 4: Claude Code Skills 統合
 
-### 4.1 Skills形式での提供
+### 4.1 SKILL.md 形式での提供
 
-```yaml
-# .claude/skills/sourcesage.yaml
-name: sourcesage
-description: Repository structure analyzer for AI agents
-version: 1.0.0
+Claude Code の Skills は **SKILL.md** というマークダウン形式で定義します。
 
-commands:
-  - name: tree
-    description: Get repository tree with file statistics
-    usage: sage --agent-mode tree [options]
+#### ディレクトリ構造
 
-  - name: files
-    description: Get specific files content
-    usage: sage --agent-mode files --files <paths>
-
-  - name: summary
-    description: Get repository summary within context limits
-    usage: sage --agent-mode full --max-total-lines <n>
+```
+.claude/skills/
+└── sourcesage/
+    ├── SKILL.md              # メインスキル定義（必須）
+    ├── tree-explorer/
+    │   └── SKILL.md          # ツリー探索サブスキル
+    └── references/
+        └── workflow.md       # 詳細ワークフロー（補助）
 ```
 
-### 4.2 推奨ワークフロー（Skills説明用）
+#### メインスキル: `.claude/skills/sourcesage/SKILL.md`
 
 ```markdown
-## SourceSage - Repository Explorer
+---
+name: sourcesage
+description: |
+  Analyze repository structure with context-aware output limits.
+  Use when exploring a new codebase, understanding project structure,
+  or when you need to gather code context efficiently without
+  exceeding token limits.
+allowed-tools: Bash(sage:*, python:*)
+---
 
-### コードベース探索の手順
+# SourceSage - Repository Structure Analyzer
 
-1. **まずツリーを取得**
-   ```bash
-   sage --agent-mode tree --show-lines --format markdown
-   ```
-   → 全体構造と各ファイルの行数を把握
+SourceSageはAIエージェント向けに最適化されたリポジトリ解析ツールです。
 
-2. **重要そうなファイルを特定**
-   - エントリーポイント（cli.py, main.py, index.ts など）
-   - 行数が多いファイル（コア機能の可能性大）
-   - 設定ファイル
+## 基本ワークフロー
 
-3. **選択的にファイル内容を取得**
-   ```bash
-   sage --agent-mode files --files "src/cli.py,src/core.py"
-   ```
+### Step 1: ツリー構造を取得（まずこれを実行）
 
-4. **必要に応じて追加取得**
-   ```bash
-   sage --agent-mode files --pattern "src/modules/*.py"
-   ```
-
-### コンテキスト管理のベストプラクティス
-
-- 全体で5000行以下を目安に
-- 1ファイル500行以下を推奨
-- 大きいファイルは `--truncate-strategy middle` で中間省略
+```bash
+sage --agent-mode tree --show-lines
 ```
 
-### 4.3 実装タスク
+これにより、ファイル内容を読み込まずにリポジトリ全体の構造と各ファイルの行数を把握できます。
 
-- [ ] Skills YAML定義ファイル作成
-- [ ] ドキュメント整備
-- [ ] サンプルワークフロー作成
+### Step 2: 必要なファイルのみ取得
+
+ツリーを確認後、重要そうなファイルのみを取得：
+
+```bash
+sage --agent-mode files --files "src/cli.py,src/core.py"
+```
+
+### Step 3: コンテキスト制限付きで全体取得（必要な場合）
+
+```bash
+sage --agent-mode full --max-total-lines 5000 --max-file-lines 500
+```
+
+## コンテキスト管理のベストプラクティス
+
+- 全体で **5000行以下** を目安に
+- 1ファイル **500行以下** を推奨
+- 大きいファイルは `--truncate-strategy middle` で中間省略
+
+## 出力形式
+
+- `--format tree`: 従来のASCIIツリー形式（デフォルト）
+- `--format json`: プログラマブルなJSON形式
+
+詳細は [workflow.md](references/workflow.md) を参照。
+```
+
+#### サブスキル: `.claude/skills/sourcesage/tree-explorer/SKILL.md`
+
+```markdown
+---
+name: sourcesage-tree
+description: |
+  Quick repository tree with file statistics.
+  Use for initial codebase exploration or when you need
+  to see project structure at a glance.
+allowed-tools: Bash(sage:*)
+---
+
+# SourceSage Tree Explorer
+
+リポジトリのツリー構造と統計を素早く取得します。
+
+## 使用方法
+
+### 従来のツリー形式（人間が読みやすい）
+
+```bash
+sage --agent-mode tree --show-lines --format tree
+```
+
+出力例:
+```
+sourcesage/                          [dir]  8 items
+├── __init__.py                      [py]   12 lines
+├── cli.py                           [py]   449 lines
+└── modules/                         [dir]  10 items
+    └── DocuSum/                     [dir]  8 items
+```
+
+### JSON形式（プログラマブル）
+
+```bash
+sage --agent-mode tree --show-lines --format json
+```
+
+出力例:
+```json
+{
+  "summary": {"total_files": 45, "total_lines": 3842},
+  "tree": [{"path": "cli.py", "lines": 449, "language": "python"}]
+}
+```
+
+## Tips
+
+- まずツリーを見て、重要そうなファイル（行数が多い、エントリーポイント等）を特定
+- その後 `/sourcesage` でファイル内容を取得
+```
+
+### 4.2 Skills のメタデータ仕様
+
+| フィールド | 必須 | 説明 |
+|-----------|------|------|
+| `name` | いいえ | スキル名（ディレクトリ名がデフォルト） |
+| `description` | **推奨** | 用途と使用場面。**Claudeが自動呼び出しを判定する際に使用** |
+| `disable-model-invocation` | いいえ | `true`でマニュアル呼び出しのみ |
+| `allowed-tools` | いいえ | 使用可能なツール（例：`Bash(sage:*)`) |
+| `context` | いいえ | `fork`でサブエージェント実行 |
+
+### 4.3 スキル呼び出し方法
+
+```bash
+# マニュアル呼び出し
+/sourcesage
+/sourcesage-tree
+
+# 引数付き
+/sourcesage --max-lines 3000
+```
+
+**自動呼び出し**: `description` に記載されたキーワード（"repository structure", "codebase exploration" など）に基づいて、Claudeが自動的にスキルを判定・実行。
+
+### 4.4 実装タスク
+
+- [ ] `.claude/skills/sourcesage/SKILL.md` 作成
+- [ ] `.claude/skills/sourcesage/tree-explorer/SKILL.md` 作成
+- [ ] `references/workflow.md` 詳細ドキュメント作成
 - [ ] Claude Code との統合テスト
+- [ ] 自動呼び出しのトリガーワード最適化
 
 ---
 
@@ -354,11 +533,10 @@ sage --agent-mode deps \
 
 ### 出力形式
 
-| 形式 | 用途 | ファイル |
-|------|------|----------|
-| `markdown` | 人間＆LLM両方が読みやすい | `*.md` |
-| `json` | プログラマブルな処理 | `*.json` |
-| `compact` | 最小コンテキスト | テキスト |
+| 形式 | 用途 | 特徴 |
+|------|------|------|
+| `tree` | 人間＆LLM向け（デフォルト） | 従来のASCIIツリー、視覚的 |
+| `json` | プログラマブルな処理 | 構造化データ、フィルタリング可能 |
 
 ### デフォルト制限値
 
