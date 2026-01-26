@@ -15,6 +15,11 @@ from rich.theme import Theme
 from .core import SourceSage
 from .logging_utils import setup_rich_logging
 from .modules.DiffReport import GitDiffGenerator, MarkdownReportGenerator
+from .modules.AgentMode import AgentOutput
+from .modules.AgentMode.agent_output import AgentModeType, OutputFormat
+from .modules.DocuSum.file_pattern_matcher import FilePatternMatcher
+from .modules.DocuSum.language_detector import LanguageDetector
+from .modules.DocuSum.file_processor import FileProcessor
 
 # Configure loguru to use Rich styling globally
 console = setup_rich_logging()
@@ -133,6 +138,115 @@ def add_arguments(parser):
         type=str,
         default="Report_{latest_tag}.md",
         help="Markdown report filename. {latest_tag} will be replaced with the latest tag.",
+    )
+
+    # ==============================================
+    # Agent Mode Options (for AI agents like Claude Code)
+    #
+    parser.add_argument(
+        "--agent-mode",
+        type=str,
+        choices=["tree", "files", "full"],
+        default=None,
+        help="Agent mode: tree (structure only), files (selective), full (with limits)",
+    )
+    parser.add_argument(
+        "--format",
+        type=str,
+        choices=["tree", "json"],
+        default="tree",
+        help="Output format for agent mode (default: tree)",
+    )
+    parser.add_argument(
+        "--max-depth",
+        type=int,
+        default=None,
+        help="Maximum tree depth for agent mode",
+    )
+    parser.add_argument(
+        "--show-lines",
+        action="store_true",
+        default=True,
+        help="Show line counts in tree output (default: True)",
+    )
+    parser.add_argument(
+        "--show-size",
+        action="store_true",
+        default=True,
+        help="Show file sizes in tree output (default: True)",
+    )
+    parser.add_argument(
+        "--sort-by",
+        type=str,
+        choices=["name", "lines", "size", "modified"],
+        default="name",
+        help="Sort criterion for tree output (default: name)",
+    )
+    parser.add_argument(
+        "--large-threshold",
+        type=int,
+        default=200,
+        help="Lines threshold for marking files as 'large' (default: 200)",
+    )
+    parser.add_argument(
+        "--files",
+        type=str,
+        default=None,
+        help="Comma-separated list of files to include (for --agent-mode files)",
+    )
+    parser.add_argument(
+        "--pattern",
+        type=str,
+        default=None,
+        help="Glob pattern to include files (for --agent-mode files)",
+    )
+    parser.add_argument(
+        "--exclude-pattern",
+        type=str,
+        default=None,
+        help="Glob pattern to exclude files (for --agent-mode files)",
+    )
+    parser.add_argument(
+        "--min-lines",
+        type=int,
+        default=None,
+        help="Minimum line count filter (for --agent-mode files)",
+    )
+    parser.add_argument(
+        "--max-lines",
+        type=int,
+        default=None,
+        help="Maximum line count filter (for --agent-mode files)",
+    )
+    parser.add_argument(
+        "--max-total-lines",
+        type=int,
+        default=10000,
+        help="Maximum total lines in output (for --agent-mode full, default: 10000)",
+    )
+    parser.add_argument(
+        "--max-file-lines",
+        type=int,
+        default=1000,
+        help="Maximum lines per file (for --agent-mode full, default: 1000)",
+    )
+    parser.add_argument(
+        "--truncate-strategy",
+        type=str,
+        choices=["head", "tail", "middle"],
+        default="middle",
+        help="How to truncate long files (default: middle)",
+    )
+    parser.add_argument(
+        "--priority-files",
+        type=str,
+        default=None,
+        help="Comma-separated glob patterns for priority files",
+    )
+    parser.add_argument(
+        "--exclude-large",
+        action="store_true",
+        help="Automatically exclude large files",
     )
 
     # ==============================================
@@ -279,6 +393,52 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
     )
     console.print(rel_tbl)
 
+    # Agent Mode options
+    agent_msg = {
+        "en": {
+            "agent_options": "Agent Mode Options (for AI agents)",
+            "agent_mode_desc": "Agent mode: tree, files, or full",
+            "format_desc": "Output format (tree or json)",
+            "max_depth_desc": "Maximum tree depth",
+            "large_threshold_desc": "Lines threshold for 'large' files",
+            "files_desc": "Comma-separated file paths",
+            "pattern_desc": "Glob pattern to include",
+            "max_total_lines_desc": "Maximum total lines",
+            "max_file_lines_desc": "Maximum lines per file",
+            "truncate_strategy_desc": "How to truncate (head/tail/middle)",
+        },
+        "ja": {
+            "agent_options": "エージェントモードオプション（AIエージェント向け）",
+            "agent_mode_desc": "エージェントモード: tree, files, full",
+            "format_desc": "出力形式（tree または json）",
+            "max_depth_desc": "ツリーの最大深度",
+            "large_threshold_desc": "'large'判定の行数閾値",
+            "files_desc": "カンマ区切りのファイルパス",
+            "pattern_desc": "含めるglobパターン",
+            "max_total_lines_desc": "出力の最大総行数",
+            "max_file_lines_desc": "ファイルごとの最大行数",
+            "truncate_strategy_desc": "切り詰め方法（head/tail/middle）",
+        },
+    }
+    agent_m = agent_msg.get(language, agent_msg["en"])
+
+    agent_tbl = Table(
+        title=agent_m["agent_options"], show_header=True, header_style="bold green"
+    )
+    agent_tbl.add_column("Option")
+    agent_tbl.add_column("Default", style="dim")
+    agent_tbl.add_column("Description")
+    agent_tbl.add_row("--agent-mode", "None", agent_m["agent_mode_desc"])
+    agent_tbl.add_row("--format", "tree", agent_m["format_desc"])
+    agent_tbl.add_row("--max-depth", "None", agent_m["max_depth_desc"])
+    agent_tbl.add_row("--large-threshold", "200", agent_m["large_threshold_desc"])
+    agent_tbl.add_row("--files", "None", agent_m["files_desc"])
+    agent_tbl.add_row("--pattern", "None", agent_m["pattern_desc"])
+    agent_tbl.add_row("--max-total-lines", "10000", agent_m["max_total_lines_desc"])
+    agent_tbl.add_row("--max-file-lines", "1000", agent_m["max_file_lines_desc"])
+    agent_tbl.add_row("--truncate-strategy", "middle", agent_m["truncate_strategy_desc"])
+    console.print(agent_tbl)
+
     # Examples
     examples = Text()
     examples.append(f"{msg['examples_title']}:\n", style="bold")
@@ -286,6 +446,13 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
     examples.append("  sage --use-ignore\n")
     examples.append("  sage --diff --report-title 'My Report'\n")
     examples.append("  sage -o ./output --repo ./myproject\n")
+    examples.append("\n")
+    examples.append("Agent Mode Examples:\n", style="bold green")
+    examples.append("  sage --agent-mode tree --show-lines\n")
+    examples.append("  sage --agent-mode tree --format json\n")
+    examples.append("  sage --agent-mode files --files 'cli.py,core.py'\n")
+    examples.append("  sage --agent-mode files --pattern '**/*.py'\n")
+    examples.append("  sage --agent-mode full --max-total-lines 5000\n")
     console.print(Panel(examples, title=msg["examples_title"], border_style="yellow", expand=True))
 
 
@@ -309,6 +476,91 @@ def log_arguments(args):
     for key, value in args_dict.items():
         key = key.replace("-", "_")
         logger.debug(">> {: >30} : {: <20}".format(str(key), str(value)))
+
+
+def run_agent_mode(args, console):
+    """Run agent mode processing."""
+    messages = {
+        "en": {
+            "agent_mode": "Agent Mode",
+            "generating_tree": "Generating tree structure...",
+            "generating_files": "Generating file contents...",
+            "generating_full": "Generating full output with limits...",
+            "complete": "Agent mode output complete",
+        },
+        "ja": {
+            "agent_mode": "エージェントモード",
+            "generating_tree": "ツリー構造を生成中...",
+            "generating_files": "ファイル内容を生成中...",
+            "generating_full": "制限付き完全出力を生成中...",
+            "complete": "エージェントモード出力完了",
+        },
+    }
+    msg = messages.get(args.language, messages["en"])
+
+    console.print(Panel(Align.center(msg["agent_mode"]), style="info", expand=True))
+
+    # Initialize components
+    ignore_files = [args.ignore_file] if args.ignore_file and os.path.exists(args.ignore_file) else []
+    pattern_matcher = FilePatternMatcher(ignore_files)
+    language_detector = LanguageDetector(args.language_map)
+    file_processor = FileProcessor(language_detector)
+
+    agent_output = AgentOutput(pattern_matcher, language_detector, file_processor)
+
+    # Determine output format
+    output_format = OutputFormat.JSON if args.format == "json" else OutputFormat.TREE
+
+    output = ""
+
+    if args.agent_mode == "tree":
+        with console.status(f"[info]{msg['generating_tree']}[/]", spinner="dots"):
+            output = agent_output.generate_tree(
+                dir_path=args.repo,
+                output_format=output_format,
+                max_depth=args.max_depth,
+                show_lines=args.show_lines,
+                show_size=args.show_size,
+                sort_by=args.sort_by,
+                large_threshold=args.large_threshold,
+            )
+
+    elif args.agent_mode == "files":
+        with console.status(f"[info]{msg['generating_files']}[/]", spinner="dots"):
+            file_paths = args.files.split(",") if args.files else None
+            include_patterns = [args.pattern] if args.pattern else None
+            exclude_patterns = [args.exclude_pattern] if args.exclude_pattern else None
+
+            output = agent_output.generate_files(
+                dir_path=args.repo,
+                file_paths=file_paths,
+                include_patterns=include_patterns,
+                exclude_patterns=exclude_patterns,
+                min_lines=args.min_lines,
+                max_lines=args.max_lines,
+                max_file_lines=args.max_file_lines,
+                output_format=output_format,
+            )
+
+    elif args.agent_mode == "full":
+        with console.status(f"[info]{msg['generating_full']}[/]", spinner="dots"):
+            priority_files = args.priority_files.split(",") if args.priority_files else None
+
+            output = agent_output.generate_full(
+                dir_path=args.repo,
+                max_total_lines=args.max_total_lines,
+                max_file_lines=args.max_file_lines,
+                truncate_strategy=args.truncate_strategy,
+                priority_files=priority_files,
+                exclude_large=args.exclude_large,
+                large_threshold=args.large_threshold,
+                output_format=output_format,
+            )
+
+    # Print output directly to stdout for agent consumption
+    print(output)
+
+    console.print(f"[success]{msg['complete']}[/]")
 
 
 def run(args=None):
@@ -347,6 +599,13 @@ def run(args=None):
     }
 
     msg = messages.get(args.language, messages["en"])
+
+    # ==============================================
+    # Agent Mode - Handle separately and exit early
+    #
+    if args.agent_mode:
+        run_agent_mode(args, console)
+        return
 
     # -----------------------------------------------
     # .SourceSageignore ファイルの生成
