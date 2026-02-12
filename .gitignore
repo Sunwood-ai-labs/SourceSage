@@ -171,3 +171,7 @@ issue_response.txt
 llm_output.md
 output.html
 sourcesage/modules/DocuSum/repository_summary.md
+
+# Local-only files (do not track in git)
+RELEASE_NOTES.md
+uv.lock
