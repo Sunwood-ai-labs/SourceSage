@@ -12,6 +12,7 @@ from rich.table import Table
 from rich.text import Text
 from rich.theme import Theme
 
+from . import __version__
 from .core import SourceSage
 from .logging_utils import setup_rich_logging
 from .modules.DiffReport import GitDiffGenerator, MarkdownReportGenerator
@@ -446,26 +447,6 @@ def main():
 
     from dotenv import load_dotenv
 
-    # Load version from pyproject.toml
-    package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    pyproject_path = os.path.join(package_root, "pyproject.toml")
-    version = "unknown"
-    try:
-        import tomli
-        with open(pyproject_path, "rb") as f:
-            pyproject = tomli.load(f)
-            version = pyproject.get("project", {}).get("version", "unknown")
-    except Exception:
-        # Fallback to reading the file manually
-        try:
-            with open(pyproject_path, "r", encoding="utf-8") as f:
-                for line in f:
-                    if line.startswith("version ="):
-                        version = line.split("=")[1].strip().strip('"').strip("'")
-                        break
-        except Exception:
-            version = "7.1.1"  # Fallback version
-
     dotenv_path = os.path.join(os.getcwd(), ".env")
     logger.debug(f"dotenv_path : {dotenv_path}")
     load_dotenv(dotenv_path=dotenv_path, verbose=True, override=True)
@@ -475,7 +456,7 @@ def main():
 
     # Show version and exit if -v or --version is specified
     if args.version:
-        console.print(f"SourceSage v{version}", style="bold green")
+        console.print(f"SourceSage v{__version__}", style="bold green")
         sys.exit(0)
 
     run(args)
