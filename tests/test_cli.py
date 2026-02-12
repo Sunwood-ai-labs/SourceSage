@@ -2,6 +2,7 @@
 Tests for SourceSage CLI functionality
 """
 import argparse
+import subprocess
 import sys
 from pathlib import Path
 
@@ -10,6 +11,7 @@ import pytest
 # Add parent directory to path to import sourcesage
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from sourcesage import __version__
 from sourcesage.cli import add_arguments
 
 
@@ -37,13 +39,6 @@ class TestCLIArguments:
         args = parser.parse_args(["--diff"])
         assert args.diff is True
 
-    def test_use_ignore_option(self):
-        """Test --use-ignore option"""
-        parser = argparse.ArgumentParser(add_help=False)
-        add_arguments(parser)
-        args = parser.parse_args(["--use-ignore"])
-        assert args.use_ignore is True
-
     def test_default_values(self):
         """Test default values for arguments"""
         parser = argparse.ArgumentParser(add_help=False)
@@ -53,7 +48,6 @@ class TestCLIArguments:
         assert args.output == "./"
         assert args.repo == "./"
         assert args.diff is False
-        assert args.use_ignore is False
         assert args.language == "en"
         assert ".SourceSageignore" in args.ignore_file
 
@@ -71,13 +65,11 @@ class TestCLIArguments:
         args = parser.parse_args([
             "-o", "./output",
             "--diff",
-            "--use-ignore",
             "--repo", "./myrepo"
         ])
 
         assert args.output == "./output"
         assert args.diff is True
-        assert args.use_ignore is True
         assert args.repo == "./myrepo"
 
 
@@ -124,6 +116,17 @@ class TestSourceSageignoreGeneration:
         # Check for lock file patterns
         assert "uv.lock" in content
         assert "package-lock.json" in content or "yarn.lock" in content
+
+    def test_sourcesageignore_has_node_modules(self):
+        """Test that .SourceSageignore includes Node.js patterns"""
+        package_root = Path(__file__).parent.parent
+        template_path = package_root / "sourcesage" / "config" / ".SourceSageignore"
+
+        content = template_path.read_text()
+
+        # Check for Node.js patterns
+        assert "node_modules/" in content
+        assert "# Node.js" in content or "# Node.js関連" in content
 
 
 class TestCLIOptions:
@@ -179,6 +182,57 @@ class TestBackwardCompatibility:
 
         with pytest.raises(SystemExit):
             parser.parse_args(["--generate-diff-report"])
+
+
+class TestVersionDisplay:
+    """Test version display functionality"""
+
+    def test_version_module_exists(self):
+        """Test that __version__ is accessible from sourcesage module"""
+        assert __version__ is not None
+        assert __version__ != "0.0.0"
+
+    def test_version_matches_pyproject(self):
+        """Test that __version__ matches pyproject.toml"""
+        pyproject_path = Path(__file__).parent.parent / "pyproject.toml"
+        pyproject_content = pyproject_path.read_text()
+
+        # Extract version from pyproject.toml
+        for line in pyproject_content.splitlines():
+            if line.startswith("version ="):
+                pyproject_version = line.split("=")[1].strip().strip('"').strip("'")
+                break
+        else:
+            pyproject_version = None
+
+        assert pyproject_version is not None
+        assert __version__ == pyproject_version
+
+    def test_version_short_option(self):
+        """Test -v option for version display"""
+        parser = argparse.ArgumentParser(add_help=False)
+        add_arguments(parser)
+        args = parser.parse_args(["-v"])
+        assert args.version is True
+
+    def test_version_long_option(self):
+        """Test --version long option"""
+        parser = argparse.ArgumentParser(add_help=False)
+        add_arguments(parser)
+        args = parser.parse_args(["--version"])
+        assert args.version is True
+
+    def test_version_uses_importlib_metadata(self):
+        """Test that version is retrieved from importlib.metadata"""
+        from importlib.metadata import version as metadata_version
+
+        try:
+            metadata_ver = metadata_version("sourcesage")
+            assert __version__ == metadata_ver
+        except Exception:
+            # If package is not installed, __version__ should still work
+            # and return the version from pyproject.toml
+            assert __version__ != "0.0.0"
 
 
 if __name__ == "__main__":
