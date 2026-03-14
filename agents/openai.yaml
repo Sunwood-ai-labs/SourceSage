@@ -1,0 +1,4 @@
+interface:
+  display_name: "SourceSage CLI"
+  short_description: "Generate SourceSage summaries and diff reports"
+  default_prompt: "Use $sourcesage-cli to analyze this repository with SourceSage and summarize the generated artifacts."
