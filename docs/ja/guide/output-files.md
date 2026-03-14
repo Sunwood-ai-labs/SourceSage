@@ -2,16 +2,16 @@
 
 ## Repository Summary
 
-デフォルト出力先:
+標準の出力先:
 
 ```text
 .SourceSageAssets/Repository_summary.md
 ```
 
-このサマリには次が含まれます。
+このサマリには次の内容が含まれます。
 
 - リポジトリツリー
-- Git 情報
+- Git リポジトリ情報
 - プロジェクト統計
 - ファイル一覧テーブル
 - 言語統計
@@ -19,16 +19,16 @@
 
 ## Release Report
 
-非推奨の diff 出力先:
+非推奨の diff 出力:
 
 ```text
 .SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md
 ```
 
-必要な場合のみ、従来のタグ差分レポートとして使ってください。
+旧来のタグ間レポートがまだ必要な場合にだけ利用してください。
 
-## 出力先ルール
+## 出力先のルール
 
-- `uv run sage --repo .` は現在のリポジトリへ出力
-- `uv run sage --repo <path>` は対象リポジトリへ出力
-- `uv run sage --repo <path> -o <output>` は明示した出力ディレクトリへ出力
+- `uv run sage --repo .` は現在のリポジトリに出力します
+- `uv run sage --repo <path>` は指定した対象リポジトリに出力します
+- `uv run sage --repo <path> -o <output>` は明示した出力先に出力します

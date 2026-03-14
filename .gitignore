@@ -143,7 +143,7 @@ venv.bak/
 node_modules/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
-.tmp-sourcesage-*/
+.tmp-*/
 .tmp-docs-check/
 .tmp-polish-check/
 

@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+    paths:
+      - docs/**
+      - README.md
+      - README.ja.md
+      - .github/workflows/deploy-docs.yml
   workflow_dispatch:
 
 permissions:
@@ -16,12 +21,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,7 +35,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: npm
           cache-dependency-path: docs/package-lock.json
 
@@ -51,6 +52,13 @@ jobs:
         with:
           path: docs/.vitepress/dist
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

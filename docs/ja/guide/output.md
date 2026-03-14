@@ -2,28 +2,28 @@
 
 ## 標準の出力構成
 
-通常実行では次の構成で出力されます。
+通常実行では次のファイルを生成します。
 
 ```text
 .SourceSageAssets/
-└── Repository_summary.md
+  Repository_summary.md
 ```
 
-`--diff` を有効にし、十分なタグがある場合は次も生成できます。
+`--diff` を有効にし、必要なタグが揃っている場合は次も生成されます。
 
 ```text
 .SourceSageAssets/
-└── RELEASE_REPORT/
-    └── Report_<latest_tag>.md
+  RELEASE_REPORT/
+    Report_<latest_tag>.md
 ```
 
-## Repository summary に含まれる内容
+## Repository Summary に含まれる内容
 
 - プロジェクト名とツリー構造
-- `.git` がある場合の Git 情報
+- `.git` ディレクトリがある場合の Git 情報
 - ファイル統計と言語統計
-- 除外対象ではないファイルの抜粋
+- 除外されていないファイルの抜粋
 
-## 出力サンプル
+## 生成例
 
 サンプルは [`example/Repository_summary.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/example/Repository_summary.md) にあります。

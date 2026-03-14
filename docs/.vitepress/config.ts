@@ -5,7 +5,7 @@ const repo = "https://github.com/Sunwood-ai-labs/SourceSage";
 export default defineConfig({
   title: "SourceSage",
   description:
-    "Repository analysis CLI that turns source trees into AI-friendly markdown documentation.",
+    "Repository analysis CLI that turns source trees into AI-friendly Markdown documentation.",
   base: "/SourceSage/",
   cleanUrls: true,
   lastUpdated: true,
@@ -18,7 +18,7 @@ export default defineConfig({
       {
         property: "og:description",
         content:
-          "Repository analysis CLI that turns source trees into AI-friendly markdown documentation.",
+          "Repository analysis CLI that turns source trees into AI-friendly Markdown documentation.",
       },
     ],
     [
@@ -60,7 +60,7 @@ export default defineConfig({
         search: { provider: "local" },
         footer: {
           message: "Released under the MIT License.",
-          copyright: "Copyright © Sunwood AI Labs",
+          copyright: "Copyright (c) Sunwood AI Labs",
         },
       },
     },
@@ -95,7 +95,7 @@ export default defineConfig({
         search: { provider: "local" },
         footer: {
           message: "MIT License で公開しています。",
-          copyright: "Copyright © Sunwood AI Labs",
+          copyright: "Copyright (c) Sunwood AI Labs",
         },
       },
     },

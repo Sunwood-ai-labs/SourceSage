@@ -6,32 +6,32 @@
 uv run sage --help
 ```
 
-このリポジトリでは `sage` と `sourcesage` の両方のエントリポイントを使えます。
+このリポジトリでは `sage` と `sourcesage` の両方のエントリポイントを利用できます。
 
-## 主要オプション
+## 主なオプション
 
 | オプション | 役割 |
 | --- | --- |
 | `--repo <path>` | 解析対象のリポジトリを指定します。 |
-| `-o, --output <dir>` | `<dir>/.SourceSageAssets/` 配下に生成物を書き出します。 |
-| `-l, --lang {en,ja}` | 見出し言語を英語または日本語に切り替えます。 |
-| `--ignore-file <path>` | SourceSage が使う ignore テンプレートの場所を明示します。 |
-| `--language-map <path>` | 言語判定用の JSON を差し替えます。 |
-| `-v, --version` | パッケージバージョンを表示します。 |
+| `-o, --output <dir>` | 生成ファイルを `<dir>/.SourceSageAssets/` 配下へ出力します。 |
+| `-l, --lang {en,ja}` | サマリの見出し言語を英語または日本語に切り替えます。 |
+| `--ignore-file <path>` | SourceSage が使う ignore ファイルを上書きします。 |
+| `--language-map <path>` | 言語マップ JSON を差し替えます。 |
+| `-v, --version` | パッケージのバージョンを表示します。 |
 
-## 非推奨の差分レポート
+## 非推奨の diff レポート
 
 ```bash
 uv run sage --repo . --diff
 ```
 
-`--diff` は引き続き使えますが非推奨です。リポジトリに 2 つ以上のタグがある場合だけリリースレポートを生成します。
+`--diff` は互換性のために残っていますが、新しい運用では非推奨です。Git タグが 2 つ以上ある場合にだけリリース差分レポートを生成します。
 
 ## Ignore の扱い
 
-SourceSage は次の 2 つを統合して扱います。
+SourceSage は次の 2 つを統合して使います。
 
 - `.gitignore`
 - `.SourceSageignore`
 
-`.SourceSageignore` が無い場合は、解析開始前にデフォルトテンプレートを自動生成します。
+`.SourceSageignore` が無い場合は、解析前にデフォルトテンプレートを自動生成します。

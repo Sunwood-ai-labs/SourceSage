@@ -6,15 +6,15 @@ After a standard run, SourceSage writes:
 
 ```text
 .SourceSageAssets/
-└── Repository_summary.md
+  Repository_summary.md
 ```
 
 When `--diff` is enabled and enough tags exist, SourceSage can also write:
 
 ```text
 .SourceSageAssets/
-└── RELEASE_REPORT/
-    └── Report_<latest_tag>.md
+  RELEASE_REPORT/
+    Report_<latest_tag>.md
 ```
 
 ## What the repository summary includes
