@@ -1,10 +1,13 @@
 import subprocess
-from collections.abc import Sequence
+from typing import Sequence
 
 from loguru import logger
 
 
-logger.level("SUBPROCESS", no=15, color="<cyan>", icon="🔍")
+try:
+    logger.level("SUBPROCESS")
+except ValueError:
+    logger.level("SUBPROCESS", no=15, color="<cyan>", icon=">")
 
 
 def run_command(command: Sequence[str], cwd=None, check=True, preview=True):
