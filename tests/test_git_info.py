@@ -22,7 +22,10 @@ def force_rmtree(path):
         os.chmod(failed_path, stat.S_IWRITE)
         func(failed_path)
 
-    shutil.rmtree(path, onexc=onexc)
+    try:
+        shutil.rmtree(path, onexc=onexc)
+    except TypeError:
+        shutil.rmtree(path, onerror=onexc)
 
 
 class TestRunCommand:
