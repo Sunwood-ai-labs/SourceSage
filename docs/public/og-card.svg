@@ -11,7 +11,7 @@
   <path d="M332 330L360 358" stroke="#F8FAFC" stroke-width="16" stroke-linecap="round"/>
   <text x="420" y="218" fill="#F8FAFC" font-family="Space Grotesk, Noto Sans JP, sans-serif" font-size="86" font-weight="700">SourceSage</text>
   <text x="420" y="286" fill="#B7C8D8" font-family="Space Grotesk, Noto Sans JP, sans-serif" font-size="32" font-weight="500">Repository analysis CLI for AI-ready markdown</text>
-  <text x="420" y="372" fill="#0F766E" font-family="Space Grotesk, Noto Sans JP, sans-serif" font-size="28" font-weight="700">Repository Summary</text>
+  <text x="420" y="372" fill="#0F766E" font-family="Space Grotesk, Noto Sans JP, sans-serif" font-size="28" font-weight="700">Repository Documentation</text>
   <text x="420" y="414" fill="#B7C8D8" font-family="Space Grotesk, Noto Sans JP, sans-serif" font-size="28" font-weight="700">Git context</text>
   <text x="420" y="456" fill="#F59E0B" font-family="Space Grotesk, Noto Sans JP, sans-serif" font-size="28" font-weight="700">Bilingual docs</text>
   <defs>

@@ -1,6 +1,6 @@
 # Troubleshooting
 
-## The summary includes `.git` files
+## The documentation artifact includes `.git` files
 
 SourceSage should exclude `.git/` by default. If you still see Git internals, check whether you passed a custom ignore file that overrides the defaults.
 

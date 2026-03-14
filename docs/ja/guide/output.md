@@ -17,7 +17,7 @@
     Report_<latest_tag>.md
 ```
 
-## Repository Summary に含まれる内容
+## 主要ドキュメント成果物に含まれる内容
 
 - プロジェクト名とツリー構造
 - `.git` ディレクトリがある場合の Git 情報
@@ -26,4 +26,4 @@
 
 ## 生成例
 
-サンプルは [`example/Repository_summary.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/example/Repository_summary.md) にあります。
+サンプルのドキュメント成果物は [`example/Repository_summary.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/example/Repository_summary.md) にあります。

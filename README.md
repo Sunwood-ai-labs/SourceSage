@@ -39,7 +39,7 @@
 
 ## Why SourceSage
 
-- Generate a repository brief that an assistant can read immediately.
+- Generate repository documentation that an assistant can read immediately.
 - Combine project structure, Git context, file statistics, and file excerpts in one Markdown artifact.
 - Work against the current checkout or any other local repository through `--repo`.
 
@@ -90,7 +90,7 @@ uv run sage --repo . --ignore-file .SourceSageignore
 
 ## Output
 
-Default output:
+Primary artifact:
 
 ```text
 .SourceSageAssets/

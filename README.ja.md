@@ -39,7 +39,7 @@
 
 ## SourceSage でできること
 
-- AI アシスタントがすぐ読めるリポジトリ要約を生成できます。
+- AI アシスタントがすぐ読めるリポジトリドキュメントを生成できます。
 - ツリー構造、Git 情報、ファイル統計、抜粋を 1 つの Markdown にまとめられます。
 - 現在のリポジトリだけでなく、`--repo` で別のローカルリポジトリも解析できます。
 
@@ -90,7 +90,7 @@ uv run sage --repo . --ignore-file .SourceSageignore
 
 ## 出力
 
-標準の出力先:
+主要な成果物:
 
 ```text
 .SourceSageAssets/

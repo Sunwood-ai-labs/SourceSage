@@ -14,7 +14,7 @@ uv run sage --help
 | --- | --- |
 | `--repo <path>` | 解析対象のリポジトリを指定します。 |
 | `-o, --output <dir>` | 生成ファイルを `<dir>/.SourceSageAssets/` 配下へ出力します。 |
-| `-l, --lang {en,ja}` | サマリの見出し言語を英語または日本語に切り替えます。 |
+| `-l, --lang {en,ja}` | ドキュメントの見出し言語を英語または日本語に切り替えます。 |
 | `--ignore-file <path>` | SourceSage が使う ignore ファイルを上書きします。 |
 | `--language-map <path>` | 言語マップ JSON を差し替えます。 |
 | `-v, --version` | パッケージのバージョンを表示します。 |

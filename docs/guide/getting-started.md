@@ -2,7 +2,7 @@
 
 ## Overview
 
-SourceSage scans a repository and writes an AI-friendly Markdown brief to `.SourceSageAssets/Repository_summary.md`.
+SourceSage scans a repository and writes an AI-friendly Markdown documentation artifact to `.SourceSageAssets/Repository_summary.md`.
 
 ## Try it once with `uvx`
 
@@ -21,7 +21,7 @@ uv run sage --help
 uv run sage --repo .
 ```
 
-This creates `.SourceSageignore` when missing and writes the summary under `.SourceSageAssets/`.
+This creates `.SourceSageignore` when missing and writes the primary documentation artifact under `.SourceSageAssets/`.
 
 ## Analyze another repository from this checkout
 
@@ -31,7 +31,7 @@ uv run --directory D:\Prj\SourceSage sage --repo D:\Prj\SourceSage\example -o D:
 
 Replace those paths with your own SourceSage checkout and target repository.
 
-## Generate a Japanese summary into a custom directory
+## Generate Japanese documentation into a custom directory
 
 ```bash
 uv run sage --repo . -l ja -o ./out

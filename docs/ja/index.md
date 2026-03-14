@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: "SourceSage"
-  text: "コマンドラインから使える AI 向けリポジトリ要約 CLI"
-  tagline: "リポジトリを解析し、ignore ルールを統合し、Git の文脈も含めた Markdown サマリを生成します。AI アシスタントがそのまま読める形に整えるためのツールです。"
+  text: "コマンドラインから使える AI 向けリポジトリ解析 / ドキュメント生成 CLI"
+  tagline: "リポジトリを解析し、ignore ルールを統合し、Git の文脈も含めた Markdown ドキュメントを生成します。AI アシスタントがそのまま読める形に整えるためのツールです。"
   image:
     src: /hero.svg
     alt: SourceSage hero
@@ -20,17 +20,17 @@ hero:
       link: /
 
 features:
-  - title: "最初に欲しいのはリポジトリ要約"
-    details: "`.SourceSageAssets/Repository_summary.md` に、ツリー構造、統計、Git 情報、ファイル抜粋をまとめて出力します。"
+  - title: "主要成果物はリポジトリドキュメント"
+    details: "`.SourceSageAssets/Repository_summary.md` に、ツリー構造、統計、Git 情報、ファイル抜粋をまとめた構造化ドキュメントを出力します。"
   - title: "馴染みのある ignore ルール"
     details: "`.gitignore` と `.SourceSageignore` を統合して使います。`.SourceSageignore` が無い場合はデフォルトテンプレートを自動生成します。"
   - title: "英語と日本語を切り替え可能"
-    details: "`-l en` と `-l ja` で見出し言語を切り替えられ、ドキュメントも英日で揃えています。"
+    details: "`-l en` と `-l ja` でドキュメント見出しの言語を切り替えられ、ドキュメントも英日で揃えています。"
 ---
 
 ## SourceSage が役立つ場面
 
-SourceSage は、AI アシスタントに作業を渡す前の下準備を軽くします。見通しの悪いディレクトリ一覧ではなく、構造化された Markdown のリポジトリ要約を渡せます。
+SourceSage は、AI アシスタントに作業を渡す前の下準備を軽くします。見通しの悪いディレクトリ一覧ではなく、構造化された Markdown のリポジトリドキュメントを渡せます。
 
 ## 次に見るページ
 

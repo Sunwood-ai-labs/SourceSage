@@ -25,7 +25,7 @@ class SourceSage:
         # Progress is primarily handled by CLI; keep this lean.
         logger.debug("Running SourceSage core...")
 
-        # Generate SourceSage markdown (Repository_summary.md)
+        # Generate the primary SourceSage documentation artifact.
         sourcesage_module = SourceSageModule(
             folders=[self.repo_path],
             ignore_file=self.ignore_file,

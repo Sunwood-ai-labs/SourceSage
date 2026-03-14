@@ -4,14 +4,14 @@ import os
 class Constants:
     """Minimal constants needed by current features.
 
-    Focused on DocuMind (Repository_summary.md) output paths only.
+    Focused on the primary documentation artifact output paths.
     """
 
     def __init__(self, output_dir):
         self.BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         self.CONFIG_DIR = os.path.join(self.BASE_DIR, "config")
 
-        # Output settings for Repository summary
+        # Output settings for the primary documentation artifact
         self.SOURCE_SAGE_MD = "Repository_summary.md"
 
         self.set_output_dir(output_dir)

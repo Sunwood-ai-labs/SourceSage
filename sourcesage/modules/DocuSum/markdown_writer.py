@@ -5,7 +5,7 @@ from loguru import logger
 
 
 class MarkdownWriter:
-    """Generate Repository_summary markdown."""
+    """Generate the primary documentation artifact markdown."""
 
     MESSAGES = {
         "en": {

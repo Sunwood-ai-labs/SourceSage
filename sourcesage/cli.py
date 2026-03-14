@@ -153,7 +153,7 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
     messages = {
         "en": {
             "usage_title": "Usage",
-            "usage_text": "Generates Repository Summary by default.",
+            "usage_text": "Generates AI-friendly repository documentation by default.",
             "diff_text": " flag to enable (deprecated)",
             "core_options": "Core Options",
             "output_desc": "Output directory for generated files",
@@ -175,7 +175,7 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
         },
         "ja": {
             "usage_title": "使用方法",
-            "usage_text": "デフォルトでRepository Summaryを生成します。",
+            "usage_text": "デフォルトで AI 向けのリポジトリドキュメントを生成します。",
             "diff_text": " フラグで有効化（非推奨）",
             "core_options": "基本オプション",
             "output_desc": "生成ファイルの出力ディレクトリ",
@@ -313,9 +313,9 @@ def run(args=None):
         "en": {
             "ignore_generated": "Generated .SourceSageignore file:",
             "ignore_not_found": "Default .SourceSageignore not found",
-            "repository_summary": "Repository Summary",
+            "repository_summary": "Repository Documentation",
             "generating": "Generating...",
-            "generation_complete": "Repository Summary generation completed",
+            "generation_complete": "Repository documentation generation completed",
             "release_report": "Release Report",
             "deprecated_warning": "Deprecated: diff report generation will be removed in a future release as LLM command execution has improved.",
             "generating_diff": "Generating git diff report...",
@@ -328,9 +328,9 @@ def run(args=None):
         "ja": {
             "ignore_generated": ".SourceSageignoreファイルを生成しました:",
             "ignore_not_found": "デフォルトの.SourceSageignoreが見つかりません",
-            "repository_summary": "リポジトリサマリー",
+            "repository_summary": "リポジトリドキュメント",
             "generating": "生成中...",
-            "generation_complete": "リポジトリサマリーの生成が完了しました",
+            "generation_complete": "リポジトリドキュメントの生成が完了しました",
             "release_report": "リリースレポート",
             "deprecated_warning": "非推奨: 差分レポート生成機能は、LLM のコマンド実行能力の向上に伴い将来削除予定です。",
             "generating_diff": "git diff レポートを生成中...",

@@ -14,7 +14,7 @@ SourceSage exposes both `sage` and `sourcesage` entry points from this repositor
 | --- | --- |
 | `--repo <path>` | Analyze a target repository. |
 | `-o, --output <dir>` | Write generated files under `<dir>/.SourceSageAssets/`. |
-| `-l, --lang {en,ja}` | Switch summary headings between English and Japanese. |
+| `-l, --lang {en,ja}` | Switch documentation headings between English and Japanese. |
 | `--ignore-file <path>` | Override the ignore template path used by SourceSage. |
 | `--language-map <path>` | Use a custom language map JSON file. |
 | `-v, --version` | Print the package version. |

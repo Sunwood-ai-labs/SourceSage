@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: "SourceSage"
-  text: "AI-friendly repository documentation from the command line"
-  tagline: "Analyze a repository, merge ignore rules, collect Git context, and emit a structured Markdown summary that assistants can consume immediately."
+  text: "AI-friendly repository analysis and documentation from the command line"
+  tagline: "Analyze a repository, merge ignore rules, collect Git context, and emit a structured Markdown documentation artifact that assistants can consume immediately."
   image:
     src: /hero.svg
     alt: SourceSage hero
@@ -20,17 +20,17 @@ hero:
       link: /ja/
 
 features:
-  - title: "Repo summary first"
-    details: "Generate `.SourceSageAssets/Repository_summary.md` with project structure, stats, Git context, and per-file excerpts."
+  - title: "Repository documentation first"
+    details: "Generate `.SourceSageAssets/Repository_summary.md` as a structured documentation artifact with project structure, stats, Git context, and per-file excerpts."
   - title: "Ignore rules that feel familiar"
     details: "Merge `.gitignore` and `.SourceSageignore`, and create a default `.SourceSageignore` automatically when a repo does not have one yet."
   - title: "English and Japanese output"
-    details: "Switch summary headings with `-l en` or `-l ja` and keep the docs mirrored across both languages."
+    details: "Switch documentation headings with `-l en` or `-l ja` and keep the docs mirrored across both languages."
 ---
 
 ## Why SourceSage?
 
-SourceSage is built for the moment before an assistant can help effectively. It gives an LLM a structured, repo-shaped brief instead of an opaque directory tree.
+SourceSage is built for the moment before an assistant can help effectively. It gives an LLM a structured, repo-shaped documentation artifact instead of an opaque directory tree.
 
 ## What you can do next
 

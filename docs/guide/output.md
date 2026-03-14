@@ -17,7 +17,7 @@ When `--diff` is enabled and enough tags exist, SourceSage can also write:
     Report_<latest_tag>.md
 ```
 
-## What the repository summary includes
+## What the primary documentation artifact includes
 
 - Project title and tree structure
 - Git repository information when a `.git` directory is available
@@ -26,4 +26,4 @@ When `--diff` is enabled and enough tags exist, SourceSage can also write:
 
 ## Example output
 
-The repository ships an example summary at [`example/Repository_summary.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/example/Repository_summary.md).
+The repository ships an example documentation artifact at [`example/Repository_summary.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/example/Repository_summary.md).

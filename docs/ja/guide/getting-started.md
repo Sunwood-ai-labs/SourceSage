@@ -2,7 +2,7 @@
 
 ## 概要
 
-SourceSage はリポジトリを走査し、AI が読みやすい Markdown サマリを `.SourceSageAssets/Repository_summary.md` に生成します。
+SourceSage はリポジトリを走査し、AI が読みやすい Markdown ドキュメントを `.SourceSageAssets/Repository_summary.md` に生成します。
 
 ## `uvx` で一度だけ試す
 
@@ -21,7 +21,7 @@ uv run sage --help
 uv run sage --repo .
 ```
 
-このコマンドは `.SourceSageignore` が無い場合に自動生成し、出力を `.SourceSageAssets/` 配下に書き込みます。
+このコマンドは `.SourceSageignore` が無い場合に自動生成し、主要なドキュメント成果物を `.SourceSageAssets/` 配下に書き込みます。
 
 ## このチェックアウトから別のリポジトリを解析する
 
@@ -31,7 +31,7 @@ uv run --directory D:\Prj\SourceSage sage --repo D:\Prj\SourceSage\example -o D:
 
 通常は自分の SourceSage チェックアウト先と対象リポジトリのパスに置き換えてください。
 
-## 日本語の要約を別ディレクトリへ出力する
+## 日本語ドキュメントを別ディレクトリへ出力する
 
 ```bash
 uv run sage --repo . -l ja -o ./out
