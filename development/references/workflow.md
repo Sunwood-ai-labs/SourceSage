@@ -1,10 +1,10 @@
 # Workflow Notes
 
-This placeholder keeps the historical development plan link valid for the VitePress build.
+This placeholder keeps the internal development area self-explanatory after the public docs cleanup.
 
-The current public guidance for SourceSage lives in:
+Public SourceSage usage is documented in:
 
-- `/guide/getting-started`
-- `/guide/cli`
-- `/guide/output`
-- `/guide/troubleshooting`
+- `docs/guide/getting-started.md`
+- `docs/guide/cli.md`
+- `docs/guide/output.md`
+- `docs/guide/troubleshooting.md`

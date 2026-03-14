@@ -4,27 +4,32 @@
 
 SourceSage scans a repository and writes an AI-friendly Markdown brief to `.SourceSageAssets/Repository_summary.md`.
 
-## Verified local setup
+## Try it once with `uvx`
+
+```bash
+uvx --refresh sourcesage --help
+uvx --refresh sourcesage --repo /path/to/repository
+```
+
+## Run from source
 
 ```bash
 git clone https://github.com/Sunwood-ai-labs/SourceSage.git
 cd SourceSage
 uv sync
-```
-
-## Try the published package
-
-```bash
-uvx --refresh sourcesage --help
-```
-
-## Generate a summary for the current repository
-
-```bash
+uv run sage --help
 uv run sage --repo .
 ```
 
-This command creates `.SourceSageignore` when missing and writes the summary under `.SourceSageAssets/`.
+This creates `.SourceSageignore` when missing and writes the summary under `.SourceSageAssets/`.
+
+## Analyze another repository from this checkout
+
+```bash
+uv run --directory D:\Prj\SourceSage sage --repo D:\Prj\SourceSage\example -o D:\Prj\SourceSage\.tmp-docs-check\example
+```
+
+Replace those paths with your own SourceSage checkout and target repository.
 
 ## Generate a Japanese summary into a custom directory
 

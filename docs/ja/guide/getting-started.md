@@ -4,27 +4,32 @@
 
 SourceSage はリポジトリを走査し、AI が読みやすい Markdown サマリを `.SourceSageAssets/Repository_summary.md` に生成します。
 
-## 検証済みのローカルセットアップ
+## `uvx` で一度だけ試す
+
+```bash
+uvx --refresh sourcesage --help
+uvx --refresh sourcesage --repo /path/to/repository
+```
+
+## ソースから実行する
 
 ```bash
 git clone https://github.com/Sunwood-ai-labs/SourceSage.git
 cd SourceSage
 uv sync
-```
-
-## 配布版を試す
-
-```bash
-uvx --refresh sourcesage --help
-```
-
-## 現在のリポジトリを要約する
-
-```bash
+uv run sage --help
 uv run sage --repo .
 ```
 
 このコマンドは `.SourceSageignore` が無い場合に自動生成し、出力を `.SourceSageAssets/` 配下に書き込みます。
+
+## このチェックアウトから別のリポジトリを解析する
+
+```bash
+uv run --directory D:\Prj\SourceSage sage --repo D:\Prj\SourceSage\example -o D:\Prj\SourceSage\.tmp-docs-check\example
+```
+
+通常は自分の SourceSage チェックアウト先と対象リポジトリのパスに置き換えてください。
 
 ## 日本語の要約を別ディレクトリへ出力する
 

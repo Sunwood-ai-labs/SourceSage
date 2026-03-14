@@ -7,26 +7,29 @@ This directory contains tests for SourceSage functionality.
 ## Test Files
 
 ### 1. `test_cli.py`
-Tests for CLI argument parsing and basic functionality.
+CLI parsing, default behaviors, ignore-file generation, and version display.
 
-**Test Classes:**
-- `TestCLIArguments` - Tests for CLI argument parsing
-- `TestSourceSageignoreGeneration` - Tests for .SourceSageignore file generation
-- `TestCLIOptions` - Tests for various CLI options
-- `TestBackwardCompatibility` - Tests for backward compatibility
-
-**Total Tests:** 16
+**Total Tests:** 21
 
 ### 2. `test_language_and_ignore.py`
-Tests for language options and ignore file merging functionality.
+Language selection and ignore-rule merging across `.gitignore` and `.SourceSageignore`.
 
-**Test Classes:**
-- `TestLanguageOption` - Tests for `--language` option (en/ja)
-- `TestIgnoreFileMerging` - Tests for .gitignore and .SourceSageignore merging
-- `TestFilePatternMatcherFunctionality` - Tests for FilePatternMatcher functionality
-- `TestBackwardCompatibility` - Tests for backward compatibility with single file input
+**Total Tests:** 18
 
-**Total Tests:** 14
+### 3. `test_git_info.py`
+Git command execution, repository inspection, tag handling, and diff-report prerequisites.
+
+**Total Tests:** 12
+
+### 4. `test_e2e.py`
+End-to-end CLI execution against real temporary repositories.
+
+**Total Tests:** 5
+
+### 5. `test_docusum_markdown_structure.py`
+Repository summary structure, tables, UTF-8 output, and exclusion behavior.
+
+**Total Tests:** 12
 
 ## Verification Snapshot
 
@@ -64,39 +67,28 @@ uv run pytest tests/test_language_and_ignore.py::TestLanguageOption -v
 uv run pytest tests/ --cov=sourcesage --cov-report=html
 ```
 
-## Key Features Tested
+## Coverage Highlights
 
-### 1. Language Options
-- Default language is `en` (English)
-- `--language ja` option switches to Japanese
-- Invalid language options are rejected
+### 1. CLI behavior
+- argument parsing, output paths, report flags, and version commands
+- backward compatibility of the `sage` and `sourcesage` entrypoints
 
-### 2. Ignore File Merging
-- `.gitignore` and `.SourceSageignore` are properly merged
-- Patterns from both files are respected
-- `uv.lock` is correctly excluded via `.SourceSageignore`
+### 2. Language and ignore handling
+- default and explicit language selection for English and Japanese
+- merged ignore behavior across `.gitignore` and `.SourceSageignore`
+- wildcard, directory, and include-pattern matching
 
-### 3. File Pattern Matching
-- Default patterns work correctly
-- Wildcard patterns (`*.pyc`, `*.log`) function as expected
-- Directory patterns (`__pycache__/`, `node_modules/`) work properly
-- Include patterns (negation) are supported
+### 3. Git and diff-report prerequisites
+- command execution success and failure paths
+- repository branch, commit, and tag inspection
+- graceful handling when diff prerequisites are missing
 
-### 4. Backward Compatibility
-- Single file path still works for `FilePatternMatcher`
-- Existing CLI options continue to function
-- Old removed options properly error out
+### 4. End-to-end output
+- repository summary generation in temporary repositories
+- custom output directories and language-specific output
+- automatic `.SourceSageignore` creation and reuse
 
-## Recent Improvements
-
-1. **Language Support**: Added `--language` option to support English and Japanese output
-2. **Ignore File Merging**: Improved ignore file handling to merge `.gitignore` and `.SourceSageignore`
-3. **Better Testing**: Added comprehensive tests for new features
-
-## Future Improvements
-
-- Add integration tests for end-to-end functionality
-- Add performance tests for large repositories
-- Add tests for markdown generation quality
-- Add tests for Git information collection
-- Add tests for language detection
+### 5. Markdown quality
+- required headings and statistics tables
+- UTF-8 output and project naming
+- exclusion of ignored files and `.git`
