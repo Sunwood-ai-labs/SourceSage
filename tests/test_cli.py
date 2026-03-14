@@ -14,6 +14,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from sourcesage import __version__
 from sourcesage.cli import add_arguments
 
+UTF8 = "utf-8"
+
 
 class TestCLIArguments:
     """Test CLI argument parsing"""
@@ -87,12 +89,12 @@ class TestSourceSageignoreGeneration:
         package_root = Path(__file__).parent.parent
         template_path = package_root / "sourcesage" / "config" / ".SourceSageignore"
 
-        content = template_path.read_text()
+        content = template_path.read_text(encoding="utf-8")
 
         # Check for key sections
         assert "# バージョン管理システム" in content or "Version control" in content
         assert "# Python関連" in content or "Python" in content
-        assert "# 仮想環境" in content or "virtual environment" in content
+        assert "# 仮想環境" in content or "virtual environment" in content.lower()
         assert "# パッケージマネージャーのロックファイル" in content or "lock file" in content
 
     def test_sourcesageignore_has_venv_patterns(self):
@@ -100,7 +102,7 @@ class TestSourceSageignoreGeneration:
         package_root = Path(__file__).parent.parent
         template_path = package_root / "sourcesage" / "config" / ".SourceSageignore"
 
-        content = template_path.read_text()
+        content = template_path.read_text(encoding="utf-8")
 
         # Check for virtual environment patterns
         assert ".venv" in content or "venv" in content
@@ -111,7 +113,7 @@ class TestSourceSageignoreGeneration:
         package_root = Path(__file__).parent.parent
         template_path = package_root / "sourcesage" / "config" / ".SourceSageignore"
 
-        content = template_path.read_text()
+        content = template_path.read_text(encoding="utf-8")
 
         # Check for lock file patterns
         assert "uv.lock" in content
@@ -122,7 +124,7 @@ class TestSourceSageignoreGeneration:
         package_root = Path(__file__).parent.parent
         template_path = package_root / "sourcesage" / "config" / ".SourceSageignore"
 
-        content = template_path.read_text()
+        content = template_path.read_text(encoding="utf-8")
 
         # Check for Node.js patterns
         assert "node_modules/" in content
@@ -160,7 +162,7 @@ class TestBackwardCompatibility:
     def test_sourcesage_command_name_in_pyproject(self):
         """Test that 'sourcesage' command is still available"""
         pyproject_path = Path(__file__).parent.parent / "pyproject.toml"
-        content = pyproject_path.read_text()
+        content = pyproject_path.read_text(encoding="utf-8")
 
         assert "sourcesage = " in content
         assert "sage = " in content
@@ -195,7 +197,7 @@ class TestVersionDisplay:
     def test_version_matches_pyproject(self):
         """Test that __version__ matches pyproject.toml"""
         pyproject_path = Path(__file__).parent.parent / "pyproject.toml"
-        pyproject_content = pyproject_path.read_text()
+        pyproject_content = pyproject_path.read_text(encoding="utf-8")
 
         # Extract version from pyproject.toml
         for line in pyproject_content.splitlines():

@@ -19,7 +19,10 @@ class GitDiffGenerator:
             run_command(
                 self.git_fetch_tags, cwd=self.repo_path if self.repo_path else None
             )
+        except Exception as e:
+            logger.warning(f"タグの取得に失敗しました。ローカルタグで継続します: {e}")
 
+        try:
             logger.debug("最新と前のタグを取得しています...")
             tags_output = run_command(
                 self.git_tag_sort, cwd=self.repo_path if self.repo_path else None

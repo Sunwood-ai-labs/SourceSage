@@ -1,19 +1,18 @@
 # =============================================
 # .SourceSageignore
-# SourceSageが解析から除外するファイル/ディレクトリのパターン
+# Default ignore patterns for SourceSage analysis
 # =============================================
 
 # ---------------------------------------------
-# バージョン管理システム
+# Version control
 # ---------------------------------------------
 .git/
 .gitignore
 .SourceSageignore
 
 # ---------------------------------------------
-# Python関連
+# Python
 # ---------------------------------------------
-# キャッシュ
 __pycache__/
 **/__pycache__/**
 *.pyc
@@ -21,7 +20,7 @@ __pycache__/
 *.pyd
 .Python
 
-# テスト・カバレッジ
+# Test and coverage artifacts
 .pytest_cache/
 .coverage
 .tox/
@@ -29,21 +28,21 @@ htmlcov/
 *.cover
 tests/temp/
 
-# 仮想環境
+# Virtual environments
 .venv/
 venv/
 env/
 ENV/
 .python-version
 
-# パッケージ・ビルド
+# Package and build outputs
 *.egg-info/
 dist/
 build/
 *.egg
 
 # ---------------------------------------------
-# パッケージマネージャーのロックファイル
+# Package manager lock files
 # ---------------------------------------------
 poetry.lock
 Pipfile.lock
@@ -53,14 +52,14 @@ yarn.lock
 pnpm-lock.yaml
 
 # ---------------------------------------------
-# Node.js関連
+# Node.js
 # ---------------------------------------------
 node_modules/
 .npm/
 .yarn/
 
 # ---------------------------------------------
-# IDE・エディタ
+# IDE and editor files
 # ---------------------------------------------
 .vscode/
 .idea/
@@ -70,7 +69,7 @@ node_modules/
 .DS_Store
 
 # ---------------------------------------------
-# Terraform関連
+# Terraform
 # ---------------------------------------------
 .terraform/
 *.terraform.lock.hcl
@@ -78,14 +77,14 @@ node_modules/
 *.tfstate.backup
 
 # ---------------------------------------------
-# SourceSage固有
+# SourceSage artifacts
 # ---------------------------------------------
 .SourceSageAssets/
 .SourceSageAssetsDemo/
 repository_summary.md
 
 # ---------------------------------------------
-# 一時ファイル・出力
+# Temporary outputs
 # ---------------------------------------------
 output/
 output.md
@@ -94,32 +93,27 @@ test_output/
 memo.md
 
 # ---------------------------------------------
-# ドキュメント・例
+# Docs drafts and generated content
 # ---------------------------------------------
-docs/
 docs/drafts/
 example/
-LICENSE
 
 # ---------------------------------------------
-# 画像・メディアファイル
+# Images and media
 # ---------------------------------------------
 *.png
 *.jpg
 *.jpeg
-*.jepg
+*.webp
 *.gif
 *.svg
 *.ico
 *.mp4
 *.mp3
-assets/
 
 # ---------------------------------------------
-# パターン例外（除外から除外する）
+# Include overrides
 # ---------------------------------------------
 !docs/important.md
 !.github/workflows/
 tmp/
-
-*.svg

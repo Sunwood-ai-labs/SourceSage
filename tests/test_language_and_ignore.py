@@ -15,6 +15,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from sourcesage.cli import add_arguments
 from sourcesage.modules.DocuSum.file_pattern_matcher import FilePatternMatcher
 
+UTF8 = "utf-8"
+
 
 class TestLanguageOption:
     """Test --language option"""
@@ -83,7 +85,7 @@ class TestIgnoreFileMerging:
         """Test FilePatternMatcher with a single ignore file"""
         with tempfile.TemporaryDirectory() as tmpdir:
             ignore_file = Path(tmpdir) / ".testignore"
-            ignore_file.write_text("*.pyc\n__pycache__/\ntest_temp/\n")
+            ignore_file.write_text("*.pyc\n__pycache__/\ntest_temp/\n", encoding=UTF8)
 
             matcher = FilePatternMatcher(str(ignore_file))
 
@@ -98,11 +100,11 @@ class TestIgnoreFileMerging:
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create .gitignore
             gitignore = Path(tmpdir) / ".gitignore"
-            gitignore.write_text("*.pyc\n__pycache__/\nnode_modules/\n")
+            gitignore.write_text("*.pyc\n__pycache__/\nnode_modules/\n", encoding=UTF8)
 
             # Create .SourceSageignore
             sourcesageignore = Path(tmpdir) / ".SourceSageignore"
-            sourcesageignore.write_text("uv.lock\n*.log\ntest_temp/\n")
+            sourcesageignore.write_text("uv.lock\n*.log\ntest_temp/\n", encoding=UTF8)
 
             # Test with both files
             matcher = FilePatternMatcher([str(gitignore), str(sourcesageignore)])
@@ -121,11 +123,11 @@ class TestIgnoreFileMerging:
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create .gitignore
             gitignore = Path(tmpdir) / ".gitignore"
-            gitignore.write_text("*.pyc\n__pycache__/\n*.log\n")
+            gitignore.write_text("*.pyc\n__pycache__/\n*.log\n", encoding=UTF8)
 
             # Create .SourceSageignore
             sourcesageignore = Path(tmpdir) / ".SourceSageignore"
-            sourcesageignore.write_text("uv.lock\n*.log\ntest_output/\n")
+            sourcesageignore.write_text("uv.lock\n*.log\ntest_output/\n", encoding=UTF8)
 
             # Test merging (uv.lock should be from .SourceSageignore)
             matcher = FilePatternMatcher([str(gitignore), str(sourcesageignore)])
@@ -147,7 +149,7 @@ class TestIgnoreFileMerging:
         sourcesageignore = package_root / ".SourceSageignore"
 
         if sourcesageignore.exists():
-            content = sourcesageignore.read_text()
+            content = sourcesageignore.read_text(encoding=UTF8)
             assert "uv.lock" in content, "uv.lock should be in .SourceSageignore"
 
     def test_packaged_sourcesageignore_has_uv_lock(self):
@@ -156,7 +158,7 @@ class TestIgnoreFileMerging:
         packaged_ignore = package_root / "sourcesage" / "config" / ".SourceSageignore"
 
         if packaged_ignore.exists():
-            content = packaged_ignore.read_text()
+            content = packaged_ignore.read_text(encoding=UTF8)
             assert "uv.lock" in content, "uv.lock should be in packaged .SourceSageignore"
 
 
@@ -167,7 +169,7 @@ class TestFilePatternMatcherFunctionality:
         """Test that default patterns are included"""
         with tempfile.TemporaryDirectory() as tmpdir:
             ignore_file = Path(tmpdir) / ".testignore"
-            ignore_file.write_text("")  # Empty file
+            ignore_file.write_text("", encoding=UTF8)  # Empty file
 
             matcher = FilePatternMatcher(str(ignore_file))
 
@@ -185,7 +187,7 @@ class TestFilePatternMatcherFunctionality:
         """Test wildcard pattern matching"""
         with tempfile.TemporaryDirectory() as tmpdir:
             ignore_file = Path(tmpdir) / ".testignore"
-            ignore_file.write_text("*.pyc\n*.log\ntest_*\n")
+            ignore_file.write_text("*.pyc\n*.log\ntest_*\n", encoding=UTF8)
 
             matcher = FilePatternMatcher(str(ignore_file))
 
@@ -199,7 +201,7 @@ class TestFilePatternMatcherFunctionality:
         """Test directory pattern matching"""
         with tempfile.TemporaryDirectory() as tmpdir:
             ignore_file = Path(tmpdir) / ".testignore"
-            ignore_file.write_text("__pycache__/\nnode_modules/\n")
+            ignore_file.write_text("__pycache__/\nnode_modules/\n", encoding=UTF8)
 
             matcher = FilePatternMatcher(str(ignore_file))
 
@@ -211,7 +213,7 @@ class TestFilePatternMatcherFunctionality:
         """Test include patterns (negation)"""
         with tempfile.TemporaryDirectory() as tmpdir:
             ignore_file = Path(tmpdir) / ".testignore"
-            ignore_file.write_text("*.log\n!debug.log\n")
+            ignore_file.write_text("*.log\n!debug.log\n", encoding=UTF8)
 
             matcher = FilePatternMatcher(str(ignore_file))
 
@@ -227,7 +229,7 @@ class TestBackwardCompatibility:
         """Test that passing a single file path still works"""
         with tempfile.TemporaryDirectory() as tmpdir:
             ignore_file = Path(tmpdir) / ".testignore"
-            ignore_file.write_text("*.pyc\n")
+            ignore_file.write_text("*.pyc\n", encoding=UTF8)
 
             # Both string and list should work
             matcher1 = FilePatternMatcher(str(ignore_file))

@@ -1,19 +1,18 @@
 # =============================================
 # .SourceSageignore
-# SourceSageが解析から除外するファイル/ディレクトリのパターン
+# Default ignore patterns for SourceSage analysis
 # =============================================
 
 # ---------------------------------------------
-# バージョン管理システム
+# Version control
 # ---------------------------------------------
-.git
+.git/
 .gitignore
 .SourceSageignore
 
 # ---------------------------------------------
-# Python関連
+# Python
 # ---------------------------------------------
-# キャッシュ
 __pycache__/
 **/__pycache__/**
 *.pyc
@@ -21,29 +20,29 @@ __pycache__/
 *.pyd
 .Python
 
-# テスト・カバレッジ
+# Test and coverage artifacts
 .pytest_cache/
 .coverage
 .tox/
 htmlcov/
 *.cover
+tests/temp/
 
-# 仮想環境
+# Virtual environments
 .venv/
 venv/
 env/
 ENV/
 .python-version
 
-# パッケージ・ビルド
+# Package and build outputs
 *.egg-info/
-sourcesage.egg-info/
 dist/
 build/
 *.egg
 
 # ---------------------------------------------
-# パッケージマネージャーのロックファイル
+# Package manager lock files
 # ---------------------------------------------
 poetry.lock
 Pipfile.lock
@@ -53,14 +52,14 @@ yarn.lock
 pnpm-lock.yaml
 
 # ---------------------------------------------
-# Node.js関連
+# Node.js
 # ---------------------------------------------
 node_modules/
 .npm/
 .yarn/
 
 # ---------------------------------------------
-# IDE・エディタ
+# IDE and editor files
 # ---------------------------------------------
 .vscode/
 .idea/
@@ -70,38 +69,51 @@ node_modules/
 .DS_Store
 
 # ---------------------------------------------
-# SourceSage固有
+# Terraform
 # ---------------------------------------------
-SourceSageAssets/
-SourceSageAssetsDemo/
-SourceSage.md
-output.md
+.terraform/
+*.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+
+# ---------------------------------------------
+# SourceSage artifacts
+# ---------------------------------------------
+.SourceSageAssets/
+.SourceSageAssetsDemo/
+repository_summary.md
+
+# ---------------------------------------------
+# Temporary outputs
+# ---------------------------------------------
 output/
-Changelog
+output.md
+test_output/
+*.log
+memo.md
 
 # ---------------------------------------------
-# プロジェクト固有
+# Docs drafts and generated content
 # ---------------------------------------------
-assets/
-data/
-streamlit/
-Style-Bert-VITS2/
-tmp/
-temp/
+docs/drafts/
+example/
 
 # ---------------------------------------------
-# ライセンス・ドキュメント
-# ---------------------------------------------
-LICENSE
-
-# ---------------------------------------------
-# 画像・メディアファイル
+# Images and media
 # ---------------------------------------------
 *.png
 *.jpg
 *.jpeg
+*.webp
 *.gif
 *.svg
 *.ico
 *.mp4
 *.mp3
+
+# ---------------------------------------------
+# Include overrides
+# ---------------------------------------------
+!docs/important.md
+!.github/workflows/
+tmp/

@@ -108,7 +108,7 @@ class DocuSum:
             self.pattern_matcher, self.language_detector, self.file_processor
         )
         self.markdown_writer = MarkdownWriter(
-            self.stats_collector, self.pattern_matcher
+            self.stats_collector, self.pattern_matcher, language=self.language
         )
 
     def generate_markdown(self):

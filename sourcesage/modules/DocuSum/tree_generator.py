@@ -4,58 +4,52 @@ from loguru import logger
 
 
 class TreeGenerator:
-    """ディレクトリツリーを生成するクラス"""
+    """Generate a directory tree and collect tree statistics."""
 
     def __init__(self, pattern_matcher):
         self.pattern_matcher = pattern_matcher
 
     def generate_tree(self, dir_path, max_depth=None):
-        """ディレクトリツリーを生成する"""
-        tree = ["```plaintext"]
-        tree.append(f"OS: {os.name}")
-        tree.append(f"Directory: {os.path.abspath(dir_path)}\n")
+        """Generate a plaintext directory tree."""
+        tree = ["```plaintext", f"OS: {os.name}", f"Directory: {os.path.abspath(dir_path)}", ""]
 
         def _build_tree(path, prefix="", depth=0):
             if max_depth is not None and depth > max_depth:
                 return
 
             try:
-                # ディレクトリエントリをソート（ディレクトリ優先）
-                entries = sorted(
-                    os.scandir(path), key=lambda e: (not e.is_dir(), e.name.lower())
-                )
+                entries = [
+                    entry
+                    for entry in sorted(
+                        os.scandir(path), key=lambda item: (not item.is_dir(), item.name.lower())
+                    )
+                    if not self.pattern_matcher.should_exclude(entry.path)
+                ]
 
-                for i, entry in enumerate(entries):
-                    if self.pattern_matcher.should_exclude(entry.path):
-                        continue
-
-                    is_last = i == len(entries) - 1
-                    current_prefix = "└── " if is_last else "├── "
-
-                    # エントリ名の装飾（ディレクトリの場合は/を付加）
-                    entry_name = f"{entry.name}{'/' if entry.is_dir() else ''}"
-                    tree.append(f"{prefix}{current_prefix}{entry_name}")
-
+                for index, entry in enumerate(entries):
+                    is_last = index == len(entries) - 1
+                    branch = "└── " if is_last else "├── "
+                    tree.append(f"{prefix}{branch}{entry.name}{'/' if entry.is_dir() else ''}")
                     if entry.is_dir():
                         next_prefix = prefix + ("    " if is_last else "│   ")
                         _build_tree(entry.path, next_prefix, depth + 1)
-
-            except PermissionError as e:
-                logger.warning(f"アクセス権限エラー {path}: {e}")
-            except Exception as e:
-                logger.error(f"ディレクトリ処理エラー {path}: {e}")
+            except PermissionError as exc:
+                logger.warning(f"Permission denied while scanning {path}: {exc}")
+            except Exception as exc:
+                logger.error(f"Tree generation error for {path}: {exc}")
 
         try:
             _build_tree(dir_path)
-        except Exception as e:
-            logger.error(f"ツリー生成エラー {dir_path}: {e}")
-            tree.append(f"Error: {str(e)}")
+        except Exception as exc:
+            logger.error(f"Tree generation error for {dir_path}: {exc}")
+            tree.append(f"Error: {exc}")
 
-        tree.append("```\n")
+        tree.append("```")
+        tree.append("")
         return "\n".join(tree)
 
     def get_tree_stats(self, dir_path):
-        """ツリーの統計情報を取得する"""
+        """Collect basic tree statistics."""
         stats = {
             "total_dirs": 0,
             "total_files": 0,
@@ -75,9 +69,7 @@ class TreeGenerator:
 
                         if entry.is_dir():
                             dir_count += 1
-                            sub_dir_count, sub_file_count = _count_entries(
-                                entry.path, depth + 1
-                            )
+                            sub_dir_count, sub_file_count = _count_entries(entry.path, depth + 1)
                             dir_count += sub_dir_count
                             file_count += sub_file_count
                         else:
@@ -88,13 +80,11 @@ class TreeGenerator:
                     stats["largest_dir"] = (path, dir_count + file_count)
 
                 return dir_count, file_count
-
-            except Exception as e:
-                logger.error(f"統計情報収集エラー {path}: {e}")
+            except Exception as exc:
+                logger.error(f"Failed to collect tree stats for {path}: {exc}")
                 return 0, 0
 
         total_dirs, total_files = _count_entries(dir_path)
         stats["total_dirs"] = total_dirs
         stats["total_files"] = total_files
-
         return stats

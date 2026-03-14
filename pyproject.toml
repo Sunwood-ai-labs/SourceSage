@@ -19,11 +19,13 @@ classifiers = [
     "Topic :: Utilities",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
 dependencies = [
@@ -36,7 +38,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Sunwood-ai-labs/SourceSage"
+Homepage = "https://sunwood-ai-labs.github.io/SourceSage/"
+Documentation = "https://sunwood-ai-labs.github.io/SourceSage/"
 Repository = "https://github.com/Sunwood-ai-labs/SourceSage"
 Issues = "https://github.com/Sunwood-ai-labs/SourceSage/issues"
 
@@ -57,8 +60,8 @@ include = [
     "/LICENSE",
 ]
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
     "black>=22.0.0",

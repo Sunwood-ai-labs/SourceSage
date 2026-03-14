@@ -28,13 +28,9 @@ class MarkdownReportGenerator:
         self.repo_path = repo_path or os.getcwd()
 
     def generate_markdown_report(self):
-        """
-        git diff からマークダウンレポートを生成します。
-        """
-        logger.debug("マークダウンレポートを生成しています...")
-        repo_name = (
-            os.path.basename(os.path.abspath(self.repo_path)) if self.repo_path else ""
-        )
+        """Generate a Markdown release report from git diff output."""
+        logger.debug("Generating Markdown release report")
+        repo_name = os.path.basename(os.path.abspath(self.repo_path)) if self.repo_path else ""
         title = f"{repo_name} {self.report_title}".strip()
         report_content = f"# {title}\n\n"
 
@@ -48,120 +44,85 @@ class MarkdownReportGenerator:
             elif section == "readme":
                 report_content += self._generate_readme_section()
 
-        with open(self.output_path, "w", encoding="utf8") as file:
+        with open(self.output_path, "w", encoding="utf-8") as file:
             file.write(report_content)
 
-        logger.debug("マークダウンドキュメントが正常に生成されました！")
+        logger.debug("Markdown release report generated successfully")
 
     def _generate_version_comparison_section(self):
-        """
-        バージョン比較セクションを生成します。
-        """
-        section_content = "## バージョン比較\n\n"
-        section_content += (
-            f"**{self.previous_tag}** と **{self.latest_tag}** の比較\n\n"
-        )
-        return section_content
+        return f"## Version Comparison\n\n**{self.previous_tag}** to **{self.latest_tag}**\n\n"
 
     def _generate_diff_details_section(self):
-        """
-        差分の詳細セクションを生成します。
-        """
-        section_content = "## 差分の詳細\n\n"
+        section_content = "## Diff Details\n\n"
         file_diffs = self._organize_diff_by_file()
         section_content += self._generate_file_sections(file_diffs)
         return section_content
 
     def _generate_repo_info_section(self):
-        """
-        リポジトリ情報セクションを生成します。
-        """
-        section_content = "## \U0001f4c2 Gitリポジトリ情報\n\n"
+        section_content = "## Git Repository Information\n\n"
 
         if GitInfoCollector is None:
-            section_content += "Git情報コレクターが利用できません。\n\n"
-            return section_content
+            return section_content + "Git information collector is not available.\n\n"
 
         git_path = os.path.join(self.repo_path, ".git")
         try:
             collector = GitInfoCollector(git_path)
             info = collector.collect_info()
-        except Exception as e:
-            logger.warning(f"Git情報の取得に失敗: {e}")
+        except Exception as exc:
+            logger.warning(f"Failed to collect Git information: {exc}")
             info = None
 
         if not info:
-            section_content += "情報を取得できませんでした。\n\n"
-            return section_content
+            return section_content + "Failed to collect repository information.\n\n"
 
-        # 基本情報
-        section_content += "### \U0001f310 基本情報\n\n"
-        section_content += (
-            f"- \U0001f517 リモートURL: {info.get('remote_url', 'Not available')}\n"
-        )
-        section_content += f"- \U0001f33f デフォルトブランチ: {info.get('default_branch', 'Not available')}\n"
-        section_content += f"- \U0001f3af 現在のブランチ: {info.get('current_branch', 'Not available')}\n"
-        section_content += (
-            f"- \U0001f4c5 作成日時: {info.get('creation_date', 'Not available')}\n"
-        )
-        section_content += (
-            f"- \U0001f4c8 総コミット数: {info.get('total_commits', '0')}\n\n"
-        )
+        section_content += "### Basic Information\n\n"
+        section_content += f"- Remote URL: {info.get('remote_url', 'Not available')}\n"
+        section_content += f"- Default branch: {info.get('default_branch', 'Not available')}\n"
+        section_content += f"- Current branch: {info.get('current_branch', 'Not available')}\n"
+        section_content += f"- Created: {info.get('creation_date', 'Not available')}\n"
+        section_content += f"- Total commits: {info.get('total_commits', '0')}\n\n"
 
-        # 最新コミット
         last = info.get("last_commit")
         if last:
-            section_content += "### \U0001f501 最新のコミット\n\n"
-            section_content += f"- \U0001f4dd メッセージ: {last.get('message','')}\n"
-            section_content += f"- \U0001f50d ハッシュ: {last.get('hash','')}\n"
-            section_content += (
-                f"- \U0001f464 作者: {last.get('author','')} ({last.get('email','')})\n"
-            )
-            section_content += f"- \u23f0 日時: {last.get('date','')}\n\n"
+            section_content += "### Latest Commit\n\n"
+            section_content += f"- Message: {last.get('message', '')}\n"
+            section_content += f"- Hash: {last.get('hash', '')}\n"
+            section_content += f"- Author: {last.get('author', '')} ({last.get('email', '')})\n"
+            section_content += f"- Date: {last.get('date', '')}\n\n"
 
-        # タグ
         tags = info.get("tags")
         if tags:
-            section_content += "### \U0001f3f7\ufe0f 最新のタグ\n\n"
-            for t in tags:
-                section_content += f"- {t}\n"
+            section_content += "### Latest Tags\n\n"
+            for tag in tags:
+                section_content += f"- {tag}\n"
             section_content += "\n"
 
-        # コントリビューター
         contributors = info.get("contributors")
         if contributors:
-            section_content += "### \U0001f465 主要コントリビューター\n\n"
-            section_content += "| \U0001f464 名前 | \U0001f4ca コミット数 |\n"
-            section_content += "|---------|-------------|\n"
-            for c in contributors:
-                section_content += f"| {c.get('name','')} | {c.get('commits','')} |\n"
+            section_content += "### Top Contributors\n\n"
+            section_content += "| Name | Commits |\n"
+            section_content += "|------|---------|\n"
+            for contributor in contributors:
+                section_content += f"| {contributor.get('name', '')} | {contributor.get('commits', '')} |\n"
             section_content += "\n"
 
         return section_content
 
     def _generate_readme_section(self):
-        """
-        READMEの内容を末尾に追加します。
-        """
-        section_content = "## \U0001f4d6 README\n\n"
+        section_content = "## README\n\n"
         readme_path = os.path.join(self.repo_path, "README.md")
         try:
             if os.path.exists(readme_path):
-                with open(readme_path, "r", encoding="utf-8") as f:
-                    content = f.read().strip()
-                section_content += content + "\n\n"
+                with open(readme_path, "r", encoding="utf-8") as file:
+                    section_content += file.read().strip() + "\n\n"
             else:
-                section_content += "README.md が見つかりません。\n\n"
-        except Exception as e:
-            logger.warning(f"README読み込みエラー: {e}")
-            section_content += "READMEの読み込みに失敗しました。\n\n"
-
+                section_content += "README.md was not found.\n\n"
+        except Exception as exc:
+            logger.warning(f"Failed to read README: {exc}")
+            section_content += "Failed to read README content.\n\n"
         return section_content
 
     def _organize_diff_by_file(self):
-        """
-        ファイル名ごとに差分を整理します。
-        """
         file_diffs = {}
         current_file = None
         for line in self.diff.split("\n"):
@@ -173,12 +134,9 @@ class MarkdownReportGenerator:
         return file_diffs
 
     def _generate_file_sections(self, file_diffs):
-        """
-        ファイル名ごとに見出しとコードブロックを生成します。
-        """
         file_sections = ""
-        for file, lines in file_diffs.items():
-            file_sections += f"### {file}\n\n"
+        for file_path, lines in file_diffs.items():
+            file_sections += f"### {file_path}\n\n"
             file_sections += "```diff\n"
             file_sections += "\n".join(lines)
             file_sections += "\n```\n\n"
