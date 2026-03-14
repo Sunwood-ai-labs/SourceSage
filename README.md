@@ -1,303 +1,178 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/main/docs/icon/SourceSage_icon4.png" width="100%">
-<br>
+  <img
+    src="https://raw.githubusercontent.com/Sunwood-ai-labs/SourceSage/main/docs/icon/SourceSage_icon4.png"
+    alt="SourceSage hero"
+    width="100%"
+  >
+</p>
+
 <h1 align="center">SourceSage</h1>
-<h2 align="center">
-  ～Transforming code for AI～
-
-  <br>
-  <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/sourcesage">
-  <img alt="PyPI - Format" src="https://img.shields.io/pypi/format/sourcesage">
-  <img alt="PyPI - Implementation" src="https://img.shields.io/pypi/implementation/sourcesage">
-  <img alt="PyPI - Status" src="https://img.shields.io/pypi/status/sourcesage">
-  <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dd/sourcesage">
-  <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dw/sourcesage">
-  <a href="https://app.codacy.com/gh/Sunwood-ai-labs/SourceSage/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/77ab7715dd23499d82caca4e7ea3b093"/></a>
-
-  [![SourceSage - Sunwood-ai-labs](https://img.shields.io/static/v1?label=SourceSage&message=Sunwood-ai-labs&color=blue&logo=github)](https://github.com/Sunwood-ai-labs/SourceSage "Go to GitHub repo")
-![GitHub Repo stars](https://img.shields.io/github/stars/Sunwood-ai-labs/SourceSage)
-[![forks - Sunwood-ai-labs](https://img.shields.io/github/forks/SourceSage/Sunwood-ai-labs?style=social)](https://github.com/Sunwood-ai-labs/SourceSage)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/Sunwood-ai-labs/SourceSage)](https://github.com/Sunwood-ai-labs/SourceSage)
-[![GitHub Top Language](https://img.shields.io/github/languages/top/Sunwood-ai-labs/SourceSage)](https://github.com/Sunwood-ai-labs/SourceSage)
-![GitHub Release](https://img.shields.io/github/v/release/Sunwood-ai-labs/SourceSage?color=red)
-![GitHub Tag](https://img.shields.io/github/v/tag/Sunwood-ai-labs/SourceSage?sort=semver&color=orange)
-<img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Sunwood-ai-labs/SourceSage/publish-to-pypi.yml">
-  <br>
 
 <p align="center">
-  <a href="https://hamaruki.com/"><b>[🌐 Website]</b></a> •
-  <a href="https://github.com/Sunwood-ai-labs"><b>[🐱 GitHub]</b></a>
-  <a href="https://x.com/hAru_mAki_ch"><b>[🐦 Twitter]</b></a> •
-  <a href="https://hamaruki.com/tag/sourcesage/"><b>[🍀 Official Blog]</b></a>
+  <strong>Generate AI-friendly repository documentation from any local codebase.</strong>
 </p>
 
-</h2>
-
-
+<p align="center">
+  SourceSage analyzes a repository's tree, Git context, file statistics, and file contents,
+  then writes a shareable Markdown summary that LLMs and humans can scan quickly.
 </p>
 
-[日本語](README.ja.md) | English
+<p align="center">
+  <a href="https://github.com/Sunwood-ai-labs/SourceSage/actions/workflows/ci.yml">
+    <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/Sunwood-ai-labs/SourceSage/ci.yml?branch=main&label=ci">
+  </a>
+  <a href="https://github.com/Sunwood-ai-labs/SourceSage/actions/workflows/deploy-docs.yml">
+    <img alt="Docs" src="https://img.shields.io/github/actions/workflow/status/Sunwood-ai-labs/SourceSage/deploy-docs.yml?branch=main&label=docs">
+  </a>
+  <a href="https://pypi.org/project/sourcesage/">
+    <img alt="PyPI version" src="https://img.shields.io/pypi/v/sourcesage">
+  </a>
+  <a href="LICENSE">
+    <img alt="License" src="https://img.shields.io/badge/license-MIT-0f766e">
+  </a>
+</p>
 
-SourceSage is a tool that comprehensively analyzes repository structure and content to generate AI-friendly documentation. It primarily provides Repository_summary.md generation and RELEASE_REPORT creation features.
+<p align="center">
+  <strong>English</strong>
+  ·
+  <a href="README.ja.md">日本語</a>
+  ·
+  <a href="https://sunwood-ai-labs.github.io/SourceSage/">Docs</a>
+  ·
+  <a href="https://github.com/Sunwood-ai-labs/SourceSage/releases">Releases</a>
+</p>
 
 >[!IMPORTANT]
->Nearly 90% of the release notes, README, and commit messages in this repository are generated using [AIRA](https://github.com/Sunwood-ai-labs/AIRA), [SourceSage](https://github.com/Sunwood-ai-labs/SourceSage), [Gaiah](https://github.com/Sunwood-ai-labs/Gaiah), and [HarmonAI_II](https://github.com/Sunwood-ai-labs/HarmonAI_II) with [claude.ai](https://claude.ai/) and [ChatGPT4](https://chatgpt.com/).
+>Nearly 90% of the release notes, README text, and commit messages in this repository are produced with [AIRA](https://github.com/Sunwood-ai-labs/AIRA), [SourceSage](https://github.com/Sunwood-ai-labs/SourceSage), [Gaiah](https://github.com/Sunwood-ai-labs/Gaiah), and [HarmonAI_II](https://github.com/Sunwood-ai-labs/HarmonAI_II) alongside Claude and ChatGPT.
 
-## 🌟 Related Projects
+## 🌿 Why SourceSage
 
-### SourceSage MCP Server
-[SourceSage MCP Server](https://github.com/Sunwood-ai-labs/source-sage-mcp-server) is a derived version of SourceSage that integrates with the Model Context Protocol (MCP). It enables AI assistants like Claude Desktop to directly access repository analysis capabilities.
+- Turn a repository into a single Markdown artifact that an AI agent can ingest immediately.
+- Capture both structure and context: tree, Git metadata, statistics, and file excerpts.
+- Work from the current checkout or point SourceSage at another local repository with `--repo`.
+- Generate output in English or Japanese with `-l en` or `-l ja`.
 
-## Release Notes
+## ✨ Core Features
 
-For the latest updates, please visit our GitHub releases page.
+### 📘 Repository Summary
 
-https://github.com/Sunwood-ai-labs/SourceSage/releases
+SourceSage creates `.SourceSageAssets/Repository_summary.md` with:
 
+- a directory tree
+- Git repository information
+- file size and line-count tables
+- language statistics
+- selected file contents
 
-## 🎯 Key Features
+### 🧾 Release Report (Deprecated)
 
-SourceSage is a simple and lightweight repository analysis tool that provides two main features:
-
-### 1. 📋 Repository Summary Generation
-
-Comprehensively analyzes repository structure, commit information, and file statistics to generate AI-friendly markdown documentation.
-
-**Output File**: `.SourceSageAssets/Repository_summary.md`
-
-**Included Information**:
-- 🌳 Project tree structure
-- 📋 Git repository information
-- 📈 File size and line count statistics
-- 📝 Detailed file contents
-
-### 2. 📄 Release Report Generation (Optional Feature - Deprecated)
-
-> ⚠️ **Deprecated Feature**: This feature will be removed in a future release. With improvements in LLM command execution capabilities, automatic diff report generation is becoming unnecessary.
-
-Analyzes differences between Git tags to automatically generate release reports (enabled with `--diff` flag).
-
-**Output File**: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`
-
-**Included Information**:
-- 🏷️ Version comparison
-- 🔄 Detailed change differences
-- 📋 Commit history
-  - 📂 Repository basic information (remote URL, branch, latest commit, etc.)
-  - 📖 README content (optional)
-
+The CLI still exposes `--diff` for legacy release-note pipelines, but the feature is deprecated.
+For new workflows, prefer GitHub Releases instead of building automation around diff reports.
 
 ## 🚀 Quick Start
 
-### 📦 Installation (Fastest)
+### 🔧 Run From This Repository
 
 ```bash
 git clone https://github.com/Sunwood-ai-labs/SourceSage.git
 cd SourceSage
 uv sync
-uv run sage
+uv run sage --help
+uv run sage --repo .
 ```
 
-Note: When using as a package, run `pip install sourcesage` then execute `sage` (or `sourcesage`).
-
-### 🗺️ Basic Usage (Minimum Required)
+### 📦 Analyze Another Repository
 
 ```bash
-# Generate repository summary (default: uses .gitignore)
-uv run sage
-
-# Use/generate .SourceSageignore file
-uv run sage --use-ignore
-
-# Generate release report (optional - deprecated)
-uv run sage --diff
+uv run --directory D:\Prj\SourceSage sage --repo D:\Prj\SourceSage\example -o D:\Prj\SourceSage\.tmp-docs-check\example
+uv run sage --repo . -l ja
 ```
 
-Output locations:
-- Repository Summary: `.SourceSageAssets/Repository_summary.md`
-- Release Report: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md` (only with `--diff`)
+Replace the paths in the first command with your own SourceSage checkout and target repository.
 
-Frequently used options (excerpt):
+### 🧰 Use a Custom Ignore File
+
+SourceSage automatically merges the target repository's `.gitignore` and `.SourceSageignore`.
+If you need a different ignore file, use `--ignore-file`.
 
 ```bash
-uv run sage -o ./out                     # Change output destination
-uv run sage --ignore-file .gitignore     # Specify ignore rules (default)
-uv run sage --use-ignore                 # Use/generate .SourceSageignore
-uv run sage --diff                       # Generate diff report (deprecated)
+uv run sage --repo . --ignore-file .SourceSageignore -o .\.tmp-docs-check\ignore
 ```
 
-Notes:
+## 🗺️ CLI Reference
 
-- From v7.2.0, `.gitignore` is used by default. Use `--use-ignore` if you need a custom ignore file.
-- When `--language-map` is omitted, the included defaults (`sourcesage/config/`) are automatically used.
-- Release Report is generated when there are 2 or more tags (only with `--diff`).
-
-### 🔄 Upgrade
+### ✅ Common Commands
 
 ```bash
-# If installed via PyPI
-pip install --upgrade sourcesage
+uv run sage --repo .                    # analyze the current repository
+uv run sage --repo . -l ja              # generate Japanese output
+uv run sage --repo . -o ./out           # write results to a custom directory
+uv run sage --help                      # show the Rich help screen
+```
 
-# If installed via git clone
-git pull origin main
+### 🧩 Important Options
 
-# If using uv with local clone
+| Option | Purpose |
+| --- | --- |
+| `--repo` | Repository to analyze |
+| `-o`, `--output` | Output directory for generated files |
+| `-l`, `--lang`, `--language` | Output language: `en` or `ja` |
+| `--ignore-file` | Override the ignore file path |
+| `--language-map` | Override the language map JSON |
+| `--diff` | Legacy-only diff report flow retained for compatibility |
+
+## 📂 Output Files
+
+- Repository summary: `.SourceSageAssets/Repository_summary.md`
+- Release report: `.SourceSageAssets/RELEASE_REPORT/Report_{latest_tag}.md`
+
+When `--repo` is set and `-o` is omitted, SourceSage writes the artifacts into the target repository.
+
+## 📚 Documentation
+
+The full bilingual guide lives in [`docs/`](docs/) and is published through GitHub Pages:
+
+- English: [Getting Started](docs/guide/getting-started.md)
+- Japanese: [はじめに](docs/ja/guide/getting-started.md)
+- Live site: [sunwood-ai-labs.github.io/SourceSage](https://sunwood-ai-labs.github.io/SourceSage/)
+
+## 🧪 Development
+
+```bash
 uv sync
+uv run pytest -q
 ```
 
-### 🔍 Troubleshooting
-
-#### uvx cache issues
-
-If `uvx sourcesage` is using an outdated version, clear the cache:
+### Build the docs locally
 
 ```bash
-# Force refresh (recommended)
-uvx --refresh sourcesage --repo tmp
+cd docs
+npm ci
+npm run docs:build
+```
 
-# Clear all uv cache
-uv cache clean
+## 🛠️ Troubleshooting
 
-# Clear specific package cache
+### `uvx` or `uv` cache looks stale
+
+```bash
 uv cache clean sourcesage
-
-# Run without cache
-uvx --no-cache sourcesage --repo tmp
-```
-
-#### Cache management
-
-```bash
-# Check cache size
-uv cache size
-
-# Show cache directory
-uv cache dir
-
-# Prune unused cache
 uv cache prune
 ```
 
-### 📊 Example Generated Content
+### Output does not match your repository layout
 
-#### Repository Summary
+- confirm you pointed `--repo` at the repository root
+- check whether `.gitignore` or `.SourceSageignore` is excluding the files you expected
+- run again with an explicit `--ignore-file` if you need a different rule set
 
-```markdown
-    # Project: SourceSage
+## 🌐 Related Projects
 
-    ```plaintext
-    OS: posix
-    Directory: /path/to/project
+### SourceSage MCP Server
 
-    ├── .SourceSageignore
-    ├── pyproject.toml
-    ├── sourcesage/
-    │   ├── __init__.py
-    │   ├── cli.py
-    │   └── modules/
-    │       ├── DocuSum/
-    │       └── DiffReport/
-    │           ├── __init__.py
-    │           ├── git_diff.py
-    │           └── markdown_report.py
-    └── README.md
-    ```
+[SourceSage MCP Server](https://github.com/Sunwood-ai-labs/source-sage-mcp-server)
+brings SourceSage analysis into MCP-compatible assistants such as Claude Desktop.
 
-    ## 📊 Project Statistics
+## 📄 License
 
-    - 📅 Created: 2025-02-02 16:22:31
-    - 📁 Total directories: 5
-    - 📄 Total files: 15
-    - 📏 Max depth: 3
-
-    ### 📊 File Size and Line Count
-
-    | File | Size | Lines | Language |
-    |------|------|-------|----------|
-    | pyproject.toml | 1.2 KB | 30 | TOML |
-    | **Total** |  | **1234** |  |
-
-    ### 📈 Language Statistics
-
-    | Language | Files | Total Lines | Total Size |
-    |----------|-------|-------------|-----------|
-    | Python | 15 | 1234 | 45.6 KB |
-    | Markdown | 3 | 150 | 5.2 KB |
-```
-
-## 🛠️ Development Environment
-
-SourceSage supports modern Python development environments:
-
-- **Python**: 3.8 or later
-- **Package Management**: uv / pip
-- **Build System**: hatchling
-- **Configuration File**: pyproject.toml
-
-### Development Setup
-
-```bash
-# Development environment setup using uv
-git clone https://github.com/Sunwood-ai-labs/SourceSage.git
-cd SourceSage
-uv sync
-
-# Run tests
-uv run pytest
-
-# Code formatting
-uv run black sourcesage/
-uv run isort sourcesage/
-
-# Build package
-uv build
-```
-
-
-## 💡 Usage Examples
-
-```bash
-# 1) Output repository summary (default: uses .gitignore)
-uv run sage
-
-# 2) Output summary using .SourceSageignore
-uv run sage --use-ignore
-
-# 3) Generate diff report (deprecated feature)
-uv run sage --diff
-
-# 4) Change output destination
-uv run sage -o ./analysis
-```
-
-## Contributing
-
-Help us improve SourceSage! If you have bug reports or feature suggestions, please open an issue or submit a pull request at our [GitHub repository](https://github.com/Sunwood-ai-labs/SourceSage).
-
-## License
-
-This project is released under the [MIT License](LICENSE).
-
----
-
-<p align="center">
-<a href="https://orynth.dev/projects/sourcesage" target="_blank" rel="noopener">
-  <img src="https://orynth.dev/api/badge/sourcesage?theme=light&style=default" alt="Featured on Orynth" width="260" height="80" />
-</a>
-</p>
-
-## Official Links & Verification (SSAGE)
-
-- **Orynth project**: https://www.orynth.dev/projects/sourcesage
-- **GitHub repo**: https://github.com/Sunwood-ai-labs/SourceSage
-
-**SSAGE** (Solana mint):
-`1QaAfN81sYjenLGeiPa9NW1s6FND4A36R3ASKKxVory`
-
-**Primary pool** (SSAGE/USDC, Meteora):
-https://www.geckoterminal.com/solana/pools/A4oHVtJxGRRYvqfRuUGPwfxFVdBmPJnYZtcqew5Y8HoH
-
-**Dexscreener**:
-https://dexscreener.com/solana/a4ohvtjxgrryvqfruugpwfxfvdbmpjnyztcqew5y8hoh
-
-> **Note**: SSAGE is a community market token/identifier for the SourceSage project on Orynth. It is not equity, ownership, or a claim on the project. No investment advice.
+SourceSage is released under the [MIT License](LICENSE).

@@ -1,0 +1,23 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#08111B"/>
+  <rect x="48" y="48" width="1104" height="534" rx="32" fill="url(#bg)"/>
+  <rect x="100" y="122" width="180" height="220" rx="28" fill="#F8FAFC"/>
+  <rect x="132" y="162" width="116" height="16" rx="8" fill="#0F766E"/>
+  <rect x="132" y="198" width="98" height="12" rx="6" fill="#94A3B8"/>
+  <rect x="132" y="228" width="86" height="12" rx="6" fill="#94A3B8"/>
+  <rect x="132" y="258" width="74" height="12" rx="6" fill="#94A3B8"/>
+  <circle cx="300" cy="298" r="64" fill="#14B8A6"/>
+  <circle cx="300" cy="298" r="30" stroke="#F8FAFC" stroke-width="16"/>
+  <path d="M332 330L360 358" stroke="#F8FAFC" stroke-width="16" stroke-linecap="round"/>
+  <text x="420" y="218" fill="#F8FAFC" font-family="Space Grotesk, Noto Sans JP, sans-serif" font-size="86" font-weight="700">SourceSage</text>
+  <text x="420" y="286" fill="#B7C8D8" font-family="Space Grotesk, Noto Sans JP, sans-serif" font-size="32" font-weight="500">Repository analysis CLI for AI-ready markdown</text>
+  <text x="420" y="372" fill="#0F766E" font-family="Space Grotesk, Noto Sans JP, sans-serif" font-size="28" font-weight="700">Repository Summary</text>
+  <text x="420" y="414" fill="#B7C8D8" font-family="Space Grotesk, Noto Sans JP, sans-serif" font-size="28" font-weight="700">Git context</text>
+  <text x="420" y="456" fill="#F59E0B" font-family="Space Grotesk, Noto Sans JP, sans-serif" font-size="28" font-weight="700">Bilingual docs</text>
+  <defs>
+    <linearGradient id="bg" x1="48" y1="48" x2="1152" y2="582" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10231F"/>
+      <stop offset="1" stop-color="#172554"/>
+    </linearGradient>
+  </defs>
+</svg>

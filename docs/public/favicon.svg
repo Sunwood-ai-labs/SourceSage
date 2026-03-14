@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="SourceSage icon">
+  <rect width="128" height="128" rx="28" fill="#f3fbfa"/>
+  <path d="M28 36h72v14H28z" fill="#0f766e"/>
+  <path d="M28 57h48v14H28z" fill="#1d4ed8"/>
+  <path d="M28 78h72v14H28z" fill="#134e4a"/>
+  <circle cx="90" cy="64" r="16" fill="#ffffff" stroke="#0f766e" stroke-width="8"/>
+</svg>

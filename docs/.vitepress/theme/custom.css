@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+:root {
+  --vp-c-brand-1: #0f766e;
+  --vp-c-brand-2: #115e59;
+  --vp-c-brand-3: #134e4a;
+  --vp-c-bg: #f5f7f4;
+  --vp-c-bg-soft: #eef3ef;
+  --vp-c-bg-alt: #fbf8f1;
+  --vp-c-text-1: #10231f;
+  --vp-c-text-2: #33504b;
+  --vp-home-hero-name-background: linear-gradient(120deg, #0f766e 0%, #2563eb 52%, #f59e0b 100%);
+  --vp-home-hero-image-background-image:
+    radial-gradient(circle at 20% 20%, rgba(15, 118, 110, 0.24), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(37, 99, 235, 0.18), transparent 38%),
+    radial-gradient(circle at 50% 80%, rgba(245, 158, 11, 0.2), transparent 42%);
+  --vp-home-hero-image-filter: blur(54px);
+}
+
+html,
+body,
+.VPApp {
+  font-family: "Space Grotesk", "Noto Sans JP", sans-serif;
+}
+
+.VPNavBarTitle .title,
+.VPHero .name,
+.vp-doc h1,
+.vp-doc h2 {
+  letter-spacing: -0.03em;
+}
+
+.VPHero {
+  position: relative;
+}
+
+.VPHero::before {
+  content: "";
+  position: absolute;
+  inset: -2rem -1rem auto;
+  height: 18rem;
+  background:
+    radial-gradient(circle at 10% 15%, rgba(15, 118, 110, 0.18), transparent 35%),
+    radial-gradient(circle at 75% 20%, rgba(37, 99, 235, 0.14), transparent 32%),
+    radial-gradient(circle at 50% 100%, rgba(245, 158, 11, 0.18), transparent 45%);
+  filter: blur(34px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.VPHero .container,
+.VPFeatures,
+.vp-doc {
+  position: relative;
+  z-index: 1;
+}
+
+.VPFeature {
+  border-radius: 24px;
+  border: 1px solid rgba(16, 35, 31, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(245, 247, 244, 0.92)),
+    linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(37, 99, 235, 0.08));
+  box-shadow: 0 20px 50px rgba(16, 35, 31, 0.08);
+}
+
+.vp-doc a,
+.VPLocalNav a,
+.VPNavBarMenuLink {
+  font-weight: 600;
+}
+
+.vp-doc blockquote {
+  border-left: 4px solid rgba(15, 118, 110, 0.45);
+  background: rgba(255, 255, 255, 0.7);
+}
