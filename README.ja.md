@@ -81,6 +81,12 @@ uv run sage --help
 uv run sage --repo .
 ```
 
+### ⚡ クローンせずに試す
+
+```bash
+uvx --refresh sourcesage --help
+```
+
 ### 📦 別のリポジトリを解析する
 
 ```bash
@@ -135,6 +141,13 @@ uv run sage --help                      # Rich 形式のヘルプを表示
 - English: [Getting Started](docs/guide/getting-started.md)
 - 日本語: [はじめに](docs/ja/guide/getting-started.md)
 - 公開サイト: [sunwood-ai-labs.github.io/SourceSage](https://sunwood-ai-labs.github.io/SourceSage/)
+
+## 🤝 プロジェクト運用
+
+- [変更履歴](CHANGELOG.md)
+- [コントリビューションガイド](CONTRIBUTING.md)
+- [行動規範](CODE_OF_CONDUCT.md)
+- [セキュリティポリシー](SECURITY.md)
 
 ## 🧪 開発
 

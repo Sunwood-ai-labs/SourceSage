@@ -20,12 +20,12 @@ hero:
       link: /ja/
 
 features:
-  - title: Repo summary first
-    details: Generate `.SourceSageAssets/Repository_summary.md` with project structure, stats, Git context, and per-file excerpts.
-  - title: Ignore rules that feel familiar
-    details: Merge `.gitignore` and `.SourceSageignore`, and create a default `.SourceSageignore` automatically when a repo does not have one yet.
-  - title: English and Japanese output
-    details: Switch summary headings with `-l en` or `-l ja` and keep the docs mirrored across both languages.
+  - title: "Repo summary first"
+    details: "Generate `.SourceSageAssets/Repository_summary.md` with project structure, stats, Git context, and per-file excerpts."
+  - title: "Ignore rules that feel familiar"
+    details: "Merge `.gitignore` and `.SourceSageignore`, and create a default `.SourceSageignore` automatically when a repo does not have one yet."
+  - title: "English and Japanese output"
+    details: "Switch summary headings with `-l en` or `-l ja` and keep the docs mirrored across both languages."
 ---
 
 ## Why SourceSage?

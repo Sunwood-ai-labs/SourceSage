@@ -81,6 +81,12 @@ uv run sage --help
 uv run sage --repo .
 ```
 
+### ⚡ Run Without Cloning
+
+```bash
+uvx --refresh sourcesage --help
+```
+
 ### 📦 Analyze Another Repository
 
 ```bash
@@ -135,6 +141,13 @@ The full bilingual guide lives in [`docs/`](docs/) and is published through GitH
 - English: [Getting Started](docs/guide/getting-started.md)
 - Japanese: [はじめに](docs/ja/guide/getting-started.md)
 - Live site: [sunwood-ai-labs.github.io/SourceSage](https://sunwood-ai-labs.github.io/SourceSage/)
+
+## 🤝 Project Standards
+
+- [Changelog](CHANGELOG.md)
+- [Contributing Guide](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Security Policy](SECURITY.md)
 
 ## 🧪 Development
 

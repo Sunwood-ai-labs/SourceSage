@@ -12,6 +12,12 @@ cd SourceSage
 uv sync
 ```
 
+## Try the published package
+
+```bash
+uvx --refresh sourcesage --help
+```
+
 ## Generate a summary for the current repository
 
 ```bash
