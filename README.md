@@ -81,10 +81,13 @@ uv run sage --repo .
 
 ```bash
 uv run sage --repo .
+uv run sage --repo . --lite
 uv run sage --repo /path/to/repository -l ja
 uv run sage --repo /path/to/repository -o ./out
 uv run sage --repo . --ignore-file .SourceSageignore
 ```
+
+`--lite` keeps the tree, Git information, statistics, and root README files while skipping the full file-by-file excerpts section.
 
 `--diff` is still available for legacy compatibility, but it is intentionally deprecated and no longer the primary workflow.
 
@@ -98,6 +101,8 @@ Primary artifact:
 ```
 
 SourceSage merges `.gitignore` and `.SourceSageignore`. If `.SourceSageignore` does not exist yet, it creates a default template automatically before analysis starts.
+
+For first-pass repository exploration, `--lite` is safer when ignore rules are not tuned yet because it avoids expanding every file into the summary.
 
 ## Documentation
 

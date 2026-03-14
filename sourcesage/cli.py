@@ -75,6 +75,11 @@ def add_arguments(parser):
         help="Path to language map file",
         default=default_language_map,
     )
+    parser.add_argument(
+        "--lite",
+        action="store_true",
+        help="Generate a lighter summary with tree, Git info, stats, and root README files only",
+    )
 
     # ==============================================
     # レポート生成用の引数を追加
@@ -161,6 +166,7 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
             "ignore_file_desc": "Path to ignore patterns file (default: .SourceSageignore, also uses .gitignore if present)",
             "language_map_desc": "Path to language map JSON",
             "language_desc": "Output language (default: en)",
+            "lite_desc": "Skip full file excerpts and keep only root README content",
             "release_options": "Release Report Options (deprecated)",
             "diff_desc": "Enable diff report generation (deprecated)",
             "repo_path_desc": "Root path of git repository",
@@ -183,6 +189,7 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
             "ignore_file_desc": "無視パターンファイルのパス（デフォルト: .SourceSageignore、.gitignoreも使用）",
             "language_map_desc": "言語マップJSONのパス",
             "language_desc": "出力言語（デフォルト: en）",
+            "lite_desc": "全ファイル抜粋を省略し、ルート README だけを残す軽量出力",
             "release_options": "リリースレポートオプション（非推奨）",
             "diff_desc": "差分レポート生成を有効化（非推奨）",
             "repo_path_desc": "gitリポジトリのルートパス",
@@ -230,6 +237,9 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
     )
     core_tbl.add_row(
         "-l, --lang", "en", msg["language_desc"]
+    )
+    core_tbl.add_row(
+        "--lite", "False", msg["lite_desc"]
     )
     core_tbl.add_row(
         "--language-map", str(_get_default("language_map")), msg["language_map_desc"]
@@ -280,6 +290,7 @@ def render_rich_help(parser: argparse.ArgumentParser, language="en"):
     examples = Text()
     examples.append(f"{msg['examples_title']}:\n", style="bold")
     examples.append("  sage\n")
+    examples.append("  sage --lite\n")
     examples.append("  sage --diff --report-title 'My Report'\n")
     examples.append("  sage -o ./output --repo ./myproject\n")
     console.print(Panel(examples, title=msg["examples_title"], border_style="yellow", expand=True))
@@ -385,7 +396,12 @@ def run(args=None):
     )
     with console.status(f"[info]{msg['generating']}[/]", spinner="dots"):
         sourcesage = SourceSage(
-            args.output, args.repo, args.ignore_file, args.language_map, args.language
+            args.output,
+            args.repo,
+            args.ignore_file,
+            args.language_map,
+            args.language,
+            args.lite,
         )
         sourcesage.run()
     console.print(f"[success]{msg['generation_complete']}[/]")

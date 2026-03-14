@@ -23,6 +23,14 @@ uv run sage --repo .
 
 このコマンドは `.SourceSageignore` が無い場合に自動生成し、主要なドキュメント成果物を `.SourceSageAssets/` 配下に書き込みます。
 
+## まずは軽量モードで確認する
+
+```bash
+uv run sage --repo . --lite
+```
+
+ignore ルールをまだ詰めていない段階では、`--lite` から始めると安全です。ツリー、Git 情報、統計、ルート README を残しつつ、全ファイル抜粋でサマリーが膨らむのを避けられます。
+
 ## このチェックアウトから別のリポジトリを解析する
 
 ```bash

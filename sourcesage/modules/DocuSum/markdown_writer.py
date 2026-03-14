@@ -11,6 +11,7 @@ class MarkdownWriter:
         "en": {
             "git_info": "## Git Repository Information",
             "basic_info": "### Basic Information",
+            "readme": "## README",
             "remote_url": "Remote URL",
             "default_branch": "Default branch",
             "current_branch": "Current branch",
@@ -38,6 +39,7 @@ class MarkdownWriter:
         "ja": {
             "git_info": "## Git リポジトリ情報",
             "basic_info": "### 基本情報",
+            "readme": "## README",
             "remote_url": "リモート URL",
             "default_branch": "デフォルトブランチ",
             "current_branch": "現在のブランチ",
@@ -176,24 +178,58 @@ class MarkdownWriter:
             )
         md_file.write("\n")
 
+    def write_readme_contents(self, md_file, file_processor, folder):
+        """Write only root-level README files."""
+        try:
+            readme_files = []
+            for _, file_name, file_path in self._iter_included_files(folder):
+                relative_path = os.path.relpath(file_path, folder)
+                if os.path.dirname(relative_path) not in ("", "."):
+                    continue
+
+                lowered_name = file_name.lower()
+                if lowered_name == "readme" or lowered_name.startswith("readme."):
+                    readme_files.append(file_path)
+
+            if not readme_files:
+                return
+
+            md_file.write(f"{self.messages['readme']}\n\n")
+            for file_path in readme_files:
+                try:
+                    content = file_processor.process_file(file_path, folder)
+                except Exception as exc:
+                    logger.warning(f"README processing error {file_path}: {exc}")
+                    continue
+
+                if content:
+                    md_file.write(content)
+        except Exception as exc:
+            logger.error(f"README content output error: {exc}")
+            raise
+
     def write_file_contents(self, md_file, file_processor, folder):
         """Write file contents."""
         try:
             md_file.write(f"{self.messages['file_contents']}\n\n")
-            for root, _, files in os.walk(folder):
-                for file_name in sorted(files):
-                    file_path = os.path.join(root, file_name)
-                    if self.pattern_matcher.should_exclude(file_path):
-                        continue
+            for _, _, file_path in self._iter_included_files(folder):
+                try:
+                    content = file_processor.process_file(file_path, folder)
+                except Exception as exc:
+                    logger.warning(f"File processing error {file_path}: {exc}")
+                    continue
 
-                    try:
-                        content = file_processor.process_file(file_path, folder)
-                    except Exception as exc:
-                        logger.warning(f"File processing error {file_path}: {exc}")
-                        continue
-
-                    if content:
-                        md_file.write(content)
+                if content:
+                    md_file.write(content)
         except Exception as exc:
             logger.error(f"File content output error: {exc}")
             raise
+
+    def _iter_included_files(self, folder):
+        """Yield non-excluded files in a stable order."""
+        for root, _, files in os.walk(folder):
+            for file_name in sorted(files):
+                file_path = os.path.join(root, file_name)
+                if self.pattern_matcher.should_exclude(file_path):
+                    continue
+                yield root, file_name, file_path

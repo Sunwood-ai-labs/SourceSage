@@ -24,6 +24,17 @@ When `--diff` is enabled and enough tags exist, SourceSage can also write:
 - File and language statistics
 - File-by-file excerpts for non-excluded files
 
+## `--lite` differences
+
+When you run SourceSage with `--lite`, the same `Repository_summary.md` keeps:
+
+- Project title and tree structure
+- Git repository information when available
+- File and language statistics
+- Root README files only
+
+It skips the full `## File Contents` section so the summary stays smaller during first-pass exploration.
+
 ## Example output
 
 The repository ships an example documentation artifact at [`example/Repository_summary.md`](https://github.com/Sunwood-ai-labs/SourceSage/blob/main/example/Repository_summary.md).

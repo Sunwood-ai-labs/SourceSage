@@ -152,6 +152,33 @@ class TestE2ECLIExecution:
                 content = summary_file.read_text(encoding=UTF8)
                 assert expected_heading in content
 
+    def test_cli_lite_mode_keeps_root_readme_without_full_file_contents(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            repo_path = Path(tmpdir) / "test_repo"
+            repo_path.mkdir()
+
+            (repo_path / "README.md").write_text(
+                "# Test Repository\n\nLite summary context.",
+                encoding=UTF8,
+            )
+            (repo_path / "main.py").write_text(
+                "def hello():\n    return 'world'\n",
+                encoding=UTF8,
+            )
+            init_git_repo(repo_path, commit_message="init")
+
+            result = run_cli(repo_path, "--lite")
+            assert result.returncode == 0, f"CLI failed: {result.stderr}"
+
+            summary_file = resolve_summary_file(repo_path)
+            assert summary_file.exists(), f"Repository_summary.md not found in {repo_path}"
+
+            content = summary_file.read_text(encoding=UTF8)
+            assert "## README" in content
+            assert "## File Contents" not in content
+            assert "Lite summary context." in content
+            assert "return 'world'" not in content
+
     def test_cli_generates_sourcesageignore_by_default(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             repo_path = Path(tmpdir) / "test_repo"

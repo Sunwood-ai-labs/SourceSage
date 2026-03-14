@@ -41,6 +41,13 @@ class TestCLIArguments:
         args = parser.parse_args(["--diff"])
         assert args.diff is True
 
+    def test_lite_option(self):
+        """Test --lite option for light summary generation"""
+        parser = argparse.ArgumentParser(add_help=False)
+        add_arguments(parser)
+        args = parser.parse_args(["--lite"])
+        assert args.lite is True
+
     def test_default_values(self):
         """Test default values for arguments"""
         parser = argparse.ArgumentParser(add_help=False)
@@ -50,6 +57,7 @@ class TestCLIArguments:
         assert args.output == "./"
         assert args.repo == "./"
         assert args.diff is False
+        assert args.lite is False
         assert args.language == "en"
         assert ".SourceSageignore" in args.ignore_file
 

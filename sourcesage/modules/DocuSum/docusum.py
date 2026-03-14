@@ -36,6 +36,7 @@ class DocuSum:
         output_file="repository_summary.md",
         git_path=None,
         language="en",
+        lite=False,
     ):
         """
         DocuSumの初期化。
@@ -47,10 +48,12 @@ class DocuSum:
             output_file (str): 出力マークダウンファイルのパス
             git_path (str): .gitディレクトリのパス（デフォルトはfolders[0]/.git）
             language (str): 出力言語 (en または ja、デフォルト: en)
+            lite (bool): README を残して全ファイル抜粋を省略する軽量モード
         """
         self.folders = folders if folders is not None else [os.getcwd()]
         self.git_path = git_path if git_path else os.path.join(self.folders[0], ".git")
         self.language = language
+        self.lite = lite
 
         # .SourceSageIgnoreファイルの初期化（ignore_file存在チェック後）
         self._init_ignore_file(ignore_file)
@@ -127,6 +130,7 @@ class DocuSum:
                 "generating_stats": "Generating statistics...",
                 "collecting_file_stats": "Collecting file statistics...",
                 "generating_language_stats": "Generating language statistics...",
+                "processing_readme": "Processing root README files...",
                 "processing_file_contents": "Processing file contents...",
                 "markdown_generated": "Markdown document generated:",
                 "error": "Markdown generation error:",
@@ -138,6 +142,7 @@ class DocuSum:
                 "generating_stats": "統計情報生成...",
                 "collecting_file_stats": "ファイル統計収集...",
                 "generating_language_stats": "言語統計生成...",
+                "processing_readme": "ルート README 処理...",
                 "processing_file_contents": "ファイル内容処理...",
                 "markdown_generated": "マークダウンドキュメントが生成されました:",
                 "error": "マークダウン生成エラー:",
@@ -179,10 +184,16 @@ class DocuSum:
                             md_file, language_stats
                         )
 
-                    with console.status(f"[cyan]{msg['processing_file_contents']}[/]", spinner="dots"):
-                        self.markdown_writer.write_file_contents(
-                            md_file, self.file_processor, folder
-                        )
+                    if self.lite:
+                        with console.status(f"[cyan]{msg['processing_readme']}[/]", spinner="dots"):
+                            self.markdown_writer.write_readme_contents(
+                                md_file, self.file_processor, folder
+                            )
+                    else:
+                        with console.status(f"[cyan]{msg['processing_file_contents']}[/]", spinner="dots"):
+                            self.markdown_writer.write_file_contents(
+                                md_file, self.file_processor, folder
+                            )
 
             console.log(
                 f"[green]{msg['markdown_generated']}[/] [red]{self.output_file}[/]"
@@ -271,6 +282,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--git-path", help=".gitディレクトリのパス（デフォルトはfolders[0]/.git）"
     )
+    parser.add_argument(
+        "--lite",
+        action="store_true",
+        help="README を残して全ファイル抜粋を省略する軽量モード",
+    )
 
     args = parser.parse_args()
 
@@ -282,6 +298,7 @@ if __name__ == "__main__":
             language_map_file=args.language_map,
             output_file=args.output,
             git_path=args.git_path,
+            lite=args.lite,
         )
         output_file = docusum.generate_markdown()
 

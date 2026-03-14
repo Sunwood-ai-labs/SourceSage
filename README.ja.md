@@ -81,10 +81,13 @@ uv run sage --repo .
 
 ```bash
 uv run sage --repo .
+uv run sage --repo . --lite
 uv run sage --repo /path/to/repository -l ja
 uv run sage --repo /path/to/repository -o ./out
 uv run sage --repo . --ignore-file .SourceSageignore
 ```
+
+`--lite` を付けると、ツリー・Git 情報・統計・ルート README を残しつつ、全ファイルの抜粋セクションを省略できます。
 
 `--diff` は互換性のため残していますが、現在の主導線ではなく非推奨扱いです。
 
@@ -98,6 +101,8 @@ uv run sage --repo . --ignore-file .SourceSageignore
 ```
 
 SourceSage は `.gitignore` と `.SourceSageignore` を統合して使います。`.SourceSageignore` が無い場合は、解析前にデフォルトテンプレートを自動生成します。
+
+初回のリポジトリ探索では、ignore ルールを整備する前でもサマリーが膨らみにくい `--lite` が安全です。
 
 ## ドキュメント
 

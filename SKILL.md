@@ -1,6 +1,6 @@
 ---
 name: sourcesage-cli
-description: Generate AI-friendly repository documentation with the SourceSage CLI. Use when Codex needs to run `sage` or `sourcesage` to create `.SourceSageAssets/Repository_summary.md`, analyze the current repository or another local repository, switch the output language between English and Japanese, change the output directory, or optionally create a deprecated tag-diff release report with `--diff`.
+description: Generate AI-friendly repository documentation with the SourceSage CLI. Use when Codex needs to run `sage` or `sourcesage` to create `.SourceSageAssets/Repository_summary.md`, analyze the current repository or another local repository, switch the output language between English and Japanese, use `--lite` to keep the summary small, change the output directory, or optionally create a deprecated tag-diff release report with `--diff`.
 ---
 
 # SourceSage CLI
@@ -19,8 +19,10 @@ Prefer the local checkout over assuming `sourcesage` is globally installed. In t
 
 2. Pick the smallest command that satisfies the request.
    - Current repo summary: `uv run sage`
+   - Current repo summary in lite mode: `uv run sage --lite`
    - Current repo summary in Japanese: `uv run sage -l ja`
    - Another repo with default output inside that repo: `uv run --directory <sourcesage-root> sage --repo "<target-repo>"`
+   - Another repo in lite mode: `uv run --directory <sourcesage-root> sage --repo "<target-repo>" --lite`
    - Another repo with explicit output directory: `uv run --directory <sourcesage-root> sage --repo "<target-repo>" -o "<output-dir>"`
    - Deprecated diff report: `uv run --directory <sourcesage-root> sage --repo "<target-repo>" --diff`
 
@@ -28,6 +30,7 @@ Prefer the local checkout over assuming `sourcesage` is globally installed. In t
    - Repository summary: `<output-dir>/.SourceSageAssets/Repository_summary.md`
    - Deprecated diff report: `<output-dir>/.SourceSageAssets/RELEASE_REPORT/Report_<latest-tag>.md`
    - Open the generated markdown and summarize the important results instead of only reporting that the command ran.
+   - In `--lite` mode, confirm the summary keeps the tree, Git info, statistics, and root README files while omitting the `## File Contents` section.
 
 4. Report side effects and command mismatches.
    - Expect SourceSage to create `<repo>/.SourceSageignore` if it does not exist.
@@ -40,6 +43,7 @@ Prefer the local checkout over assuming `sourcesage` is globally installed. In t
 - Prefer `uv run --directory <sourcesage-root> sage ...` outside the SourceSage repo so the command uses this checkout without requiring a global install.
 - Fall back to `sourcesage` or `sage` directly only when the package is already installed and `uv` is unavailable.
 - Use `-l ja` or `-l en` for output language.
+- Use `--lite` for first-pass exploration when ignore rules are not tuned yet or when full file excerpts would make the summary too large.
 - Use `-o` when the user wants artifacts outside the repo root.
 - Use `--repo` to analyze another repository from this checkout.
 

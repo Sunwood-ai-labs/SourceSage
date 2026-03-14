@@ -13,6 +13,7 @@ class SourceSage:
         output_file="output.md",
         language_map_file="language_map.json",
         language="en",
+        lite=False,
     ):
         """
         SourceSageの初期化
@@ -23,6 +24,7 @@ class SourceSage:
             output_file (str): 出力マークダウンファイルのパス
             language_map_file (str): 言語マッピング定義ファイルのパス
             language (str): 出力言語 (en または ja、デフォルト: en)
+            lite (bool): README を残して全ファイル抜粋を省略する軽量モード
         """
         self.docusum = DocuSum(
             folders=folders,
@@ -30,8 +32,11 @@ class SourceSage:
             language_map_file=language_map_file,
             output_file=output_file,
             language=language,
+            lite=lite,
         )
-        logger.info(f"SourceSage initialized: ignore_file={ignore_file}, folders={folders}, language={language}")
+        logger.info(
+            f"SourceSage initialized: ignore_file={ignore_file}, folders={folders}, language={language}, lite={lite}"
+        )
 
     def generate_markdown(self):
         """

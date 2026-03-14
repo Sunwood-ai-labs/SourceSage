@@ -84,6 +84,26 @@ class TestDocuSumMarkdownStructure:
             assert "`test.py`" in content
             assert "```python" in content
 
+    def test_markdown_lite_mode_keeps_root_readme_only(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            (Path(tmpdir) / "README.md").write_text("# Demo\n\nHello README\n", encoding=UTF8)
+            (Path(tmpdir) / "test.py").write_text("print('hello')\n", encoding=UTF8)
+            output_file = Path(tmpdir) / "output.md"
+
+            DocuSum(
+                folders=[tmpdir],
+                output_file=str(output_file),
+                git_path=None,
+                lite=True,
+            ).generate_markdown()
+            content = output_file.read_text(encoding=UTF8)
+
+            assert "## README" in content
+            assert "## File Contents" not in content
+            assert "`README.md`" in content
+            assert "Hello README" in content
+            assert "print('hello')" not in content
+
     def test_markdown_with_git_info(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             repo_path = Path(tmpdir)

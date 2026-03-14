@@ -23,6 +23,14 @@ uv run sage --repo .
 
 This creates `.SourceSageignore` when missing and writes the primary documentation artifact under `.SourceSageAssets/`.
 
+## Start with a lighter first pass
+
+```bash
+uv run sage --repo . --lite
+```
+
+Use `--lite` first when ignore rules are not tuned yet. It keeps the tree, Git info, stats, and root README files without expanding every file into the summary.
+
 ## Analyze another repository from this checkout
 
 ```bash
