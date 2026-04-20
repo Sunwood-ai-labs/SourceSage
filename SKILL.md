@@ -1,51 +1,37 @@
 ---
 name: sourcesage-cli
-description: Generate AI-friendly repository documentation with the SourceSage CLI. Use when Codex needs to run `sage` or `sourcesage` to create `.SourceSageAssets/Repository_summary.md`, analyze the current repository or another local repository, switch the output language between English and Japanese, use `--lite` to keep the summary small, change the output directory, or optionally create a deprecated tag-diff release report with `--diff`.
+description: "Generate AI-friendly repository documentation with the SourceSage CLI. Use when Codex needs to run `sage` or `sourcesage` to create `.SourceSageAssets/Repository_summary.md`, analyze the current repository or another local repository, switch the output language between English and Japanese, use `--lite` to keep the summary small, change the output directory, or optionally create a deprecated tag-diff release report with `--diff`."
 ---
 
 # SourceSage CLI
 
-## Overview
-
-Use the SourceSage CLI from this repository checkout to generate repository summaries for the current repo or another local repo.
-
-Prefer the local checkout over assuming `sourcesage` is globally installed. In this repository layout, the SourceSage tool root is the directory that contains this `SKILL.md`.
+Use the SourceSage CLI from this repository checkout to generate repository summaries for the current repo or another local repo. Prefer the local checkout over assuming `sourcesage` is globally installed; the tool root is the directory containing this `SKILL.md`.
 
 ## Workflow
 
-1. Resolve the SourceSage tool root and the target repository.
-   - If the user did not specify another repo, analyze the current workspace.
-   - If the current workspace is not the SourceSage repo, run SourceSage from its own checkout with `uv run --directory <sourcesage-root> sage ...`.
+1. **Resolve tool root and target.** Analyze the current workspace by default. Outside this repo, prefix commands with `uv run --directory <sourcesage-root>`. Fall back to bare `sage` only when `uv` is unavailable and the package is already installed.
 
-2. Pick the smallest command that satisfies the request.
-   - Current repo summary: `uv run sage`
-   - Current repo summary in lite mode: `uv run sage --lite`
-   - Current repo summary in Japanese: `uv run sage -l ja`
-   - Another repo with default output inside that repo: `uv run --directory <sourcesage-root> sage --repo "<target-repo>"`
-   - Another repo in lite mode: `uv run --directory <sourcesage-root> sage --repo "<target-repo>" --lite`
-   - Another repo with explicit output directory: `uv run --directory <sourcesage-root> sage --repo "<target-repo>" -o "<output-dir>"`
-   - Deprecated diff report: `uv run --directory <sourcesage-root> sage --repo "<target-repo>" --diff`
+2. **Pick the smallest command that satisfies the request.** Prefer `uv run sage` (both `sage` and `sourcesage` entry points are in `pyproject.toml`).
 
-3. Verify the generated artifacts after every run.
+   | Scenario | Command |
+   |----------|---------|
+   | Current repo | `uv run sage` |
+   | Lite mode | `uv run sage --lite` |
+   | Japanese output | `uv run sage -l ja` |
+   | Another repo | `uv run --directory <sourcesage-root> sage --repo "<target>"` |
+   | Another repo, lite | `uv run --directory <sourcesage-root> sage --repo "<target>" --lite` |
+   | Custom output dir | `uv run --directory <sourcesage-root> sage --repo "<target>" -o "<dir>"` |
+   | Diff report (deprecated) | `uv run --directory <sourcesage-root> sage --repo "<target>" --diff` |
+
+   Use `--lite` for first-pass exploration when ignore rules are not tuned or full excerpts would be too large.
+
+3. **Verify the generated artifacts after every run.**
    - Repository summary: `<output-dir>/.SourceSageAssets/Repository_summary.md`
    - Deprecated diff report: `<output-dir>/.SourceSageAssets/RELEASE_REPORT/Report_<latest-tag>.md`
    - Open the generated markdown and summarize the important results instead of only reporting that the command ran.
    - In `--lite` mode, confirm the summary keeps the tree, Git info, statistics, and root README files while omitting the `## File Contents` section.
 
-4. Report side effects and command mismatches.
-   - Expect SourceSage to create `<repo>/.SourceSageignore` if it does not exist.
-   - Treat `--ignore-file` as the supported ignore override.
-   - Do not rely on `--use-ignore` unless the CLI is updated and re-verified, because the current CLI does not expose that flag.
-
-## Command Notes
-
-- Prefer `uv run sage` inside the SourceSage repo because `pyproject.toml` defines both `sage` and `sourcesage` entry points.
-- Prefer `uv run --directory <sourcesage-root> sage ...` outside the SourceSage repo so the command uses this checkout without requiring a global install.
-- Fall back to `sourcesage` or `sage` directly only when the package is already installed and `uv` is unavailable.
-- Use `-l ja` or `-l en` for output language.
-- Use `--lite` for first-pass exploration when ignore rules are not tuned yet or when full file excerpts would make the summary too large.
-- Use `-o` when the user wants artifacts outside the repo root.
-- Use `--repo` to analyze another repository from this checkout.
+4. **Report side effects.** SourceSage creates `<repo>/.SourceSageignore` if missing. Use `--ignore-file` for custom ignore patterns (`--use-ignore` is not exposed by the current CLI).
 
 ## Validation
 
@@ -56,6 +42,10 @@ Prefer the local checkout over assuming `sourcesage` is globally installed. In t
 
 ## Avoid
 
-- Do not assume README examples are authoritative when they differ from `sourcesage/cli.py`.
+- Do not assume README examples are authoritative when they differ from `sourcesage/cli.py`; check the source.
 - Do not overwrite existing artifacts silently when the user asked for a specific destination and it already contains results.
-- Do not describe SourceSage usage from memory when you can inspect `pyproject.toml` and `sourcesage/cli.py` in this repo.
+
+## References
+
+- `sourcesage/cli.py` — canonical CLI flags, argument defaults, and help text
+- `pyproject.toml` — entry points (`sage`, `sourcesage`), version, and dependencies
